@@ -1,0 +1,6 @@
+ServerPort: :8087
+Host: localhost
+Username: root
+Password: 1234
+Dbname: test
+Port: 3306
