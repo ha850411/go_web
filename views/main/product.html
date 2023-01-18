@@ -1,12 +1,11 @@
 <!--引入共用模板-->
-{{ template "layout.html" }}
-
+{{ template "layout.html" .}}
 {{ define "content" }}
 <div class="main">
   <!-- MAIN CONTENT -->
   <div class="main-content">
     <div class="container-fluid">
-      <h3 class="page-title">Typography</h3>
+      <h3 class="page-title">存貨管理</h3>
       <div class="panel panel-headline">
         <div class="panel-body">
           <h1>Dashboard Heading 1</h1>
@@ -53,4 +52,5 @@
   </div>
   <!-- END MAIN CONTENT -->
 </div>
+
 {{end}}

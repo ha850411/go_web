@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	controllerApi "goWeb/controllers/api"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetApiRouters(r *gin.Engine) {

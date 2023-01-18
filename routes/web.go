@@ -9,4 +9,5 @@ import (
 func GetWebRouters(r *gin.Engine) {
 	r.GET("/", controllers.Index)
 	r.GET("/index", controllers.Index)
+	r.GET("/product", controllers.ProductManage)
 }
