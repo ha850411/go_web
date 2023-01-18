@@ -25,9 +25,9 @@
 <body>
 
 <div id="wrapper">
-    {{ template "header.html" .}}
+    {{ block "layout/header" . }}{{end}}
     <div id="menu">
-    {{ template "menu.html" .}}
+        {{ block "layout/menu" . }}{{end}}
     </div>
     {{ block "content" . }}{{end}}
 </div>

@@ -2,5 +2,5 @@ ServerPort: :8087
 Host: localhost
 Username: root
 Password: 1234
-Dbname: test
+Dbname: companay
 Port: 3306

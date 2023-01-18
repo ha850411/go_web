@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"goWeb/controllers"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetRouter(r *gin.Engine) {
@@ -12,4 +13,6 @@ func SetRouter(r *gin.Engine) {
 	GetApiRouters(r)
 	// 載入 error routers
 	r.NoRoute(controllers.NotFound)
+	// 加載資源文件
+	r.Static("/static", "./static")
 }
