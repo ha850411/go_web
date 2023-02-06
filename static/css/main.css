@@ -2350,3 +2350,16 @@ ul.activity-timeline > li:last-child:after {
 }
 
 /*# sourceMappingURL=main.css.map */
+@media screen and (min-width: 1025px) {
+    .header-menu {
+        display:none;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .header-profile {
+        display:none;
+    }
+    .header-menu {
+        display:block;
+    }
+}

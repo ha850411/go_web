@@ -1,6 +1,8 @@
-ServerPort: :8087
-Host: localhost
-Username: root
-Password: 1234
-Dbname: companay
-Port: 3306
+server : 
+  port: :8087
+database: 
+  host: 107.191.52.212
+  username: eason
+  password: 88888888
+  dbname: company
+  port: 3306

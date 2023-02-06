@@ -2,6 +2,7 @@ package routes
 
 import (
 	"goWeb/controllers"
+	"goWeb/middleware"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
@@ -10,10 +11,13 @@ import (
 func GetWebRouters(r *gin.Engine) {
 	// 載入 we共用模板設定
 	r.HTMLRender = createMyRender()
-	r.GET("/", controllers.Index)
-	r.GET("/index", controllers.Index)
-	r.GET("/login", controllers.Login)
-	r.GET("/product", controllers.ProductManage)
+	r.GET("/login", controllers.Login) // 登入頁
+	r.POST("/auth", controllers.Auth)  // 登入驗證
+	// 首頁
+	r.GET("/", middleware.Auth(), controllers.Index)
+	r.GET("/index", middleware.Auth(), controllers.Index)
+	// 產品管理
+	r.GET("/product", middleware.Auth(), controllers.ProductManage)
 }
 
 /*

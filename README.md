@@ -1,6 +1,7 @@
 # 使用說明
 
-## 執行 main.go
+## 透過 docker-compose 啟動
 ```
-go run main.go
+cd this_project
+docker-compose up -d --build
 ```

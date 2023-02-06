@@ -1,13 +1,14 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Test(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "test",
+		"msg":  "test123",
 	})
 }

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <!-- VENDOR CSS -->
     <link rel="stylesheet" href="static/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/vendor/font-awesome/css/all.min.css">
     <link rel="stylesheet" href="static/vendor/linearicons/style.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="static/css/main.css">
@@ -25,8 +25,8 @@
 <body>
 
 <div id="wrapper">
-    {{ block "layout/header" . }}{{end}}
     <div id="menu">
+        {{ block "layout/header" . }}{{end}}
         {{ block "layout/menu" . }}{{end}}
     </div>
     {{ block "content" . }}{{end}}

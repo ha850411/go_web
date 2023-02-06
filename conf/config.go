@@ -2,29 +2,46 @@ package conf
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Conf struct {
-	ServerPort string `yaml:"ServerPort"`
-	Host       string `yaml:"Host"`
-	Username   string `yaml:"Username"`
-	Password   string `yaml:"Password"`
-	Dbname     string `yaml:"Dbname"`
-	Port       string `yaml:"Port"`
+	Server   ServerConf   `yaml:"server"`
+	Database DatabaseConf `yaml:"database"`
 }
 
-func GetConfig() Conf {
+type ServerConf struct {
+	Port string `yaml:"port"`
+}
+
+type DatabaseConf struct {
+	Host     string `yaml:"host"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Dbname   string `yaml:"dbname"`
+	Port     string `yaml:"port"`
+}
+
+func Readfile(filePath string) (Conf, error) {
 	var settings Conf
-	yamlFile, err := ioutil.ReadFile("./conf/config.yaml")
+	yamlFile, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		fmt.Printf("read fail: %s", err)
+		return settings, err
 	}
 	//yaml文件内容影射到结构体中
 	err1 := yaml.Unmarshal(yamlFile, &settings)
 	if err1 != nil {
-		fmt.Println("error")
+		return settings, err1
+	}
+	return settings, nil
+}
+
+func GetConfig() Conf {
+	settings, err := Readfile("./conf/config.yaml")
+	if err != nil {
+		fmt.Println(err)
 	}
 	return settings
 }
