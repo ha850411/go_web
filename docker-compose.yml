@@ -1,0 +1,15 @@
+version: "3"
+services:
+
+  golang1.19:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: golang1.19
+    restart: unless-stopped
+    working_dir: /app
+    entrypoint: go run main.go
+    ports:
+      - 8087:8087
+    volumes:
+      - .:/app
