@@ -9,10 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 登入頁
 func Login(c *gin.Context) {
 	c.HTML(http.StatusOK, "login", gin.H{})
 }
 
+// 登入驗證
 func Auth(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
@@ -42,4 +44,10 @@ func Auth(c *gin.Context) {
 			"error": "帳號密碼錯誤, 請重新登入",
 		})
 	}
+}
+
+// 登出
+func Logout(c *gin.Context) {
+	c.SetCookie("loginToken", "", -1, "/", "", false, false)
+	c.Redirect(http.StatusMovedPermanently, "/login")
 }

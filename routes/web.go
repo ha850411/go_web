@@ -11,8 +11,9 @@ import (
 func GetWebRouters(r *gin.Engine) {
 	// 載入 we共用模板設定
 	r.HTMLRender = createMyRender()
-	r.GET("/login", controllers.Login) // 登入頁
-	r.POST("/auth", controllers.Auth)  // 登入驗證
+	r.GET("/login", controllers.Login)   // 登入頁
+	r.POST("/auth", controllers.Auth)    // 登入驗證
+	r.GET("/logout", controllers.Logout) // 登出頁
 	// 首頁
 	r.GET("/", middleware.Auth(), controllers.Index)
 	r.GET("/index", middleware.Auth(), controllers.Index)
