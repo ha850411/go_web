@@ -46,7 +46,7 @@ func GetProductsList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.UpdateTime)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}
