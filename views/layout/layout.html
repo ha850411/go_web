@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="static/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/vendor/font-awesome/css/all.min.css">
     <link rel="stylesheet" href="static/vendor/linearicons/style.css">
+
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="static/css/main.css">
     <!-- GOOGLE FONTS -->
@@ -20,6 +21,13 @@
     <script src="/static/js/vue.js"></script>
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- dataTables -->
+    <link rel="stylesheet" href="static/vendor/dataTables/datatables.min.css">
+    <link rel="stylesheet" href="static/vendor/dataTables/responsive/responsive.dataTables.min.css">
+    <script src="/static/vendor/dataTables/datatables.js"></script>
+    <script src="/static/vendor/dataTables/responsive/dataTables.responsive.min.js"></script>
+    <script src="/static/js/dataTable-init.js"></script>
+    
 </head>
 
 <body>
@@ -29,7 +37,11 @@
         {{ block "layout/header" . }}{{end}}
         {{ block "layout/menu" . }}{{end}}
     </div>
-    {{ block "content" . }}{{end}}
+    <div id="app">
+        {{ block "content" . }}{{end}}
+        {{ block "modals" . }}{{end}}
+    </div>
+    
 </div>
 
 {{ block "javascript" . }}{{end}}

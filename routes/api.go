@@ -1,7 +1,7 @@
 package routes
 
 import (
-	controllerApi "goWeb/controllers/api"
+	"goWeb/controllers/api"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,6 +9,7 @@ import (
 func GetApiRouters(r *gin.Engine) {
 	apiGroup := r.Group("api")
 	{
-		apiGroup.GET("/test", controllerApi.Test)
+		// 取得商品列表
+		apiGroup.GET("/getProductsList", api.GetProductsList)
 	}
 }

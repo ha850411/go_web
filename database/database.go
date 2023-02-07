@@ -27,7 +27,7 @@ func DbConnect() *sql.DB {
 		Password: settings.Database.Password,
 		Dbname:   settings.Database.Dbname,
 	}
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4", dbInfo.Username, dbInfo.Password, dbInfo.Host, dbInfo.Port, dbInfo.Dbname)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbInfo.Username, dbInfo.Password, dbInfo.Host, dbInfo.Port, dbInfo.Dbname)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)

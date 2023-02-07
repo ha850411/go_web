@@ -27,13 +27,20 @@ func GetWebRouters(r *gin.Engine) {
  */
 func createMyRender() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
-	menu, header, layout := "views/layout/menu.html", "views/layout/header.html", "views/layout/layout.html"
+	common := map[string]string{
+		"menu":   "views/layout/menu.html",
+		"header": "views/layout/header.html",
+		"layout": "views/layout/layout.html",
+	}
+	includes := map[string]string{
+		"productModal": "views/includes/productModal.html",
+	}
 	// 首頁
-	r.AddFromFiles("index", layout, header, menu, "views/main/index.html")
+	r.AddFromFiles("index", common["layout"], common["header"], common["menu"], "views/main/index.html")
 	// 登入頁
-	r.AddFromFiles("login", layout, "views/main/login.html")
+	r.AddFromFiles("login", common["layout"], "views/main/login.html")
 	// 存貨管理
-	r.AddFromFiles("product", layout, header, menu, "views/main/product.html")
+	r.AddFromFiles("product", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/product.html")
 	// 404 page
 	r.AddFromFiles("404", "views/main/404.html")
 	return r
