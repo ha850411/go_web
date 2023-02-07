@@ -1,17 +1,24 @@
 package api
 
 import (
+	"database/sql"
 	"fmt"
 	"goWeb/database"
 	"goWeb/models"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
+var db *sql.DB
+
+func init() {
+	db = database.DbConnect()
+}
+
 func GetProductsList(c *gin.Context) {
-	db := database.DbConnect()
 	// params
 	limit := c.DefaultQuery("length", "10") // 分頁筆數
 	offset := c.DefaultQuery("start", "0")  // 起始筆數
@@ -24,7 +31,8 @@ func GetProductsList(c *gin.Context) {
 	columes := map[string]string{
 		"0": "name",
 		"1": "amount",
-		"2": "updateTime",
+		"2": "amountNotice",
+		"3": "updateTime",
 	}
 	orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
 	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
@@ -56,4 +64,36 @@ func GetProductsList(c *gin.Context) {
 		"recordsTotal":    count,
 		"recordsFiltered": count,
 	})
+}
+
+func UpdateAmount(c *gin.Context) {
+	time.Sleep(time.Second * 2)
+	id := c.PostForm("id")
+	amount := c.PostForm("amount")
+	sql := fmt.Sprintf("UPDATE products SET amount=%s WHERE id=%s", amount, id)
+	rows, err := db.Exec(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	rowsAffected, _ := rows.RowsAffected()
+	fmt.Printf("sql: %v\n", sql)
+	fmt.Printf("rowsAffected: %v\n", rowsAffected)
+	if rowsAffected > 0 {
+		// 寫 log
+		sql = fmt.Sprintf("INSERT INTO products_log (pid, amount) VALUES (%s, %s)", id, amount)
+		db.Exec(sql)
+		c.JSON(http.StatusOK, gin.H{
+			"code":        http.StatusOK,
+			"updatedRows": rowsAffected,
+		})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "無資料更新",
+		})
+	}
 }

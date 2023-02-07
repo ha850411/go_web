@@ -17,7 +17,6 @@
                     <td align="center"><i class="fa fa-spinner fa-spin" style="font-size:20px;"></i><span style="margin-left:3px;">載入中...</span></td>
                 </tr>
             </table>
-
         </div>
       </div>
     </div>
@@ -39,20 +38,44 @@ $(function(){
 
 function updateAmount(id)
 {
-    console.log($('.amountInput[data-id="'+id+'"]').val());
     $.ajax({
         type: 'PUT',
         url: '/api/products/updateAmount',
         dataType: 'json',
         data: { 
-        
+            id: id,
+            amount: $('.amountInput[data-id="'+id+'"]').val()
+        },
+        beforeSend: function(){
+            $('.statusIcon').css("display", "none");
+            $('.msgItem').css("display", "none");
+            $('.mdfBtn_'+id).css("display", "none");
+            $('.loading_'+id).css("display", "block");
         },
         success: function (result, statusText, xhr) {
-            console.log(result);
+            $('.success_'+id).css("display", "block");
+            $('.success_'+id).fadeOut(3000);
         },
-        error: function (thrownError) {
-            console.log(thrownError);
+        error: function (err) {
+            $('.msgItem').css("display", "block");
+            $('.msg_'+id).html(err.responseJSON.msg);
+            $('.failed_'+id).css("display", "block");
+            $('.failed_'+id).fadeOut(3000);
+            $('.msgItem').fadeOut(3000);
+        },
+        complete: function(){
+            console.log('complete');
+            $('.mdfBtn_'+id).css("display", "block");
+            $('.loading_'+id).css("display", "none");
         }
+    });
+}
+
+function ListenInput(event, id) {
+    val = event.target.value;
+    console.log(val);
+    $('.amountInput[data-id="'+id+'"]').each(function(){
+        $(this).val(val);
     });
 }
 </script>

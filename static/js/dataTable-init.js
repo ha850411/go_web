@@ -27,9 +27,13 @@ function initProductTable()
                 title: "數量",
                 render: function(data, type, row) {
                     output = '<div style="display:flex; align-items:center;">';
-                    output += '<input type="number" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'">';
-                    output += '<button type="button" class="btn btn-success btn-sm" style="margin-left:5px" onclick="updateAmount('+row.id+')">修改</button>';
+                    output += '<input type="number" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'" oninput="ListenInput(event, '+row.id+')">';
+                    output += '<button type="button" class="btn btn-success btn-sm mdfBtn_'+row.id+'" style="margin-left:5px" onclick="updateAmount('+row.id+')">修改</button>';
+                    output += '<i class="fa fa-spinner fa-spin loading_'+row.id+'" style="margin-left:5px;font-size:20px;display:none;"></i>';
+                    output += '<i class="fa fa-solid fa-check statusIcon success_'+row.id+'" style="color:#12af55;margin-left:5px;font-size:20px;display:none;"></i>';
+                    output += '<i class="fa fa-solid fa-xmark statusIcon failed_'+row.id+'" style="color:#FF0000;margin-left:5px;font-size:20px;display:none;"></i>';
                     output += '</div>';
+                    output += '<div class="msgItem msgItem_'+row.id+'" style="display:none;">message: <span class="msg_'+row.id+'" style="color:#FF0000;"></span></div>';
                     return output;
                 }
             },
