@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/base64"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,10 +10,12 @@ import (
 // 中間件
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		_, err := c.Cookie("loginToken")
+		loginToken, err := c.Cookie("loginToken")
 		if err != nil {
 			c.Redirect(http.StatusMovedPermanently, "/login")
 		}
+		username, _ := base64.RawURLEncoding.DecodeString(loginToken)
+		c.Set("username", string(username))
 		c.Next()
 	}
 }

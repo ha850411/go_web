@@ -1,27 +1,62 @@
 {{ define "modals" }}
-<div id="productModal" class="modal fade" role="dialog">
+<!-- 新增 -->
+<div id="productAddModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-  
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">新增產品</h4>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="usr">產品名稱:</label>
-                <input type="text" class="form-control" id="usr">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">新增產品</h4>
             </div>
-            <div class="form-group">
-                <label for="pwd">數量:</label>
-                <input type="password" class="form-control" id="pwd">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modal_name"><span style="color:#FF0000;">*</span>產品名稱:</label>
+                    <input type="text" class="form-control" id="modal_name">
+                </div>
+                <div class="form-group">
+                    <label for="modal_amount"><span style="color:#FF0000;">*</span>數量:</label>
+                    <input type="number" class="form-control" id="modal_amount">
+                </div>
+                <div class="form-group">
+                    <label for="modal_amount_notice">存貨警戒線:</label>
+                    <input type="number" class="form-control" id="modal_amount_notice">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="addSubmitBtn" onclick="doInsert()">新增</button>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success">新增</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
+<!-- 修改 -->
+<div id="productEditModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">編輯產品</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modal_edit_id" value="">
+                <div class="form-group">
+                    <label for="modal_edit_name"><span style="color:#FF0000;">*</span>產品名稱:</label>
+                    <input type="text" class="form-control" id="modal_edit_name">
+                </div>
+                <div class="form-group">
+                    <label for="modal_edit_amount"><span style="color:#FF0000;">*</span>數量:</label>
+                    <input type="number" class="form-control" id="modal_edit_amount">
+                </div>
+                <div class="form-group">
+                    <label for="modal_edit_amount_notice">存貨警戒線:</label>
+                    <input type="number" class="form-control" id="modal_edit_amount_notice">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="editSubmitBtn" onclick="doEdit()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
 {{end}}

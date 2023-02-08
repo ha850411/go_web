@@ -13,5 +13,11 @@ func GetApiRouters(r *gin.Engine) {
 		apiGroup.GET("/products/getList", api.GetProductsList)
 		// 更新數量
 		apiGroup.PUT("/products/updateAmount", api.UpdateAmount)
+		// 新增產品
+		apiGroup.POST("/products/add", api.AddProduct)
+		// 編輯產品
+		apiGroup.PATCH("/products/edit", api.EditProduct)
+		// 刪除產品
+		apiGroup.DELETE("/products/delete/:id", api.DeleteProduct)
 	}
 }
