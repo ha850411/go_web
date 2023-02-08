@@ -14,7 +14,7 @@ CREATE TABLE `products_log` (
   `id` int NOT NULL,
   `pid` int NOT NULL,
   `amount` int NOT NULL,
-  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `updateDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `users` (
@@ -35,7 +35,9 @@ ALTER TABLE `products`
 --
 ALTER TABLE `products_log`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`pid`);
+  ADD UNIQUE KEY `pid_2` (`pid`,`updateDate`),
+  ADD KEY `pid` (`pid`),
+  ADD KEY `pid_3` (`pid`,`updateDate`);
 
 --
 -- 資料表索引 `users`
@@ -51,17 +53,17 @@ ALTER TABLE `users`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `products_log`
 --
 ALTER TABLE `products_log`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;

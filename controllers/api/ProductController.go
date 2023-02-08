@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -201,8 +202,17 @@ func DeleteProduct(c *gin.Context) {
 
 // 寫 log
 func writeProductsLog(id string, amount string) {
-	sql := fmt.Sprintf("INSERT INTO products_log (pid, amount) VALUES (%s, %s)", id, amount)
-	db.Exec(sql)
+	today := time.Now().Format("2006-01-02")
+	var check int
+	sql := fmt.Sprintf("SELECT count(*) FROM products_log WHERE pid=%s AND updateDate='%s'", id, today)
+	db.QueryRow(sql).Scan(&check)
+	if check > 0 {
+		sql = fmt.Sprintf("UPDATE products_log SET amount=%s WHERE pid=%s AND updateDate='%s'", amount, id, today)
+		db.Exec(sql)
+	} else {
+		sql = fmt.Sprintf("INSERT INTO products_log (pid, amount, updateDate) VALUES (%s, %s, '%s')", id, amount, today)
+		db.Exec(sql)
+	}
 }
 
 func GetTips(c *gin.Context) {
