@@ -7,12 +7,51 @@
                     <img src="/static/images/logo.jpg" alt="Klorofil Logo" style="height: 20px; margin-right: 3px"
                         class="img-responsive logo" />
                     <div style="font-size: 20px; font-weight: bold;white-space: nowrap;">雪国魚沼</div>
-                    
+
                 </div>
             </a>
         </div>
         <div class="header-menu">
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+                        <template v-if="tipApiLoading">
+                            <i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+                        </template>
+                        <template v-else>
+                            <i class="lnr lnr-alarm"></i>
+                            <span class="badge bg-danger" v-text="tipData.length"></span>
+                        </template>
+                    </a>
+                    <ul class="dropdown-menu notifications">
+                        <template v-if="tipData.length > 0">
+                            <li v-for="data in tipData">
+                                <a href="/product" class="notification-item">
+                                    <div style="display:flex;">
+                                        <div>
+                                            <span class="dot bg-danger"></span>
+                                        </div>
+                                        <div>
+                                            <div style="display:flex;align-items: center;">名稱:<span style="margin-left:3px;" v-text="data.name"></span></div>
+                                            <div style="display:flex;align-items: center;">
+                                                <span>庫存存量過低(</span>
+                                                <span v-text="'< ' + data.amountNotice"></span>
+                                                <span>)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </template>
+                        <template v-else>
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span>無提醒</span>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa-solid fa-bars"></i>
@@ -20,19 +59,19 @@
                     <ul class="dropdown-menu">
                         <li :class="active=='index'?'active':''">
                             <a href="/">
-                                <i class="lnr lnr-home"></i> 
+                                <i class="lnr lnr-home"></i>
                                 <span>首頁</span>
                             </a>
                         </li>
                         <li :class="active=='product'?'active':''">
                             <a href="/product">
-                                <i class="lnr lnr-dice"></i> 
+                                <i class="lnr lnr-dice"></i>
                                 <span>存貨管理</span>
                             </a>
                         </li>
                         <li :class="active=='setting'?'active':''">
                             <a href="/setting">
-                                <i class="lnr lnr-cog"></i> 
+                                <i class="lnr lnr-cog"></i>
                                 <span>設定</span>
                             </a>
                         </li>
@@ -43,21 +82,60 @@
         <div class="header-profile">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+                        <template v-if="tipApiLoading">
+                            <i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+                        </template>
+                        <template v-else>
+                            <i class="lnr lnr-alarm"></i>
+                            <span class="badge bg-danger" v-text="tipData.length"></span>
+                        </template>
+                    </a>
+                    <ul class="dropdown-menu notifications">
+                        <template v-if="tipData.length > 0">
+                            <li v-for="data in tipData">
+                                <a href="/product" class="notification-item">
+                                    <div style="display:flex;">
+                                        <div>
+                                            <span class="dot bg-danger"></span>
+                                        </div>
+                                        <div>
+                                            <div style="display:flex;align-items: center;">名稱:<span style="margin-left:3px;" v-text="data.name"></span></div>
+                                            <div style="display:flex;align-items: center;">
+                                                <span>庫存存量過低(</span>
+                                                <span v-text="'< ' + data.amountNotice"></span>
+                                                <span>)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </template>
+                        <template v-else>
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span>無提醒</span>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="static/images/user.png" class="img-circle" alt="Avatar" />
                         <span>{{ .username}}</span>
                         <i class="icon-submenu lnr lnr-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li>
+                        <!-- <li>
                             <a href="/setting">
-                                <i class="lnr lnr-cog"></i> 
+                                <i class="lnr lnr-cog"></i>
                                 <span>設定</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="/logout">
-                                <i class="lnr lnr-exit"></i> 
+                                <i class="lnr lnr-exit"></i>
                                 <span>登出</span>
                             </a>
                         </li>

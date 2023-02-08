@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -97,7 +96,6 @@ func UpdateAmount(c *gin.Context) {
 }
 
 func AddProduct(c *gin.Context) {
-	time.Sleep(time.Second * 2)
 	name := c.PostForm("name")
 	amount := c.PostForm("amount")
 	amountNotice := c.DefaultPostForm("amount_notice", "0")
@@ -132,7 +130,6 @@ func AddProduct(c *gin.Context) {
 }
 
 func EditProduct(c *gin.Context) {
-	time.Sleep(time.Second * 2)
 	editId := c.PostForm("id")
 	name := c.PostForm("name")
 	amount := c.PostForm("amount")
@@ -206,4 +203,28 @@ func DeleteProduct(c *gin.Context) {
 func writeProductsLog(id string, amount string) {
 	sql := fmt.Sprintf("INSERT INTO products_log (pid, amount) VALUES (%s, %s)", id, amount)
 	db.Exec(sql)
+}
+
+func GetTips(c *gin.Context) {
+	sql := "SELECT * FROM products WHERE amount<=amountNotice"
+	rows, err := db.Query(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	defer rows.Close() // close connection
+	data := make([]interface{}, 0)
+	for rows.Next() {
+		rowData := models.Products{}
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime)
+		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
+		data = append(data, rowData)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": data,
+	})
 }

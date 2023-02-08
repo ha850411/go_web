@@ -19,5 +19,7 @@ func GetApiRouters(r *gin.Engine) {
 		apiGroup.PATCH("/products/edit", api.EditProduct)
 		// 刪除產品
 		apiGroup.DELETE("/products/delete/:id", api.DeleteProduct)
+		// 取得存貨警戒商品
+		apiGroup.GET("/products/getTips", api.GetTips)
 	}
 }

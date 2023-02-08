@@ -23,7 +23,7 @@ function initProductTable()
                     output = '<div style="display:flex; align-items:center;">';
                     // input & updateBtn
                     output += '<input type="number" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'">';
-                    output += '<button type="button" class="btn btn-success btn-sm mdfBtn_'+row.id+'" style="margin-left:5px" onclick="updateAmount('+row.id+')">修改</button>';
+                    output += '<button type="button" class="btn btn-success btn-sm mdfBtn_'+row.id+'" style="margin-left:5px" onclick="updateAmount(this, '+row.id+')">修改</button>';
                     // loading icon
                     output += '<i class="fa fa-spinner fa-spin loading_'+row.id+'" style="margin-left:5px;font-size:20px;display:none;"></i>';
                     // success
@@ -39,7 +39,11 @@ function initProductTable()
                 data: 'amountNotice', 
                 render: function(data, type, row) {
                     if(data>0) {
-                        return data;
+                        if(row.amount <= row.amountNotice) {
+                            return '<span style="color:#FF0000;">' + data + '</span>';
+                        } else {
+                            return data;
+                        }
                     } else {
                         return "無";
                     }
