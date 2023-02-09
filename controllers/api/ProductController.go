@@ -336,19 +336,26 @@ func ExportCsv(c *gin.Context) {
 	var sql string
 	pid := c.DefaultQuery("pid", "0")
 	mode := c.Query("mode")
-	productList := make(map[string]string)
+	productList := make(map[string]interface{})
 	type ProductList struct {
-		Id   string
-		Name string
+		Id     string
+		Name   string
+		Amount string
 	}
 	if mode == "single" {
+		// 取得商品名稱 map
 		temp := ProductList{}
-		sql = fmt.Sprintf("SELECT id, name FROM products WHERE id=%s", pid)
-		db.QueryRow(sql).Scan(&temp.Id, &temp.Name)
-		productList[temp.Id] = temp.Name
-		// sql = fmt.Sprintf("SELECT amount, updateDate FROM products_log WHERE pid=%s ORDER BY updateDate", pid)
+		sql = fmt.Sprintf("SELECT id, name, amount FROM products WHERE id=%s", pid)
+		db.QueryRow(sql).Scan(&temp.Id, &temp.Name, &temp.Amount)
+		productList[temp.Id] = map[string]string{
+			"name":   temp.Name,
+			"amount": temp.Amount,
+		}
+		// 取得 log
+		sql = fmt.Sprintf("SELECT pid, amount, updateDate FROM products_log WHERE pid=%s ORDER BY updateDate", pid)
 	} else {
-		sql = "SELECT id, name FROM products"
+		// 取得商品名稱 map
+		sql = "SELECT id, name, amount FROM products"
 		rows, err := db.Query(sql)
 		if err != nil {
 			log.Panic(err)
@@ -356,35 +363,60 @@ func ExportCsv(c *gin.Context) {
 		defer rows.Close()
 		for rows.Next() {
 			temp := ProductList{}
-			rows.Scan(&temp.Id, &temp.Name)
-			productList[temp.Id] = temp.Name
+			rows.Scan(&temp.Id, &temp.Name, &temp.Amount)
+			productList[temp.Id] = map[string]string{
+				"name":   temp.Name,
+				"amount": temp.Amount,
+			}
 		}
-		// sql := "SELECT amount, updateDate FROM products_log ORDER BY pid asc, updateDate asc"
+		sql = "SELECT pid, amount, updateDate FROM products_log WHERE updateDate < CURRENT_DATE() ORDER BY pid asc, updateDate asc"
 	}
 	fmt.Printf("productList: %v\n", productList)
+	type Result struct {
+		Pid        string
+		Amount     string
+		UpdateDate time.Time
+	}
+	rows, err := db.Query(sql)
+	if err != nil {
+		log.Panic(err)
+		c.String(http.StatusOK, err.Error())
+	}
+	defer rows.Close()
 
-	// var dataBytes = new(bytes.Buffer)
-	// headList := []string{"ID", "Company", "HR", "Total Jobs", "Online Jobs", "Apply", "爬虫/应聘"}
-	// // 設置編碼
-	// dataBytes.WriteString("\xEF\xBB\xBF")
-	// wr := csv.NewWriter(dataBytes)
-	// wr.Write(headList)
-	// for _, company := range outCompanys {
-	// 	bodyList := []string{
-	// 		company.ID,
-	// 		company.Title,
-	// 		strconv.Itoa(company.HrCount),
-	// 		strconv.Itoa(company.Total),
-	// 		strconv.Itoa(company.OnlineCount),
-	// 		strconv.Itoa(company.ApplyCount),
-	// 		strconv.Itoa(company.SpiderCount),
-	// 	}
-	// 	wr.Write(bodyList)
-	// }
-	//清空
-	// wr.Flush()
-	// c.Writer.Header().Set("Content-type", "application/octet-stream")
-	// //c.Writer.Header().Set("Content-Type", "text/csv")
-	// c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment;filename=%s", "companys.csv"))
-	// c.String(200, dataBytes.String())
+	dataMap := make(map[string][]interface{})
+	for rows.Next() {
+		temp := Result{}
+		rows.Scan(&temp.Pid, &temp.Amount, &temp.UpdateDate)
+		dataMap[temp.Pid] = append(dataMap[temp.Pid], []string{
+			temp.Pid, temp.Amount, temp.UpdateDate.Format("2006-01-02"),
+		})
+	}
+	fmt.Printf("dataMap: %v\n", dataMap)
+
+	/*
+		var dataBytes = new(bytes.Buffer)
+		headList := []string{"商品名稱", "商品數量", "更新日期"}
+		// 設置編碼
+		dataBytes.WriteString("\xEF\xBB\xBF")
+		wr := csv.NewWriter(dataBytes)
+		wr.Write(headList)
+
+
+
+		for _, v := range dataMap {
+			fmt.Printf("v: %v\n", v)
+			bodyList := []string{
+				productList[thisPid]["name"],
+				v["amount"],
+				v["updateDate"],
+			}
+			wr.Write(bodyList)
+		}
+		// 清空
+		wr.Flush()
+		c.Writer.Header().Set("Content-type", "application/octet-stream")
+		c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment;filename=%s", "producstLog.csv"))
+		c.String(200, dataBytes.String()
+	*/
 }
