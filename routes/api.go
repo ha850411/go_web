@@ -21,5 +21,10 @@ func GetApiRouters(r *gin.Engine) {
 		apiGroup.DELETE("/products/delete/:id", api.DeleteProduct)
 		// 取得存貨警戒商品
 		apiGroup.GET("/products/getTips", api.GetTips)
+		// 取得商品名稱
+		apiGroup.GET("/products/getProductsNameList", api.GetProductsNameList)
+		// 取得商品 log
+		apiGroup.GET("/products/getProductsLog/:pid", api.GetProductsLog)
+
 	}
 }

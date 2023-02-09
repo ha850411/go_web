@@ -5,14 +5,123 @@
   <!-- MAIN CONTENT -->
   <div class="main-content">
     <div class="container-fluid">
-      <h3 class="page-title">首頁</h3>
+      <h3 class="page-title">存貨分析</h3>
       <div class="panel panel-headline">
         <div class="panel-body">
-          <h1>首頁</h1>
+            <!-- select2 -->
+            <select class="select2-main" style="width:300px;">
+                <!-- <option></option> -->
+            </select>
+
+            <!-- chartJS -->
+            <div style="margin-top:15px;">
+                <div id="loading">
+                    <i class='fa fa-spinner fa-spin' style='font-size:30px;'></i>
+                </div>
+                <canvas id="myChart" style="position: relative; height:40vh; width:80vw"></canvas>
+            </div>
         </div>
       </div>
     </div>
   </div>
   <!-- END MAIN CONTENT -->
 </div>
+
+<script>
+var myChart;
+$(function(){
+    initSelect2();
+
+    $('.select2-main').on('select2:select', function (e) {
+        var data = e.params.data;
+        console.log(data);
+        updateChart(data.id, data.text)
+    });
+});
+
+async function initSelect2(){
+    try {
+        const response = await axios.get('/api/products/getProductsNameList');
+        results = response.data.results;
+        $(".select2-main").select2({
+            placeholder: '請輸入商品名稱',
+            data: results,
+        });
+        
+        if(results.length > 0) {
+            initChart(results[0].id, results[0].text);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function initChart(pid, pname){
+    $('#loading').css("display", "block");
+    $('#myChart').css("opacity", "0");
+    results = await getProductLog(pid); // 取得 log
+    console.log(results);
+
+    myChart = new Chart($('#myChart'), {
+        type: 'bar',
+        data: {
+            labels: results["x_values"],
+            datasets: [
+                {
+                    label: pname,
+                    data: results["y_values"],
+                    borderWidth: 1,
+                },
+            ]
+        },
+        options: {
+            title:{
+                display:true,
+                text:'test',
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    $('#loading').css("display", "none");
+    $('#myChart').css("opacity", "1");
+}
+
+// 取得資料
+async function getProductLog(pid)
+{
+    var results = {
+        "x_values":[],
+        "y_values":[],
+    };
+    try {
+        const response = await axios.get('/api/products/getProductsLog/' + pid);
+        if(response.data.data.x_Value!==undefined) {
+            results["x_values"] = response.data.data.x_Value;
+        }
+        if(response.data.data.x_Value!==undefined) {
+            results["y_values"] = response.data.data.y_Value;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    return results;
+}
+
+async function updateChart(pid, pname){
+    $('#loading').css("display", "block");
+    $('#myChart').css("opacity", "0");
+    results = await getProductLog(pid); // 取得 log
+    myChart.data.labels = results["x_values"];
+    myChart.data.datasets[0].data = results["y_values"];
+    myChart.data.datasets[0].label = pname;
+    myChart.update();
+    $('#loading').css("display", "none");
+    $('#myChart').css("opacity", "1");
+}
+
+</script>
 {{end}}

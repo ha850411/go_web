@@ -42,14 +42,12 @@ func QueryToMap(db *sql.DB, sSql string) ([]map[string]interface{}, error) {
 
 	rows, err := db.Query(sSql)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.Columns()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 

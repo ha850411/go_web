@@ -216,7 +216,7 @@ func writeProductsLog(id string, amount string) {
 }
 
 func GetTips(c *gin.Context) {
-	sql := "SELECT * FROM products WHERE amount<=amountNotice"
+	sql := "SELECT * FROM products WHERE amountNotice > 0 AND amount<=amountNotice"
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -236,5 +236,97 @@ func GetTips(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"data": data,
+	})
+}
+
+func GetProductsNameList(c *gin.Context) {
+	sql := "SELECT id, name FROM products ORDER BY name asc"
+	rows, err := db.Query(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	defer rows.Close() // close connection
+	data := make([]interface{}, 0)
+	// return struct
+	type Result struct {
+		Id   int    `json:"id"`
+		Name string `json:"text"`
+	}
+	for rows.Next() {
+		product := Result{}
+		rows.Scan(&product.Id, &product.Name)
+		data = append(data, product)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"results": data,
+		"pagination": gin.H{
+			"more": true,
+		},
+	})
+}
+
+func GetProductsLog(c *gin.Context) {
+	time.Sleep(time.Second * 1)
+	// 查詢條件 預設查前 1 個月
+	date := time.Now().AddDate(0, -1, 0).Format("2006-01-02")
+
+	pid := c.Param("pid")
+	sql := fmt.Sprintf("SELECT id, amount, updateDate FROM products_log WHERE pid=%s AND updateDate >= '%s' ORDER BY updateDate asc", pid, date)
+	fmt.Printf("sql: %v\n", sql)
+
+	rows, err := db.Query(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	defer rows.Close() // close connection
+	// return struct
+	type Result struct {
+		Id         int       `json:"id"`
+		Amount     int       `json:"amount"`
+		UpdateDate time.Time `json:"updateDate"`
+		FormatDate string    `json:"formatDate"`
+	}
+	x_Value := []string{}
+	y_Value := []int{}
+
+	for rows.Next() {
+		productsLog := Result{}
+		rows.Scan(&productsLog.Id, &productsLog.Amount, &productsLog.UpdateDate)
+		productsLog.FormatDate = productsLog.UpdateDate.Format("2006-01-02")
+		x_Value = append(x_Value, productsLog.FormatDate)
+		y_Value = append(y_Value, productsLog.Amount)
+	}
+	// 檢查是否有今天的庫存, 若沒有則塞一筆進去
+	hasToday := false
+	today := time.Now().Format("2006-01-02")
+	for _, date := range x_Value {
+		if today == date {
+			hasToday = true
+			break
+		}
+	}
+	if !hasToday {
+		var todayAmount int
+		sql = fmt.Sprintf("SELECT amount FROM products WHERE id=%s", pid)
+		db.QueryRow(sql).Scan(&todayAmount)
+		x_Value = append(x_Value, today)
+		y_Value = append(y_Value, todayAmount)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"data": gin.H{
+			"pid":     pid,
+			"x_Value": x_Value,
+			"y_Value": y_Value,
+		},
 	})
 }
