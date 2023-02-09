@@ -24,7 +24,9 @@ func GetApiRouters(r *gin.Engine) {
 		// 取得商品名稱
 		apiGroup.GET("/products/getProductsNameList", api.GetProductsNameList)
 		// 取得商品 log
-		apiGroup.GET("/products/getProductsLog/:pid", api.GetProductsLog)
+		apiGroup.GET("/products/getProductsLog", api.GetProductsLog)
+		// 輸出 csv
+		apiGroup.GET("/products/export", api.ExportCsv)
 
 	}
 }

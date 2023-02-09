@@ -270,11 +270,12 @@ func GetProductsNameList(c *gin.Context) {
 }
 
 func GetProductsLog(c *gin.Context) {
-	time.Sleep(time.Second * 1)
+	pid := c.Query("pid")
+	month := c.Query("month")
+	monthInt, _ := strconv.Atoi(month)
+	monthAdd := 0 - monthInt
 	// 查詢條件 預設查前 1 個月
-	date := time.Now().AddDate(0, -1, 0).Format("2006-01-02")
-
-	pid := c.Param("pid")
+	date := time.Now().AddDate(0, monthAdd, 0).Format("2006-01-02")
 	sql := fmt.Sprintf("SELECT id, amount, updateDate FROM products_log WHERE pid=%s AND updateDate >= '%s' ORDER BY updateDate asc", pid, date)
 	fmt.Printf("sql: %v\n", sql)
 
@@ -329,4 +330,61 @@ func GetProductsLog(c *gin.Context) {
 			"y_Value": y_Value,
 		},
 	})
+}
+
+func ExportCsv(c *gin.Context) {
+	var sql string
+	pid := c.DefaultQuery("pid", "0")
+	mode := c.Query("mode")
+	productList := make(map[string]string)
+	type ProductList struct {
+		Id   string
+		Name string
+	}
+	if mode == "single" {
+		temp := ProductList{}
+		sql = fmt.Sprintf("SELECT id, name FROM products WHERE id=%s", pid)
+		db.QueryRow(sql).Scan(&temp.Id, &temp.Name)
+		productList[temp.Id] = temp.Name
+		// sql = fmt.Sprintf("SELECT amount, updateDate FROM products_log WHERE pid=%s ORDER BY updateDate", pid)
+	} else {
+		sql = "SELECT id, name FROM products"
+		rows, err := db.Query(sql)
+		if err != nil {
+			log.Panic(err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			temp := ProductList{}
+			rows.Scan(&temp.Id, &temp.Name)
+			productList[temp.Id] = temp.Name
+		}
+		// sql := "SELECT amount, updateDate FROM products_log ORDER BY pid asc, updateDate asc"
+	}
+	fmt.Printf("productList: %v\n", productList)
+
+	// var dataBytes = new(bytes.Buffer)
+	// headList := []string{"ID", "Company", "HR", "Total Jobs", "Online Jobs", "Apply", "爬虫/应聘"}
+	// // 設置編碼
+	// dataBytes.WriteString("\xEF\xBB\xBF")
+	// wr := csv.NewWriter(dataBytes)
+	// wr.Write(headList)
+	// for _, company := range outCompanys {
+	// 	bodyList := []string{
+	// 		company.ID,
+	// 		company.Title,
+	// 		strconv.Itoa(company.HrCount),
+	// 		strconv.Itoa(company.Total),
+	// 		strconv.Itoa(company.OnlineCount),
+	// 		strconv.Itoa(company.ApplyCount),
+	// 		strconv.Itoa(company.SpiderCount),
+	// 	}
+	// 	wr.Write(bodyList)
+	// }
+	//清空
+	// wr.Flush()
+	// c.Writer.Header().Set("Content-type", "application/octet-stream")
+	// //c.Writer.Header().Set("Content-Type", "text/csv")
+	// c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment;filename=%s", "companys.csv"))
+	// c.String(200, dataBytes.String())
 }

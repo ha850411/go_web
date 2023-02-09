@@ -9,9 +9,27 @@
       <div class="panel panel-headline">
         <div class="panel-body">
             <!-- select2 -->
-            <select class="select2-main" style="width:300px;">
-                <!-- <option></option> -->
-            </select>
+            <div>
+                <span>資料區間:</span>
+                <select class="select2-month" style="width:300px;">
+                    <option value="1">一個月內</option>
+                    <option value="2">二個月內</option>
+                    <option value="3">三個月內</option>
+                    <option value="4">四個月內</option>
+                    <option value="5">五個月內</option>
+                    <option value="6">六個月內</option>
+                </select>
+            </div>
+            <div style="margin: 10px 0px;">
+                <span>商品名稱:</span>
+                <select class="select2-main" style="width:300px;">
+                    <!-- <option></option> -->
+                </select>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success" onclick="exportCsv('single')">匯出此商品 csv</button>
+                <button type="button" class="btn btn-success" onclick="exportCsv('all')">匯出全部商品 csv</button>
+            </div>
 
             <!-- chartJS -->
             <div style="margin-top:15px;">
@@ -29,17 +47,29 @@
 
 <script>
 var myChart;
+var month = 1;
+var nowPid;
+var nowPname;
 $(function(){
     initSelect2();
+    // 監聽選擇月份變化
+    $('.select2-month').on('select2:select', function (e) {
+        var data = e.params.data;
+        month = data.id;
+        updateChart(nowPid, nowPname)
+    });
 
+    // 監聽商品名稱變化
     $('.select2-main').on('select2:select', function (e) {
         var data = e.params.data;
-        console.log(data);
-        updateChart(data.id, data.text)
+        nowPid = data.id;
+        nowPname = data.text;
+        updateChart(nowPid, nowPname)
     });
 });
 
 async function initSelect2(){
+    $('.select2-month').select2();
     try {
         const response = await axios.get('/api/products/getProductsNameList');
         results = response.data.results;
@@ -49,7 +79,9 @@ async function initSelect2(){
         });
         
         if(results.length > 0) {
-            initChart(results[0].id, results[0].text);
+            nowPid = results[0].id;
+            nowPname = results[0].text;
+            initChart(nowPid, nowPname);
         }
     } catch (error) {
         console.log(error);
@@ -98,7 +130,12 @@ async function getProductLog(pid)
         "y_values":[],
     };
     try {
-        const response = await axios.get('/api/products/getProductsLog/' + pid);
+        const response = await axios.get('/api/products/getProductsLog', {
+            params:{
+                pid: pid,
+                month: month,
+            }
+        });
         if(response.data.data.x_Value!==undefined) {
             results["x_values"] = response.data.data.x_Value;
         }
@@ -121,6 +158,14 @@ async function updateChart(pid, pname){
     myChart.update();
     $('#loading').css("display", "none");
     $('#myChart').css("opacity", "1");
+}
+
+function exportCsv(mode) {
+    if(mode=='single') {
+        window.open("/api/products/export?mode=single&pid=" + nowPid);
+    } else {
+        window.open("/api/products/export?mode=all");
+    }
 }
 
 </script>
