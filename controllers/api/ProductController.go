@@ -400,10 +400,12 @@ func ExportCsv(c *gin.Context) {
 	fmt.Printf("dataMap: %v\n", dataMap)
 
 	var dataBytes = new(bytes.Buffer)
-	headList := []string{"商品名稱", "商品數量", "更新日期"}
 	// 設置編碼
 	dataBytes.WriteString("\xEF\xBB\xBF")
 	wr := csv.NewWriter(dataBytes)
+	title := []string{"統計區間", startDate + "~" + endDate}
+	headList := []string{"商品名稱", "商品數量", "更新日期"}
+	wr.Write(title)
 	wr.Write(headList)
 
 	for thisPid, productInfo := range productList {
