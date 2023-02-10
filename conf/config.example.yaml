@@ -1,0 +1,8 @@
+server : 
+  port: 127.0.0.1:8087
+database: 
+  host: localhost
+  username: root
+  password: 1234
+  dbname: company
+  port: 3306
