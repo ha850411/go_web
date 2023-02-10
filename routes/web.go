@@ -30,6 +30,7 @@ func GetWebRouters(r *gin.Engine) {
 	adminGroup.POST("/setting/updatePassword", middleware.Auth(), controllers.UpdatePassword)
 	// ========= 前台 ===========
 	r.GET("/orders", front.Orders)
+	r.POST("/orders/add", front.OrdersAdd)
 }
 
 /*
@@ -42,7 +43,8 @@ func createMyRender() multitemplate.Renderer {
 		"menu":         "views/layout/menu.html",
 		"header":       "views/layout/header.html",
 		"layout":       "views/layout/layout.html",
-		"front-header": "views/layout/front-header.html",
+		"front-layout": "views/front/front-layout.html",
+		"front-header": "views/front/front-header.html",
 	}
 	includes := map[string]string{
 		"productModal": "views/includes/productModal.html",
@@ -59,7 +61,7 @@ func createMyRender() multitemplate.Renderer {
 	// 設定
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
 	// === 前端 ===
-	r.AddFromFiles("front-order", common["layout"], common["front-header"], "views/main/setting.html")
+	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], "views/front/front-order.html")
 
 	// 404 page
 	r.AddFromFiles("404", "views/main/404.html")
