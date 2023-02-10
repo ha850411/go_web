@@ -77,3 +77,66 @@ function initProductTable()
     });
     return productTable;
 }
+
+function initOrdersTable()
+{
+    orderTable = $('#orderTable').DataTable({
+        language: {
+            url: "static/vendor/dataTables/languages/ch-tw.json"  
+        },
+        oLanguage: {
+            "sProcessing": "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        },
+        processing: true,
+        serverSide:true,
+        ajax: {
+            url: "/api/orders/getLists",
+            type: "GET",
+        },
+        columns:[
+            {
+                data: 'id', 
+            },
+            {
+                data: 'name',
+            },
+            {
+                data: 'contact', 
+            },
+            {
+                data: 'pname',
+                render : function(data, type, row) {
+                    console.log(row);
+                    return row.pname;
+                }
+            },
+            {
+                data: 'amount', 
+            },
+            {
+                data: 'remark', 
+            },
+            {
+                data: 'formatTime', 
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    output = '<div style="display:flex; align-items:center;">';
+                    output += '<button type="button" class="btn btn-primary btn-sm" style="margin-right:5px" onclick="modifyOrder('+row.id+')">編輯產品</button>';
+                    output += '<button type="button" class="btn btn-danger btn-sm" onclick="doDelete(this, '+row.id+')">刪除訂單</button>';
+                    output += '</div>';
+                    return output;
+                }
+            }
+        ],
+        columnDefs:[
+            {
+                targets: 7,
+                orderable: false,
+                responsivePriority: 2,
+            },
+        ],
+    });
+    return orderTable;
+}

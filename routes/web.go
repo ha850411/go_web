@@ -39,6 +39,7 @@ func createMyRender() multitemplate.Renderer {
 	}
 	includes := map[string]string{
 		"productModal": "views/includes/productModal.html",
+		"orderModal":   "views/includes/orderModal.html",
 	}
 	// 存貨分析
 	r.AddFromFiles("analysis", common["layout"], common["header"], common["menu"], "views/main/analysis.html")
@@ -47,7 +48,7 @@ func createMyRender() multitemplate.Renderer {
 	// 存貨管理
 	r.AddFromFiles("product", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/product.html")
 	// 訂單管理
-	r.AddFromFiles("order", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/order.html")
+	r.AddFromFiles("order", common["layout"], common["header"], common["menu"], includes["orderModal"], "views/main/order.html")
 	// 設定
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
 	// 404 page

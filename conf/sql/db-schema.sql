@@ -7,10 +7,9 @@ CREATE TABLE `products` (
   `name` varchar(100) DEFAULT NULL,
   `amount` int NOT NULL,
   `amountNotice` int NOT NULL DEFAULT '0',
+  `status` int NOT NULL DEFAULT '1' COMMENT '0:刪除 1:存在',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `products` ADD `status` INT NOT NULL DEFAULT '1' COMMENT '0:刪除 1:存在' AFTER `amountNotice`;
 
 CREATE TABLE `products_log` (
   `id` int NOT NULL,
@@ -18,6 +17,7 @@ CREATE TABLE `products_log` (
   `amount` int NOT NULL,
   `updateDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
@@ -52,13 +52,15 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `products_log`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 ALTER TABLE `menu`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  
 COMMIT;
