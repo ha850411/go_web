@@ -56,8 +56,8 @@ function initProductTable()
                 data: null, 
                 render: function(data, type, row) {
                     output = '<div style="display:flex; align-items:center;">';
-                    output += '<button type="button" class="btn btn-primary btn-sm" style="margin-right:5px" onclick="modifyProduct('+row.id+', \''+row.name+'\', '+row.amount+', '+row.amountNotice+')">編輯產品</button>';
-                    output += '<button type="button" class="btn btn-danger btn-sm" onclick="doDelete(this, '+row.id+')">刪除產品</button>';
+                    output += '<i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyProduct('+row.id+', \''+row.name+'\', '+row.amount+', '+row.amountNotice+')"></i>';
+                    output += '<i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(this, '+row.id+')"></i>';
                     output += '</div>';
                     return output;
                 }
@@ -123,8 +123,8 @@ function initOrdersTable()
                 data: null,
                 render: function(data, type, row) {
                     output = '<div style="display:flex; align-items:center;">';
-                    output += '<button type="button" class="btn btn-primary btn-sm" style="margin-right:5px" onclick="modifyOrder('+row.id+')">編輯產品</button>';
-                    output += '<button type="button" class="btn btn-danger btn-sm" onclick="doDelete(this, '+row.id+')">刪除訂單</button>';
+                    output += '<i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyOrder('+row.id+')"></i>';
+                    output += '<i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(this, '+row.id+')"></i>';
                     output += '</div>';
                     return output;
                 }
