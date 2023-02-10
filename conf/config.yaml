@@ -3,6 +3,6 @@ server :
 database: 
   host: localhost
   username: root
-  password: 
+  password: 1234
   dbname: company
   port: 3306

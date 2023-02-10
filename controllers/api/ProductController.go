@@ -1,7 +1,9 @@
 package api
 
 import (
+	"bytes"
 	"database/sql"
+	"encoding/csv"
 	"fmt"
 	"goWeb/database"
 	"goWeb/models"
@@ -336,12 +338,15 @@ func ExportCsv(c *gin.Context) {
 	var sql string
 	pid := c.DefaultQuery("pid", "0")
 	mode := c.Query("mode")
-	productList := make(map[string]interface{})
+	productList := make(map[string]map[string]string)
 	type ProductList struct {
 		Id     string
 		Name   string
 		Amount string
 	}
+	// 日期區間
+	startDate := time.Now().AddDate(-1, 0, 0).Format("2006-01-02")
+	endDate := time.Now().AddDate(0, 0, 0).Format("2006-01-02")
 	if mode == "single" {
 		// 取得商品名稱 map
 		temp := ProductList{}
@@ -352,7 +357,7 @@ func ExportCsv(c *gin.Context) {
 			"amount": temp.Amount,
 		}
 		// 取得 log
-		sql = fmt.Sprintf("SELECT pid, amount, updateDate FROM products_log WHERE pid=%s ORDER BY updateDate", pid)
+		sql = fmt.Sprintf("SELECT pid, amount, updateDate FROM products_log WHERE pid=%s AND updateDate >'%s' AND updateDate<'%s' ORDER BY updateDate", pid, startDate, endDate)
 	} else {
 		// 取得商品名稱 map
 		sql = "SELECT id, name, amount FROM products"
@@ -369,7 +374,7 @@ func ExportCsv(c *gin.Context) {
 				"amount": temp.Amount,
 			}
 		}
-		sql = "SELECT pid, amount, updateDate FROM products_log WHERE updateDate < CURRENT_DATE() ORDER BY pid asc, updateDate asc"
+		sql = fmt.Sprintf("SELECT pid, amount, updateDate FROM products_log WHERE updateDate >'%s' AND updateDate<'%s' ORDER BY pid asc, updateDate asc", startDate, endDate)
 	}
 	fmt.Printf("productList: %v\n", productList)
 	type Result struct {
@@ -384,39 +389,53 @@ func ExportCsv(c *gin.Context) {
 	}
 	defer rows.Close()
 
-	dataMap := make(map[string][]interface{})
+	dataMap := make(map[string][]map[string]string)
 	for rows.Next() {
 		temp := Result{}
 		rows.Scan(&temp.Pid, &temp.Amount, &temp.UpdateDate)
-		dataMap[temp.Pid] = append(dataMap[temp.Pid], []string{
-			temp.Pid, temp.Amount, temp.UpdateDate.Format("2006-01-02"),
+		dataMap[temp.Pid] = append(dataMap[temp.Pid], map[string]string{
+			"pid":        temp.Pid,
+			"amount":     temp.Amount,
+			"updateDate": temp.UpdateDate.Format("2006-01-02"),
 		})
 	}
 	fmt.Printf("dataMap: %v\n", dataMap)
 
-	/*
-		var dataBytes = new(bytes.Buffer)
-		headList := []string{"商品名稱", "商品數量", "更新日期"}
-		// 設置編碼
-		dataBytes.WriteString("\xEF\xBB\xBF")
-		wr := csv.NewWriter(dataBytes)
-		wr.Write(headList)
+	var dataBytes = new(bytes.Buffer)
+	headList := []string{"商品名稱", "商品數量", "更新日期"}
+	// 設置編碼
+	dataBytes.WriteString("\xEF\xBB\xBF")
+	wr := csv.NewWriter(dataBytes)
+	wr.Write(headList)
 
-
-
-		for _, v := range dataMap {
-			fmt.Printf("v: %v\n", v)
-			bodyList := []string{
-				productList[thisPid]["name"],
-				v["amount"],
-				v["updateDate"],
+	for thisPid, productInfo := range productList {
+		if logsAry, exist := dataMap[thisPid]; exist {
+			for _, log := range logsAry {
+				bodyList := []string{
+					productInfo["name"],
+					log["amount"],
+					log["updateDate"],
+				}
+				wr.Write(bodyList)
 			}
-			wr.Write(bodyList)
 		}
-		// 清空
-		wr.Flush()
-		c.Writer.Header().Set("Content-type", "application/octet-stream")
-		c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment;filename=%s", "producstLog.csv"))
-		c.String(200, dataBytes.String()
-	*/
+		// 寫入今日庫存
+		bodyList := []string{
+			productInfo["name"],
+			productInfo["amount"],
+			time.Now().Format("2006-01-02"),
+		}
+		wr.Write(bodyList)
+	}
+	// 清空
+	wr.Flush()
+	var fileName string
+	if mode == "single" {
+		fileName = fmt.Sprintf("商品庫存明細_%s_%s.csv", productList[pid]["name"], time.Now().Format("20060102_150405"))
+	} else {
+		fileName = fmt.Sprintf("商品庫存明細_%s.csv", time.Now().Format("20060102_150405"))
+	}
+	c.Writer.Header().Set("Content-type", "application/octet-stream")
+	c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment;filename=%s", fileName))
+	c.String(200, dataBytes.String())
 }
