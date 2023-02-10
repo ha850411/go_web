@@ -40,5 +40,8 @@ func GetApiRouters(r *gin.Engine) {
 	ordersGroup.PATCH("/edit", api.EditOrders)
 	// 編輯訂購單
 	ordersGroup.DELETE("/:id", api.DeleteOrders)
+	// === settings Groups ===
+	settingsGroup := apiGroup.Group("/settings")
+	settingsGroup.POST("/updatePassword", api.UpdatePassword)
 
 }
