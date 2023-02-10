@@ -38,7 +38,7 @@ func Auth(c *gin.Context) {
 			expire = 86400 * 30
 		}
 		c.SetCookie("loginToken", token, expire, "/", "", false, false)
-		c.Redirect(http.StatusMovedPermanently, "/")
+		c.Redirect(http.StatusMovedPermanently, "/admin")
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "帳號密碼錯誤, 請重新登入",
@@ -49,5 +49,5 @@ func Auth(c *gin.Context) {
 // 登出
 func Logout(c *gin.Context) {
 	c.SetCookie("loginToken", "", -1, "/", "", false, false)
-	c.Redirect(http.StatusMovedPermanently, "/login")
+	c.Redirect(http.StatusMovedPermanently, "/admin/login")
 }

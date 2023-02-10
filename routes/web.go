@@ -11,19 +11,21 @@ import (
 func GetWebRouters(r *gin.Engine) {
 	// 載入共用模板設定
 	r.HTMLRender = createMyRender()
-	r.GET("/login", controllers.Login)   // 登入頁
-	r.POST("/auth", controllers.Auth)    // 登入驗證
-	r.GET("/logout", controllers.Logout) // 登出頁
+	adminGroup := r.Group("/admin")
+	adminGroup.GET("/login", controllers.Login)   // 登入頁
+	adminGroup.POST("/auth", controllers.Auth)    // 登入驗證
+	adminGroup.GET("/logout", controllers.Logout) // 登出頁
 	// 存貨管理
-	r.GET("/", middleware.Auth(), controllers.ProductManage)
-	r.GET("/product", middleware.Auth(), controllers.ProductManage)
+	adminGroup.GET("/", middleware.Auth(), controllers.ProductManage)
+	adminGroup.GET("/product", middleware.Auth(), controllers.ProductManage)
 	// 存貨分析
-	r.GET("/analysis", middleware.Auth(), controllers.Analysis)
-	// 存貨分析
-	r.GET("/order", middleware.Auth(), controllers.OrderManage)
-	// 存貨分析
-	r.GET("/setting", middleware.Auth(), controllers.SettingManage)
-
+	adminGroup.GET("/analysis", middleware.Auth(), controllers.Analysis)
+	// 訂單管理
+	adminGroup.GET("/order", middleware.Auth(), controllers.OrderManage)
+	// 設定
+	adminGroup.GET("/setting", middleware.Auth(), controllers.SettingManage)
+	// 變更密碼
+	adminGroup.POST("/setting/updatePassword", middleware.Auth(), controllers.UpdatePassword)
 }
 
 /*

@@ -12,7 +12,7 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		loginToken, err := c.Cookie("loginToken")
 		if err != nil {
-			c.Redirect(http.StatusMovedPermanently, "/login")
+			c.Redirect(http.StatusMovedPermanently, "/admin/login")
 		}
 		username, _ := base64.RawURLEncoding.DecodeString(loginToken)
 		c.Set("username", string(username))

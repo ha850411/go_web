@@ -4,7 +4,7 @@
         <nav>
             <ul class="nav">
                 <li v-for="data in menuData">
-                    <a :href="data.path" :class="data.active==active?'active':''">
+                    <a :href="'/admin' + data.path" :class="data.active==active?'active':''">
                         <i :class="data.icon" style="width: 25px;"></i>
                         <span v-text="data.name"></span>
                     </a>
