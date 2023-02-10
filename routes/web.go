@@ -2,6 +2,7 @@ package routes
 
 import (
 	"goWeb/controllers"
+	"goWeb/controllers/front"
 	"goWeb/middleware"
 
 	"github.com/gin-contrib/multitemplate"
@@ -11,6 +12,7 @@ import (
 func GetWebRouters(r *gin.Engine) {
 	// 載入共用模板設定
 	r.HTMLRender = createMyRender()
+	// ========= 後台 ===========
 	adminGroup := r.Group("/admin")
 	adminGroup.GET("/login", controllers.Login)   // 登入頁
 	adminGroup.POST("/auth", controllers.Auth)    // 登入驗證
@@ -26,6 +28,8 @@ func GetWebRouters(r *gin.Engine) {
 	adminGroup.GET("/setting", middleware.Auth(), controllers.SettingManage)
 	// 變更密碼
 	adminGroup.POST("/setting/updatePassword", middleware.Auth(), controllers.UpdatePassword)
+	// ========= 前台 ===========
+	r.GET("/orders", front.Orders)
 }
 
 /*
@@ -35,9 +39,10 @@ func GetWebRouters(r *gin.Engine) {
 func createMyRender() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
 	common := map[string]string{
-		"menu":   "views/layout/menu.html",
-		"header": "views/layout/header.html",
-		"layout": "views/layout/layout.html",
+		"menu":         "views/layout/menu.html",
+		"header":       "views/layout/header.html",
+		"layout":       "views/layout/layout.html",
+		"front-header": "views/layout/front-header.html",
 	}
 	includes := map[string]string{
 		"productModal": "views/includes/productModal.html",
@@ -53,6 +58,9 @@ func createMyRender() multitemplate.Renderer {
 	r.AddFromFiles("order", common["layout"], common["header"], common["menu"], includes["orderModal"], "views/main/order.html")
 	// 設定
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
+	// === 前端 ===
+	r.AddFromFiles("front-order", common["layout"], common["front-header"], "views/main/setting.html")
+
 	// 404 page
 	r.AddFromFiles("404", "views/main/404.html")
 	return r
