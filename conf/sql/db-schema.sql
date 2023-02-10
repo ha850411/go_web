@@ -10,6 +10,8 @@ CREATE TABLE `products` (
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+ALTER TABLE `products` ADD `status` INT NOT NULL DEFAULT '1' COMMENT '0:刪除 1:存在' AFTER `amountNotice`;
+
 CREATE TABLE `products_log` (
   `id` int NOT NULL,
   `pid` int NOT NULL,
@@ -24,46 +26,39 @@ CREATE TABLE `users` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- 資料表索引 `products`
---
+CREATE TABLE `menu` (
+  `id` int NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icon` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sort` int NOT NULL,
+  `updateTime` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
---
--- 資料表索引 `products_log`
---
 ALTER TABLE `products_log`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `pid_2` (`pid`,`updateDate`),
   ADD KEY `pid` (`pid`),
   ADD KEY `pid_3` (`pid`,`updateDate`);
 
---
--- 資料表索引 `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
---
--- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
---
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
 
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `products`
---
 ALTER TABLE `products`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `products_log`
---
 ALTER TABLE `products_log`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
---
--- 使用資料表自動遞增(AUTO_INCREMENT) `users`
---
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `menu`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;

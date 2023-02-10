@@ -41,10 +41,11 @@ func GetProductsList(c *gin.Context) {
 	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
 	// count total
 	var count int
-	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE %s", where)
+	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE %s AND status=1", where)
 	db.QueryRow(sql).Scan(&count)
 	// 分頁
-	sql = fmt.Sprintf("SELECT * FROM products WHERE %s ORDER BY %s %s LIMIT %s OFFSET %s", where, columes[orderBy], orderType, limit, offset)
+	sql = fmt.Sprintf("SELECT id, name, amount, amountNotice, updateTime FROM products WHERE %s AND status=1 ORDER BY %s %s LIMIT %s OFFSET %s", where, columes[orderBy], orderType, limit, offset)
+	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -176,7 +177,7 @@ func EditProduct(c *gin.Context) {
 func DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 	fmt.Printf("id: %v\n", id)
-	sql := fmt.Sprintf("DELETE FROM products WHERE id=%s", id)
+	sql := fmt.Sprintf("UPDATE products SET status=0 WHERE id=%s", id)
 	row, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -187,9 +188,6 @@ func DeleteProduct(c *gin.Context) {
 	}
 	rowAffected, _ := row.RowsAffected()
 	if rowAffected > 0 {
-		// 刪除 log
-		sql = fmt.Sprintf("DELETE FROM products_log WHERE pid=%s", id)
-		db.Exec(sql)
 		c.JSON(http.StatusOK, gin.H{
 			"code":        http.StatusOK,
 			"rowAffected": rowAffected,
@@ -218,7 +216,7 @@ func writeProductsLog(id string, amount string) {
 }
 
 func GetTips(c *gin.Context) {
-	sql := "SELECT * FROM products WHERE amountNotice > 0 AND amount<=amountNotice"
+	sql := "SELECT id,name,amount,amountNotice,updateTime FROM products WHERE status = 1 AND amountNotice > 0 AND amount<=amountNotice"
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -242,7 +240,7 @@ func GetTips(c *gin.Context) {
 }
 
 func GetProductsNameList(c *gin.Context) {
-	sql := "SELECT id, name FROM products ORDER BY name asc"
+	sql := "SELECT id, name FROM products WHERE status=1 ORDER BY name asc"
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -350,7 +348,7 @@ func ExportCsv(c *gin.Context) {
 	if mode == "single" {
 		// 取得商品名稱 map
 		temp := ProductList{}
-		sql = fmt.Sprintf("SELECT id, name, amount FROM products WHERE id=%s", pid)
+		sql = fmt.Sprintf("SELECT id, name, amount FROM products WHERE id=%s AND status=1", pid)
 		db.QueryRow(sql).Scan(&temp.Id, &temp.Name, &temp.Amount)
 		productList[temp.Id] = map[string]string{
 			"name":   temp.Name,
@@ -360,7 +358,7 @@ func ExportCsv(c *gin.Context) {
 		sql = fmt.Sprintf("SELECT pid, amount, updateDate FROM products_log WHERE pid=%s AND updateDate >'%s' AND updateDate<'%s' ORDER BY updateDate", pid, startDate, endDate)
 	} else {
 		// 取得商品名稱 map
-		sql = "SELECT id, name, amount FROM products"
+		sql = "SELECT id, name, amount FROM products WHERE status=1"
 		rows, err := db.Query(sql)
 		if err != nil {
 			log.Panic(err)

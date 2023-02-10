@@ -1,0 +1,236 @@
+<!--引入共用模板-->
+{{ template "layout.html" .}}
+{{ define "content" }}
+<div class="main">
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="container-fluid">
+      <h3 class="page-title">訂單管理</h3>
+      <div class="panel panel-headline">
+        <div class="panel-body">
+            <button type="button" id="addOrderBtn" class="btn btn-primary" style="margin-bottom: 10px;">新增訂單</button>
+            <!-- data table -->
+            <table id="orderTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <thead>
+                    <th>流水號</th>
+                    <th>姓名</th>
+                    <th>聯絡方式</th>
+                    <th>預購商品</th>
+                    <th>數量</th>
+                    <th>備註</th>
+                    <th>訂購時間</th>
+                </thead>
+                <tfoot>
+                    <th>流水號</th>
+                    <th>姓名</th>
+                    <th>聯絡方式</th>
+                    <th>預購商品</th>
+                    <th>數量</th>
+                    <th>備註</th>
+                    <th>訂購時間</th>
+                </tfoot>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END MAIN CONTENT -->
+</div>
+
+<script>
+var  productTable;
+$(function(){
+    // init
+    productTable = initProductTable();
+
+    $('#addProductBtn').click(function(){
+        $('#productAddModal').modal('show');
+    });
+
+});
+
+function updateAmount(obj, id)
+{
+    $.ajax({
+        type: 'PUT',
+        url: '/api/products/updateAmount',
+        dataType: 'json',
+        data: { 
+            id: id,
+            amount: $(obj).siblings().eq(0).val()
+        },
+        beforeSend: function(){
+            $('.statusIcon').css("display", "none");
+            $('.msgItem').css("display", "none");
+            $('.mdfBtn_'+id).css("display", "none");
+            $('.loading_'+id).css("display", "block");
+        },
+        success: function (result, statusText, xhr) {
+            $('.success_'+id).css("display", "block");
+            $('.success_'+id).fadeOut(3000);
+            setTimeout(() => {
+                productTable.ajax.reload();
+            }, 1000);
+        },
+        error: function (err) {
+            $('.msgItem').css("display", "block");
+            if(err.responseJSON.msg.Message !== undefined) {
+                $('.msg_'+id).html("修改失敗!" + err.responseJSON.msg.Message);
+            } else if(err.responseJSON.msg !== undefined) {
+                $('.msg_'+id).html(err.responseJSON.msg);
+            } else {
+                $('.msg_'+id).html("修改失敗!");
+            }
+            $('.failed_'+id).css("display", "block");
+            $('.failed_'+id).fadeOut(3000);
+            $('.msgItem').fadeOut(3000);
+        },
+        complete: function(){
+            console.log('complete');
+            $('.mdfBtn_'+id).css("display", "block");
+            $('.loading_'+id).css("display", "none");
+        }
+    });
+}
+
+function doInsert()
+{
+    let name = $('#modal_name').val();
+    let amount = $('#modal_amount').val();
+    if(name.length == 0) {
+        alert('產品名稱為必填');
+        $('#modal_name').focus();
+        return false;
+    }
+    if(amount.length == 0) {
+        alert('產品數量為必填');
+        $('#modal_amount').focus();
+        return false;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/api/products/add',
+        dataType: 'json',
+        data: { 
+            name: name,
+            amount: amount,
+            amount_notice: $('#modal_amount_notice').val(),
+        },
+        beforeSend: function(){
+            $('#addSubmitBtn').prop("disabled", true);
+            $('#addSubmitBtn').html("<i class='fa fa-spinner fa-spin' style='font-size:12px;'></i>")
+        },
+        success: function (result, statusText, xhr) {
+            $('#productAddModal').modal('hide');
+            alert('新增成功');
+            productTable.ajax.reload();
+        },
+        error: function (err) {
+            alert('新增失敗')
+            console.log(err);
+        },
+        complete: function(){
+            $('#addSubmitBtn').prop("disabled", false);
+            $('#addSubmitBtn').html("新增")
+        }
+    });
+}
+
+function modifyProduct(id, name, amount, amountNotice)
+{
+    $('#productEditModal').modal('show');
+    $('#modal_edit_id').val(id);
+    $('#modal_edit_name').val(name);
+    $('#modal_edit_amount').val(amount);
+    if(amountNotice == 0) {
+        $('#modal_edit_amount_notice').val('');
+    } else {
+        $('#modal_edit_amount_notice').val(amountNotice);
+    }
+}
+
+function doEdit()
+{
+    let name = $('#modal_edit_name').val();
+    let amount = $('#modal_edit_amount').val();
+    if(name.length == 0) {
+        alert('產品名稱為必填');
+        $('#modal_edit_name').focus();
+        return false;
+    }
+    if(amount.length == 0) {
+        alert('產品數量為必填');
+        $('#modal_edit_amount').focus();
+        return false;
+    }
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/products/edit',
+        dataType: 'json',
+        data: { 
+            id: $('#modal_edit_id').val(),
+            name: name,
+            amount: amount,
+            amount_notice: $('#modal_edit_amount_notice').val(),
+        },
+        beforeSend: function(){
+            $('#editSubmitBtn').prop("disabled", true);
+            $('#editSubmitBtn').html("<i class='fa fa-spinner fa-spin' style='font-size:12px;'></i>")
+        },
+        success: function (result, statusText, xhr) {
+            $('#productEditModal').modal('hide');
+            alert('修改成功');
+            productTable.ajax.reload();
+        },
+        error: function (err) {
+            $('#productEditModal').modal('hide');
+            if(err.responseJSON.msg.Message !== undefined) {
+                alert("修改失敗!\nerror: " + err.responseJSON.msg.Message)
+            } else if(err.responseJSON.msg !== undefined) {
+                alert(err.responseJSON.msg)
+            } else {
+                alert('修改失敗')
+            }
+            console.log(err);
+        },
+        complete: function(){
+            $('#editSubmitBtn').prop("disabled", false);
+            $('#editSubmitBtn').html("修改")
+        }
+    });
+}
+
+function doDelete(obj, id)
+{
+    if(confirm("確定刪除?")) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/products/delete/' + id,
+            dataType: 'json',
+            beforeSend: function(){
+                $(obj).prop("disabled", true);
+                $(obj).html("<i class='fa fa-spinner fa-spin' style='font-size:12px;'></i>")
+            },
+            success: function (result, statusText, xhr) {
+                alert('刪除成功');
+                productTable.ajax.reload();
+            },
+            error: function (err) {
+                if(err.responseJSON.msg.Message !== undefined) {
+                    alert("刪除失敗!\nerror: " + err.responseJSON.msg.Message)
+                } else if(err.responseJSON.msg !== undefined) {
+                    alert(err.responseJSON.msg)
+                } else {
+                    alert('刪除失敗')
+                }
+                console.log(err);
+            },
+            complete: function(){
+                $(obj).prop("disabled", false);
+                $(obj).html("刪除產品")
+            }
+        });
+    }
+}
+</script>
+{{end}}

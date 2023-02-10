@@ -9,16 +9,21 @@ import (
 )
 
 func GetWebRouters(r *gin.Engine) {
-	// 載入 we共用模板設定
+	// 載入共用模板設定
 	r.HTMLRender = createMyRender()
 	r.GET("/login", controllers.Login)   // 登入頁
 	r.POST("/auth", controllers.Auth)    // 登入驗證
 	r.GET("/logout", controllers.Logout) // 登出頁
-	// 首頁
-	r.GET("/", middleware.Auth(), controllers.Index)
-	r.GET("/index", middleware.Auth(), controllers.Index)
-	// 產品管理
+	// 存貨管理
+	r.GET("/", middleware.Auth(), controllers.ProductManage)
 	r.GET("/product", middleware.Auth(), controllers.ProductManage)
+	// 存貨分析
+	r.GET("/analysis", middleware.Auth(), controllers.Analysis)
+	// 存貨分析
+	r.GET("/order", middleware.Auth(), controllers.OrderManage)
+	// 存貨分析
+	r.GET("/setting", middleware.Auth(), controllers.SettingManage)
+
 }
 
 /*
@@ -35,12 +40,16 @@ func createMyRender() multitemplate.Renderer {
 	includes := map[string]string{
 		"productModal": "views/includes/productModal.html",
 	}
-	// 首頁
-	r.AddFromFiles("index", common["layout"], common["header"], common["menu"], "views/main/index.html")
+	// 存貨分析
+	r.AddFromFiles("analysis", common["layout"], common["header"], common["menu"], "views/main/analysis.html")
 	// 登入頁
 	r.AddFromFiles("login", common["layout"], "views/main/login.html")
 	// 存貨管理
 	r.AddFromFiles("product", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/product.html")
+	// 訂單管理
+	r.AddFromFiles("order", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/order.html")
+	// 設定
+	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
 	// 404 page
 	r.AddFromFiles("404", "views/main/404.html")
 	return r

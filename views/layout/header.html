@@ -57,22 +57,10 @@
                         <i class="fa-solid fa-bars"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li :class="active=='index'?'active':''">
-                            <a href="/">
-                                <i class="lnr lnr-home"></i>
-                                <span>存貨分析</span>
-                            </a>
-                        </li>
-                        <li :class="active=='product'?'active':''">
-                            <a href="/product">
-                                <i class="lnr lnr-dice"></i>
-                                <span>存貨管理</span>
-                            </a>
-                        </li>
-                        <li :class="active=='setting'?'active':''">
-                            <a href="/setting">
-                                <i class="lnr lnr-cog"></i>
-                                <span>設定</span>
+                        <li v-for="data in menuData">
+                            <a :href="data.path" :class="data.active==active?'active':''">
+                                <i :class="data.icon" style="width: 25px;"></i>
+                                <span v-text="data.name"></span>
                             </a>
                         </li>
                     </ul>
@@ -127,12 +115,6 @@
                         <i class="icon-submenu lnr lnr-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- <li>
-                            <a href="/setting">
-                                <i class="lnr lnr-cog"></i>
-                                <span>設定</span>
-                            </a>
-                        </li> -->
                         <li>
                             <a href="/logout">
                                 <i class="lnr lnr-exit"></i>

@@ -55,12 +55,14 @@
         data() {
             return {
                 active: '{{ .active }}',
+                menuData: '{{ .menu }}',
                 tipData: [],
                 tipApiLoading: true,
             }
         },
         mounted() {
             this.initTips();
+            this.initMenu();
         },
         watch: {
         },
@@ -78,6 +80,9 @@
                 }
                 this.tipApiLoading = false;
             },
+            initMenu: function() {
+                this.menuData = JSON.parse(this.menuData);
+            }
         },
     });
 const vm_menu = menu.mount('#menu');

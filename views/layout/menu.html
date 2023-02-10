@@ -3,66 +3,12 @@
     <div class="sidebar-scroll">
         <nav>
             <ul class="nav">
-                <li>
-                    <a href="/" :class="active=='index'?'active':''">
-                        <i class="lnr lnr-home"></i>
-                        <span>存貨分析</span>
+                <li v-for="data in menuData">
+                    <a :href="data.path" :class="data.active==active?'active':''">
+                        <i :class="data.icon" style="width: 25px;"></i>
+                        <span v-text="data.name"></span>
                     </a>
                 </li>
-                <li>
-                    <a href="/product" :class="active=='product'?'active':''">
-                        <i class="lnr lnr-dice"></i> 
-                        <span>存貨管理</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/setting" :class="active=='setting'?'active':''">
-                        <i class="lnr lnr-cog"></i> 
-                        <span>設定</span>
-                    </a>
-                </li>
-                <!-- <li>
-                    <a href="elements.html" class="">
-                        <i class="lnr lnr-code"></i> 
-                        <span>Elements</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="charts.html" class="">
-                        <i class="lnr lnr-chart-bars"></i> 
-                        <span>Charts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.html" class="">
-                        <i class="lnr lnr-alarm"></i> 
-                        <span>Notifications</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#subPages" data-toggle="collapse" class="collapsed">
-                        <i class="lnr lnr-file-empty"></i>
-                        <span>Pages</span>
-                        <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                    <div id="subPages" class="collapse">
-                        <ul class="nav">
-                            <li><a href="page-profile.html" class="">Profile</a></li>
-                            <li><a href="page-login.html" class="">Login</a></li>
-                            <li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="typography.html" class="active">
-                        <i class="lnr lnr-text-format"></i>
-                        <span>Typography</span></a>
-                </li>
-                <li>
-                    <a href="icons.html" class="">
-                        <i class="lnr lnr-linearicons"></i> 
-                        <span>Icons</span>
-                    </a>
-                </li> -->
             </ul>
         </nav>
     </div>

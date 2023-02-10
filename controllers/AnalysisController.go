@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ProductManage(c *gin.Context) {
+func Analysis(c *gin.Context) {
 	username, _ := c.Get("username")
 	output := service.GetCommonOutput() // 取得 menu
-	output["active"] = "product"
+	output["active"] = "analysis"
 	output["username"] = username
-	c.HTML(http.StatusOK, "product", output)
+	c.HTML(http.StatusOK, "analysis", output)
 }
