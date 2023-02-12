@@ -8,9 +8,6 @@ import (
 )
 
 func OrderManage(c *gin.Context) {
-	username, _ := c.Get("username")
-	output := service.GetCommonOutput() // 取得 menu
-	output["active"] = "order"
-	output["username"] = username
+	output := service.GetCommonOutput(c, "order") // 取得 menu
 	c.HTML(http.StatusOK, "order", output)
 }

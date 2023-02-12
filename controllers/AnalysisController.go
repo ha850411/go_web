@@ -8,9 +8,7 @@ import (
 )
 
 func Analysis(c *gin.Context) {
-	username, _ := c.Get("username")
-	output := service.GetCommonOutput() // 取得 menu
-	output["active"] = "analysis"
-	output["username"] = username
+
+	output := service.GetCommonOutput(c, "analysis") // 取得 menu
 	c.HTML(http.StatusOK, "analysis", output)
 }

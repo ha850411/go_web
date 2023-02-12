@@ -8,9 +8,6 @@ import (
 )
 
 func ProductManage(c *gin.Context) {
-	username, _ := c.Get("username")
-	output := service.GetCommonOutput() // 取得 menu
-	output["active"] = "product"
-	output["username"] = username
+	output := service.GetCommonOutput(c, "product") // 取得 menu
 	c.HTML(http.StatusOK, "product", output)
 }

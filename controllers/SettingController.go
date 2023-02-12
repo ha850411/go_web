@@ -12,10 +12,7 @@ import (
 )
 
 func SettingManage(c *gin.Context) {
-	username, _ := c.Get("username")
-	output := service.GetCommonOutput() // 取得 menu
-	output["active"] = "setting"
-	output["username"] = username
+	output := service.GetCommonOutput(c, "setting") // 取得 menu
 	c.HTML(http.StatusOK, "setting", output)
 }
 
