@@ -1,4 +1,4 @@
-function initProductTable()
+function initProductTable(keyword)
 {
     productTable = $('#productTable').DataTable({
         language: {
@@ -12,6 +12,9 @@ function initProductTable()
         ajax: {
             url: "/api/products/getList",
             type: "GET",
+        },
+        search: {
+            "search": keyword
         },
         columns:[
             {

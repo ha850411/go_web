@@ -26,7 +26,7 @@
                     <ul class="dropdown-menu notifications">
                         <template v-if="tipData.length > 0">
                             <li v-for="data in tipData">
-                                <a href="/product" class="notification-item">
+                                <a :href="'/admin/product?keyword='+data.name" class="notification-item">
                                     <div style="display:flex;">
                                         <div>
                                             <span class="dot bg-danger"></span>
@@ -82,7 +82,7 @@
                     <ul class="dropdown-menu notifications">
                         <template v-if="tipData.length > 0">
                             <li v-for="data in tipData">
-                                <a href="/admin/product" class="notification-item">
+                                <a :href="'/admin/product?keyword='+data.name" class="notification-item">
                                     <div style="display:flex;">
                                         <div>
                                             <span class="dot bg-danger"></span>

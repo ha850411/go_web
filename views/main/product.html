@@ -35,9 +35,10 @@
 
 <script>
 var  productTable;
+var keyword = '{{.keyword}}';
 $(function(){
     // init
-    productTable = initProductTable();
+    productTable = initProductTable(keyword);
 
     $('#addProductBtn').click(function(){
         $('#productAddModal').modal('show');

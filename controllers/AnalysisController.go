@@ -8,7 +8,6 @@ import (
 )
 
 func Analysis(c *gin.Context) {
-
 	output := service.GetCommonOutput(c, "analysis") // 取得 menu
 	c.HTML(http.StatusOK, "analysis", output)
 }
