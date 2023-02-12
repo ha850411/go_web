@@ -1,11 +1,10 @@
 package service
 
 import (
+	"encoding/json"
 	"goWeb/database"
 	"goWeb/models"
 	"log"
-
-	"github.com/goccy/go-json"
 )
 
 func GetMenu() string {

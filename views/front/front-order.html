@@ -1,13 +1,13 @@
 <!--引入共用模板-->
 {{ template "layout.html" .}}
 {{ define "content" }}
-<div class="main">
+<div class="">
   <!-- MAIN CONTENT -->
   <div class="main-content">
     <div class="container-fluid">
       <h3 class="page-title">訂購單</h3>
-      <div class="panel panel-headline">
-        <div class="panel-body">
+      <div class="panel panel-headline" style="max-width:600px; margin:0 auto;">
+        <div class="panel-body" >
             <h3>訂購單</h3><br>
             <form action="/orders/add" method="POST" id="mainFm">
 
@@ -22,27 +22,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label><span style="color:#FF0000;">*</span>商品名稱:</label>
-                    <div>
-                        <select class="select2-add-product" style="width:100%;">
-                            <option value="">請選擇商品</option>
-                        </select>
-                        <input type="hidden" class="form-control" id="orders_pid" name="pid">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="orders_amount"><span style="color:#FF0000;">*</span>數量:</label>
-                    <input type="number" class="form-control" id="orders_amount" name="amount">
-                </div>
-
-                <div class="form-group">
                     <label for="">備註:</label>
                     <textarea class="form-control" id="orders_remark" rows="3" name="remark"></textarea>
                 </div>
 
+                <hr>
+                <h4>訂購商品</h4>
+                <button type="button" class="btn btn-success addProductBtn">新增商品</button>
+                <input type="hidden" name="detail" id="detail">
+                <div class="productsDetailArea" style="margin-bottom: 10px;"></div>
+
                 <div class="form-group">
-                    <label for="modal_add_amount"><span style="color:#FF0000;">*</span>驗證碼:</label>
+                    <label><span style="color:#FF0000;">*</span>驗證碼:</label>
                     <canvas width="240" height="60" id="captcha"></canvas>
                 </div>
 
@@ -59,8 +50,11 @@
 
 <script>
 var captchaCode = '';
+var orderDetail = {};
+var select2ClassIndex = 1;
+var select2Data = [];
 $(function(){
-    initSelect2();
+    initSelect2Data();
 
     let captcha = new CaptchaMini({
         lineWidth: 1,
@@ -75,22 +69,33 @@ $(function(){
         content: '0123456789',
         length: 6
     }); 
+
     captcha.draw(document.querySelector('#captcha'), val => {
         captchaCode = val;
     });
 
-    // 監聽商品名稱變化
-    $('.select2-add-product').on('select2:select', function (e) {
-        var data = e.params.data;
-        $('#orders_pid').val(data.id);
+    $('.addProductBtn').click(function(){
+        select2ClassIndex++;
+        let select2Class = 'add-item-' + select2ClassIndex;
+        let amountInputClass = select2Class + '-amount';
+        let template = getTemplate(select2Class, amountInputClass);
+        $('.productsDetailArea').append(template);
+        $("." + select2Class).select2({
+            placeholder: '請輸入商品名稱',
+            data: select2Data,
+        });
+        // 監聽商品名稱變化
+        $('.' + select2Class).on('select2:select', function (e) {
+            var data = e.params.data;
+            let thisClass = e.target.classList[0];
+            orderDetail[thisClass] = {"pid": data.id};
+        });
     });
 
     $('#addSubmitBtn').click(function(){
         let require = [
             {el: '#orders_name', tip: '訂購人姓名為必填'},
             {el: '#orders_contact', tip: '聯絡方式為必填'},
-            {el: '#orders_pid', tip: '請選擇商品'},
-            {el: '#orders_amount', tip: '訂購數量為必填'},
         ];
 
         for (const key in require) {
@@ -100,6 +105,23 @@ $(function(){
                 return false;
             }
         }
+
+        if(Object.keys(orderDetail).length <= 0) {
+            alert('請填寫商品資訊');
+            return false;
+        }
+
+        for (const select2Class in orderDetail) {
+            let amount = $('.'+select2Class+'-amount').val();
+            orderDetail[select2Class]["amount"] = amount;
+            if(amount == "" || amount == "0") {
+                alert('請輸入商品數量');
+                $('.' + select2Class + '-amount').focus();
+                return false;
+            }
+        }
+        $('#detail').val(JSON.stringify(orderDetail));
+
         if($('#capchaInput').val().length == 0) {
             alert('驗證碼為必填');
             $('#capchaInput').focus();
@@ -115,21 +137,33 @@ $(function(){
     });
 });
 
-async function initSelect2(){
+async function initSelect2Data(){
     try {
         const response = await axios.get('/api/products/getProductsNameList');
-        results = response.data.results;
-        $(".select2-add-product").select2({
-            placeholder: '請輸入商品名稱',
-            data: results,
-        });
-        $(".select2-edit-product").select2({
-            placeholder: '請輸入商品名稱',
-            data: results,
-        });
+        select2Data = response.data.results;
     } catch (error) {
         console.log(error);
     }
+}
+
+
+function getTemplate(select2Class, amountInputClass)
+{
+    let template = `
+    <div id="`+select2Class+`-group" style="display:flex; align-items: center;margin-top:5px;">
+        <i class="fa-sharp fa-solid fa-trash" onclick="delGroup(this)" data-group="`+select2Class+`" style="cursor:pointer; color:#ff5151;margin-right:5px;"></i>
+        <select class="`+select2Class+`" style="width:100%;">
+            <option value="">請選擇商品</option>
+        </select>
+        <input type="number" min="1" class="form-control `+amountInputClass+`" style="width:100px;margin-left:5px;" placeholder="數量">
+    </div>`;
+    return template;
+}
+
+function delGroup(obj) {
+    let group = $(obj).attr("data-group");
+    delete orderDetail[group];
+    $('#' + group + "-group").remove();
 }
 
 </script>

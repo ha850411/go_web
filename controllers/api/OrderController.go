@@ -1,10 +1,12 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"goWeb/models"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,27 +18,31 @@ func GetOrdersLists(c *gin.Context) {
 	keyword := c.Query("search[value]")     // 關鍵字
 	where := "1"
 	if keyword != "" {
-		where = fmt.Sprintf("a.name LIKE '%%%s%%' OR a.contact LIKE '%%%s%%' OR a.remark LIKE '%%%s%%' OR b.name LIKE '%%%s%%'", keyword, keyword, keyword, keyword)
+		where = fmt.Sprintf("a.name LIKE '%%%s%%' OR a.contact LIKE '%%%s%%' OR a.remark LIKE '%%%s%%' OR c.name LIKE '%%%s%%'", keyword, keyword, keyword, keyword)
 	}
 	// 定義排序欄位
 	columes := map[string]string{
-		"0": "a.id",
-		"1": "a.name",
-		"2": "a.contact",
-		"3": "a.pid",
-		"4": "a.amount",
-		"5": "a.remark",
-		"6": "a.updateTime",
+		"0": "name",
+		"1": "contact",
+		"3": "remark",
+		"4": "updateTime",
 	}
 	orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
 	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
 	// count total
-	var count int
-	sql := fmt.Sprintf("SELECT count(*) FROM orders as a LEFT JOIN products as b ON a.pid=b.id WHERE %s", where)
+	var ids string
+	sql := fmt.Sprintf(`SELECT GROUP_CONCAT( DISTINCT a.id) as ids
+	FROM orders as a 
+	LEFT JOIN orders_detail as b ON a.id=b.order_id
+	LEFT JOIN products as c ON b.pid=c.id
+	WHERE %s ORDER BY a.%s %s LIMIT %s OFFSET %s`, where, columes[orderBy], orderType, limit, offset)
 	fmt.Printf("sql: %v\n", sql)
-	db.QueryRow(sql).Scan(&count)
+	db.QueryRow(sql).Scan(&ids)
+	count := len(strings.Split(ids, ","))
+	fmt.Printf("ids: %v\n", ids)
+	fmt.Printf("count: %v\n", count)
 	// 分頁
-	sql = fmt.Sprintf("SELECT a.*, b.name as pname FROM orders as a LEFT JOIN products as b ON a.pid=b.id WHERE %s ORDER BY %s %s LIMIT %s OFFSET %s", where, columes[orderBy], orderType, limit, offset)
+	sql = fmt.Sprintf("SELECT * FROM orders WHERE id IN (%s) ORDER BY %s %s LIMIT %s OFFSET %s", ids, columes[orderBy], orderType, limit, offset)
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -50,9 +56,33 @@ func GetOrdersLists(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Orders{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Pid, &rowData.Amount, &rowData.Remark, &rowData.UpdateTime, &rowData.Pname)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Remark, &rowData.UpdateTime)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
-		fmt.Printf("rowData: %v\n", rowData)
+		// 取得 orders_detail - begin
+		sql := fmt.Sprintf(`SELECT a.pid, a.amount, b.name FROM orders_detail as a
+		LEFT JOIN products as b ON a.pid=b.id
+		WHERE a.order_id=%v`, rowData.Id)
+		fmt.Printf("sql: %v\n", sql)
+		detailRows, err2 := db.Query(sql)
+		if err2 != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": 500,
+				"msg":  "取得商品資訊失敗:" + err2.Error(),
+			})
+			log.Panic(err)
+		}
+		defer detailRows.Close() // close
+		for detailRows.Next() {
+			tempDetail := struct {
+				Pid    int    `json:"pid"`
+				Amount int    `json:"amount"`
+				Pname  string `json:"pname"`
+			}{}
+			detailRows.Scan(&tempDetail.Pid, &tempDetail.Amount, &tempDetail.Pname)
+			fmt.Printf("tempDetail: %v\n", tempDetail)
+			rowData.Detail = append(rowData.Detail, tempDetail)
+		}
+		// 取得 orders_detail - end
 		data = append(data, rowData)
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -66,10 +96,8 @@ func GetOrdersLists(c *gin.Context) {
 func AddOrders(c *gin.Context) {
 	name := c.PostForm("name")
 	contact := c.PostForm("contact")
-	pid := c.PostForm("pid")
-	amount := c.PostForm("amount")
 	remark := c.DefaultPostForm("remark", "")
-	sql := fmt.Sprintf("INSERT INTO orders (name, contact, pid, amount, remark) VALUES ('%s', '%s', %s, %s, '%s')", name, contact, pid, amount, remark)
+	sql := fmt.Sprintf("INSERT INTO orders (name, contact, remark) VALUES ('%s', '%s', '%s')", name, contact, remark)
 	rows, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -78,8 +106,17 @@ func AddOrders(c *gin.Context) {
 		})
 		log.Panic(err)
 	}
-	rowAffected, _ := rows.RowsAffected()
-	if rowAffected > 0 {
+
+	if rowAffected, _ := rows.RowsAffected(); rowAffected > 0 {
+		// 解析 json 並新增訂單內容
+		tempDetail := c.PostForm("detail")
+		var detail map[string]map[string]interface{}
+		_ = json.Unmarshal([]byte(tempDetail), &detail)
+		LastInsertId, _ := rows.LastInsertId()
+		for _, jsonMap := range detail {
+			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
+			db.Exec(sql)
+		}
 		c.JSON(http.StatusOK, gin.H{
 			"code":         http.StatusOK,
 			"rowsAffected": rowAffected,
@@ -94,10 +131,10 @@ func AddOrders(c *gin.Context) {
 
 func GetOrders(c *gin.Context) {
 	id := c.Param("id")
-	sql := fmt.Sprintf("SELECT a.*, b.name as pname FROM orders as a LEFT JOIN products as b ON a.pid=b.id WHERE a.id=%s", id)
+	sql := fmt.Sprintf("SELECT * FROM orders WHERE id=%s", id)
 
 	rowData := models.Orders{}
-	err := db.QueryRow(sql).Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Pid, &rowData.Amount, &rowData.Remark, &rowData.UpdateTime, &rowData.Pname)
+	err := db.QueryRow(sql).Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Remark, &rowData.UpdateTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
@@ -105,6 +142,26 @@ func GetOrders(c *gin.Context) {
 		})
 		log.Panic(err)
 	}
+	// 取得 orders_detail - begin
+	sql = fmt.Sprintf(`SELECT pid, amount FROM orders_detail  WHERE order_id=%v`, rowData.Id)
+	detailRows, err2 := db.Query(sql)
+	if err2 != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 500,
+			"msg":  "取得商品資訊失敗:" + err2.Error(),
+		})
+		log.Panic(err)
+	}
+	defer detailRows.Close() // close
+	for detailRows.Next() {
+		tempDetail := struct {
+			Pid    int `json:"pid"`
+			Amount int `json:"amount"`
+		}{}
+		detailRows.Scan(&tempDetail.Pid, &tempDetail.Amount)
+		rowData.Detail = append(rowData.Detail, tempDetail)
+	}
+	// 取得 orders_detail - end
 	rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
@@ -117,13 +174,12 @@ func EditOrders(c *gin.Context) {
 		"id":      c.PostForm("id"),
 		"name":    c.PostForm("name"),
 		"contact": c.PostForm("contact"),
-		"pid":     c.PostForm("pid"),
-		"amount":  c.PostForm("amount"),
 		"remark":  c.PostForm("remark"),
+		"detail":  c.PostForm("detail"),
 	}
-	sql := fmt.Sprintf("UPDATE orders SET name='%s', contact='%s', pid=%s, amount=%s, remark='%s' WHERE id=%s", postData["name"], postData["contact"], postData["pid"], postData["amount"], postData["remark"], postData["id"])
+	sql := fmt.Sprintf("UPDATE orders SET name='%s', contact='%s', remark='%s' WHERE id=%s", postData["name"], postData["contact"], postData["remark"], postData["id"])
 	fmt.Printf("sql: %v\n", sql)
-	rows, err := db.Exec(sql)
+	_, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
@@ -131,17 +187,21 @@ func EditOrders(c *gin.Context) {
 		})
 		log.Panic(err)
 	}
-	if rowsAffected, _ := rows.RowsAffected(); rowsAffected > 0 {
-		c.JSON(http.StatusOK, gin.H{
-			"code":         http.StatusOK,
-			"rowsAffected": rowsAffected,
-		})
-	} else {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": http.StatusBadRequest,
-			"msg":  "無資料更新",
-		})
+
+	// 刪除原始訂單資料
+	sql = fmt.Sprintf("DELETE FROM orders_detail WHERE order_id=%v", postData["id"])
+	db.Exec(sql)
+	// 解析 json 並新增訂單內容
+	var detail map[string]map[string]interface{}
+	_ = json.Unmarshal([]byte(postData["detail"]), &detail)
+	for _, jsonMap := range detail {
+		sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", postData["id"], jsonMap["pid"], jsonMap["amount"])
+		db.Exec(sql)
 	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":         http.StatusOK,
+		"rowsAffected": 1,
+	})
 }
 
 func DeleteOrders(c *gin.Context) {
@@ -156,6 +216,8 @@ func DeleteOrders(c *gin.Context) {
 		log.Panic(err)
 	}
 	if rowsAffected, _ := rows.RowsAffected(); rowsAffected > 0 {
+		sql = fmt.Sprintf("DELETE FROM orders_detail WHERE order_id=%v", id)
+		db.Exec(sql)
 		c.JSON(http.StatusOK, gin.H{
 			"code":         http.StatusOK,
 			"rowsAffected": rowsAffected,

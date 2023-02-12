@@ -95,23 +95,37 @@ function initOrdersTable()
         },
         columns:[
             {
-                data: 'id', 
-            },
-            {
                 data: 'name',
             },
             {
                 data: 'contact', 
             },
             {
-                data: 'pname',
+                data: null,
+                className: 'none',
                 render : function(data, type, row) {
-                    console.log(row);
-                    return row.pname;
+                    output = '';
+                    if(row.detail !== null) {
+                        output += `<table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>名稱</th>
+                                <th>數量</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                        for (const index in row.detail) {
+                            output += `<tr>
+                                <td>` + row.detail[index].pname + `</td>
+                                <td>` + row.detail[index].amount + `</td>
+                            </tr>`;
+                        }
+                        output += `</tbody></table>`;
+                    } else {
+                        output += '無';
+                    }
+                    return output;
                 }
-            },
-            {
-                data: 'amount', 
             },
             {
                 data: 'remark', 
@@ -132,7 +146,7 @@ function initOrdersTable()
         ],
         columnDefs:[
             {
-                targets: 7,
+                targets: 5,
                 orderable: false,
                 responsivePriority: 2,
             },

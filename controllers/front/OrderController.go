@@ -1,6 +1,7 @@
 package front
 
 import (
+	"encoding/json"
 	"fmt"
 	"goWeb/database"
 	"log"
@@ -17,11 +18,10 @@ func OrdersAdd(c *gin.Context) {
 	postData := map[string]string{
 		"name":    c.PostForm("name"),
 		"contact": c.PostForm("contact"),
-		"pid":     c.PostForm("pid"),
-		"amount":  c.PostForm("amount"),
 		"remark":  c.PostForm("remark"),
+		"detail":  c.PostForm("detail"),
 	}
-	sql := fmt.Sprintf("INSERT INTO orders (name, contact, pid, amount, remark) VALUES ('%s', '%s', %s, %s, '%s')", postData["name"], postData["contact"], postData["pid"], postData["amount"], postData["remark"])
+	sql := fmt.Sprintf("INSERT INTO orders (name, contact, remark) VALUES ('%s', '%s', '%s')", postData["name"], postData["contact"], postData["remark"])
 	db := database.DbConnect()
 	rows, err := db.Exec(sql)
 	if err != nil {
@@ -32,6 +32,14 @@ func OrdersAdd(c *gin.Context) {
 		log.Panic(err)
 	}
 	if rowsAffected, _ := rows.RowsAffected(); rowsAffected > 0 {
+		// 解析 json 並新增訂單內容
+		var detail map[string]map[string]interface{}
+		_ = json.Unmarshal([]byte(postData["detail"]), &detail)
+		LastInsertId, _ := rows.LastInsertId()
+		for _, jsonMap := range detail {
+			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
+			db.Exec(sql)
+		}
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(200, `<script>alert('新增成功');location='/orders'</script>`)
 	} else {

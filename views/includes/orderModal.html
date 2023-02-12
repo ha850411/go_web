@@ -15,25 +15,16 @@
                 </div>
                 <div class="form-group">
                     <label for="modal_add_contact"><span style="color:#FF0000;">*</span>聯絡方式:</label>
-                    <input type="number" class="form-control" id="modal_add_contact">
-                </div>
-                <div class="form-group">
-                    <label><span style="color:#FF0000;">*</span>商品名稱:</label>
-                    <div>
-                        <select class="select2-add-product" style="width:100%;">
-                            <option value="">請選擇商品</option>
-                        </select>
-                        <input type="hidden" class="form-control" id="modal_add_pid">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="modal_add_amount"><span style="color:#FF0000;">*</span>數量:</label>
-                    <input type="number" class="form-control" id="modal_add_amount">
+                    <input type="text" class="form-control" id="modal_add_contact">
                 </div>
                 <div class="form-group">
                     <label for="modal_add_amount">備註:</label>
                     <textarea class="form-control" id="modal_add_remark" rows="3"></textarea>
                 </div>
+                <hr>
+                <h4>訂購商品</h4>
+                <button type="button" class="btn btn-success addProductBtn" data-type="add">新增商品</button>
+                <div class="productsDetailArea" data-type="add"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="addSubmitBtn" onclick="doInsert()">新增</button>
@@ -64,23 +55,14 @@
                     <input type="text" class="form-control" id="modal_edit_contact">
                 </div>
                 <div class="form-group">
-                    <label><span style="color:#FF0000;">*</span>商品名稱:</label>
-                    <div>
-                        <select class="select2-edit-product" style="width:100%;">
-                            <option value="">請選擇商品</option>
-                        </select>
-                        <input type="hidden" class="form-control" id="modal_edit_pid">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="modal_edit_amount"><span style="color:#FF0000;">*</span>數量:</label>
-                    <input type="number" class="form-control" id="modal_edit_amount">
-                </div>
-                <div class="form-group">
                     <label for="modal_edit_amount">備註:</label>
                     <textarea class="form-control" id="modal_edit_remark" rows="3"></textarea>
                 </div>
-            </div>
+                <hr>
+                <h4>訂購商品</h4>
+                    <button type="button" class="btn btn-success addProductBtn" data-type="edit">新增商品</button>
+                    <div class="productsDetailArea" data-type="edit"></div>
+                </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="editSubmitBtn" onclick="doEdit()">修改</button>
             </div>
