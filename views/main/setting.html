@@ -23,10 +23,9 @@
                 <button type="button" class="btn btn-primary" onclick="updatePassword()">修改</button>
             </form>
             <hr>
-            <h3>Line Notify</h3>
+            <h3>Line Notify{{if .isBind}}<span style="font-size:15px;">(已綁定)</span>{{end}}</h3>
             {{ if .isBind }}
-            <img src="/static/images/btn_base.png">
-            <h5>已綁定</h5>
+            <button type="button" class="btn btn-danger" style="height:30px;" onclick="unsetLine()">取消綁定</button>
             {{ else}}
             <a href="{{.lineUrl}}">
                 <div style="background-image: url('/static/images/btn_login_base.png'); width:94px;height:44px;position: relative;">
@@ -42,6 +41,7 @@
 </div>
 
 <script>
+var username = '{{.username}}';
 $(function(){
     $('.fa-eye').on('click', function(){
         el = $(this).attr("data-el");
@@ -74,6 +74,23 @@ function updatePassword() {
         return false;
     } 
     $('#mainFm').submit();
+}
+
+function unsetLine() {
+    $.ajax({
+        type: 'GET',
+        url: '/api/settings/unsetLine/' + username,
+        dataType: 'json',
+        success: function (result, statusText, xhr) {
+            alert('取消綁定成功');
+        },
+        error: function (thrownError) {
+            alert('取消綁定失敗');
+        },
+        complete: function(){
+            location.reload()
+        }
+    });
 }
 </script>
 {{end}}

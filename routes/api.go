@@ -40,5 +40,7 @@ func GetApiRouters(r *gin.Engine) {
 	ordersGroup.PATCH("/edit", api.EditOrders)
 	// 編輯訂購單
 	ordersGroup.DELETE("/:id", api.DeleteOrders)
-
+	// === setting Groups ===
+	settingGroup := apiGroup.Group("/settings")
+	settingGroup.GET("/unsetLine/:username", api.UnsetLine)
 }
