@@ -37,12 +37,18 @@ func OrdersAdd(c *gin.Context) {
 		var detail map[string]map[string]interface{}
 		_ = json.Unmarshal([]byte(postData["detail"]), &detail)
 		LastInsertId, _ := rows.LastInsertId()
+		lineMessage := fmt.Sprintf("\n*新訂單\n姓名: %s\n聯絡方式: %s\n備註: %s\n訂購商品:", postData["name"], postData["contact"], postData["remark"])
 		for _, jsonMap := range detail {
 			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
 			db.Exec(sql)
+			// 推播訊息
+			sql = fmt.Sprintf("SELECT name FROM products WHERE id = %s", jsonMap["pid"])
+			var pname string
+			db.QueryRow(sql).Scan(&pname)
+			lineMessage += fmt.Sprintf("\n- 商品: %s\n  數量: %s", pname, jsonMap["amount"])
 		}
 		// 推播
-		linebot.Request(fmt.Sprintf("*有新訂單\n姓名: %s\n聯絡方式: %s\n備註: %s", postData["name"], postData["contact"], postData["remark"]))
+		linebot.Request(lineMessage)
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(200, `<script>alert('新增成功');location='/orders'</script>`)
 	} else {
