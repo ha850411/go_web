@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"goWeb/database"
+	"goWeb/service/linebot"
 	"log"
 	"net/http"
 
@@ -40,6 +41,8 @@ func OrdersAdd(c *gin.Context) {
 			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
 			db.Exec(sql)
 		}
+		// 推播
+		linebot.Request(fmt.Sprintf("*有新訂單\n姓名: %s\n聯絡方式: %s\n備註: %s", postData["name"], postData["contact"], postData["remark"]))
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(200, `<script>alert('新增成功');location='/orders'</script>`)
 	} else {

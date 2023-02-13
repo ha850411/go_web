@@ -7,6 +7,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var Env = "local"
+
 type Conf struct {
 	Server   ServerConf   `yaml:"server"`
 	Database DatabaseConf `yaml:"database"`

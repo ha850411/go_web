@@ -1,0 +1,12 @@
+<!--引入共用模板-->
+{{ template "layout.html" .}}
+{{ define "content" }}
+
+<form action="/test2" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="testParam" value="test">
+    <input type="file" multiple="multiple" name="files[]"><br>
+    <input type="submit" value="upload">
+</form>
+
+<a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=Hg6jcH8P2quWxvlBEpC4n8&redirect_uri=http://localhost:8087/api/linebot/notify&scope=notify&state=csrfToken">lineapi</a>
+{{end}}

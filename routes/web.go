@@ -28,9 +28,15 @@ func GetWebRouters(r *gin.Engine) {
 	adminGroup.GET("/setting", middleware.Auth(), controllers.SettingManage)
 	// 變更密碼
 	adminGroup.POST("/setting/updatePassword", middleware.Auth(), controllers.UpdatePassword)
+	// === line bot ===
+	linebotGroup := r.Group("/linebot")
+	linebotGroup.GET("/notify", middleware.Auth(), controllers.LineBotNotify)
 	// ========= 前台 ===========
 	r.GET("/orders", front.Orders)
 	r.POST("/orders/add", front.OrdersAdd)
+	r.GET("/test", front.Test)
+	r.POST("/test2", front.Test2)
+	r.GET("/test3", front.Test3)
 }
 
 /*
@@ -61,7 +67,8 @@ func createMyRender() multitemplate.Renderer {
 	// 設定
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
 	// === 前端 ===
-	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], "views/front/front-order.html")
+	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], "views/front/order.html")
+	r.AddFromFiles("front-test", common["front-layout"], common["front-header"], "views/front/test.html")
 
 	// 404 page
 	r.AddFromFiles("404", "views/main/404.html")

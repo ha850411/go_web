@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"goWeb/database"
 	"goWeb/service"
+	"goWeb/service/linebot"
 	"log"
 	"net/http"
 
@@ -13,6 +14,19 @@ import (
 
 func SettingManage(c *gin.Context) {
 	output := service.GetCommonOutput(c, "setting") // 取得 menu
+	var lineUrl string
+	// 確認是否綁定 line notify
+	var linebotToken string
+	sql := fmt.Sprintf("SELECT linebot_token FROM users WHERE username='%s'", output["username"])
+	db := database.DbConnect()
+	db.QueryRow(sql).Scan(&linebotToken)
+	isBind := false
+	if linebotToken != "" {
+		isBind = true
+	}
+	lineUrl = fmt.Sprintf("https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s&scope=notify&state=csrfToken", linebot.CLIENT_ID, linebot.REDIRECT_URI)
+	output["lineUrl"] = lineUrl
+	output["isBind"] = isBind
 	c.HTML(http.StatusOK, "setting", output)
 }
 

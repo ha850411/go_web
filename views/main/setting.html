@@ -22,6 +22,18 @@
                 </div>
                 <button type="button" class="btn btn-primary" onclick="updatePassword()">修改</button>
             </form>
+            <hr>
+            <h3>Line Notify</h3>
+            {{ if .isBind }}
+            <img src="/static/images/btn_base.png">
+            <h5>已綁定</h5>
+            {{ else}}
+            <a href="{{.lineUrl}}">
+                <div style="background-image: url('/static/images/btn_login_base.png'); width:94px;height:44px;position: relative;">
+                    <span style="font-size:20px;line-height:20px; color:#FFFFFF; position:absolute; right:5px;top:12px;">綁定</span>
+                </div>
+            </a>
+            {{ end }}
         </div>
       </div>
     </div>
