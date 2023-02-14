@@ -68,3 +68,12 @@ CREATE TABLE `orders_detail` (
   KEY `order_id` (`order_id`),
   KEY `pid` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `products_picture` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pid` int NOT NULL,
+  `picture` mediumblob NOT NULL,
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

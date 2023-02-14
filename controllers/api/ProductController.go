@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"goWeb/database"
 	"goWeb/models"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -240,7 +241,7 @@ func GetTips(c *gin.Context) {
 }
 
 func GetProductsNameList(c *gin.Context) {
-	sql := "SELECT id, name FROM products WHERE status=1 ORDER BY name asc"
+	sql := "SELECT a.id, a.name, count(b.id) as cnt FROM products as a LEFT JOIN products_picture as b ON a.id=b.pid WHERE a.status=1 GROUP BY a.id ORDER BY a.name asc"
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -253,12 +254,13 @@ func GetProductsNameList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	// return struct
 	type Result struct {
-		Id   int    `json:"id"`
-		Name string `json:"text"`
+		Id          int    `json:"id"`
+		Name        string `json:"text"`
+		PicturesCnt int    `json:"picturesCnt"`
 	}
 	for rows.Next() {
 		product := Result{}
-		rows.Scan(&product.Id, &product.Name)
+		rows.Scan(&product.Id, &product.Name, &product.PicturesCnt)
 		data = append(data, product)
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -438,4 +440,109 @@ func ExportCsv(c *gin.Context) {
 	c.Writer.Header().Set("Content-type", "application/octet-stream")
 	c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment;filename=%s", fileName))
 	c.String(200, dataBytes.String())
+}
+
+func GetPictureLists(c *gin.Context) {
+	pid := c.Query("pid")
+	limit := c.DefaultQuery("length", "10") // 分頁筆數
+	offset := c.DefaultQuery("start", "0")  // 起始筆數
+
+	var count int
+	sql := fmt.Sprintf("SELECT count(*) FROM products_picture WHERE pid=%s", pid)
+	db.QueryRow(sql).Scan(&count)
+
+	sql = fmt.Sprintf("SELECT id,pid,updateTime FROM products_picture WHERE pid = %s LIMIT %s, %s", pid, offset, limit)
+	fmt.Printf("sql: %v\n", sql)
+	rows, err := db.Query(sql)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 500,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	defer rows.Close()
+	data := make([]interface{}, 0)
+	for rows.Next() {
+		rowData := models.ProductsPicture{}
+		rows.Scan(&rowData.Id, &rowData.Pid, &rowData.UpdateTime)
+		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
+		data = append(data, rowData)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":            200,
+		"data":            data,
+		"recordsTotal":    count,
+		"recordsFiltered": count,
+	})
+}
+
+func ShowPicture(c *gin.Context) {
+	id := c.Param("id")
+	sql := fmt.Sprintf("SELECT picture FROM products_picture WHERE id=%s", id)
+	var picture []byte
+	db.QueryRow(sql).Scan(&picture)
+	c.String(200, string(picture))
+}
+
+func UploadPic(c *gin.Context) {
+	form, _ := c.MultipartForm()
+	pid := c.PostForm("pid")
+	files := form.File["files[]"]
+	for _, v := range files {
+		file, _ := v.Open()
+		defer file.Close()
+		content, _ := ioutil.ReadAll(file)
+		sql := fmt.Sprintf("INSERT INTO products_picture (pid, picture) VALUES (%s, ?)", pid)
+		_, err := db.Exec(sql, content)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code": 400,
+				"msg":  err,
+			})
+			log.Panic(err)
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": "success",
+	})
+}
+
+func UpdatePic(c *gin.Context) {
+	edit_id := c.PostForm("edit_id")
+	formFile, _ := c.FormFile("file")
+	file, _ := formFile.Open()
+	defer file.Close()
+	content, _ := ioutil.ReadAll(file)
+	sql := fmt.Sprintf("UPDATE products_picture SET picture=? WHERE id=%s", edit_id)
+	_, err := db.Exec(sql, content)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": "success",
+	})
+}
+
+func DeletePic(c *gin.Context) {
+	id := c.Param("id")
+	sql := fmt.Sprintf("DELETE FROM products_picture WHERE id=%s", id)
+	_, err := db.Exec(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": "success",
+	})
 }

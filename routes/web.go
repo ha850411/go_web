@@ -20,6 +20,8 @@ func GetWebRouters(r *gin.Engine) {
 	// 存貨管理
 	adminGroup.GET("/", middleware.Auth(), controllers.ProductManage)
 	adminGroup.GET("/product", middleware.Auth(), controllers.ProductManage)
+	// 圖片管理
+	adminGroup.GET("/product/pic/:pid", middleware.Auth(), controllers.ProductPicManage)
 	// 存貨分析
 	adminGroup.GET("/analysis", middleware.Auth(), controllers.Analysis)
 	// 訂單管理
@@ -53,8 +55,9 @@ func createMyRender() multitemplate.Renderer {
 		"front-header": "views/front/front-header.html",
 	}
 	includes := map[string]string{
-		"productModal": "views/includes/productModal.html",
-		"orderModal":   "views/includes/orderModal.html",
+		"productModal":    "views/includes/productModal.html",
+		"orderModal":      "views/includes/orderModal.html",
+		"productPicModal": "views/includes/productPicModal.html",
 	}
 	// 存貨分析
 	r.AddFromFiles("analysis", common["layout"], common["header"], common["menu"], "views/main/analysis.html")
@@ -62,6 +65,8 @@ func createMyRender() multitemplate.Renderer {
 	r.AddFromFiles("login", common["layout"], "views/main/login.html")
 	// 存貨管理
 	r.AddFromFiles("product", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/product.html")
+	// 圖片管理
+	r.AddFromFiles("productPic", common["layout"], common["header"], common["menu"], includes["productPicModal"], "views/main/productPic.html")
 	// 訂單管理
 	r.AddFromFiles("order", common["layout"], common["header"], common["menu"], includes["orderModal"], "views/main/order.html")
 	// 設定

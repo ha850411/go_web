@@ -1,0 +1,30 @@
+{{ define "modals" }}
+<!-- 修改 -->
+<div id="picEditModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">編輯圖片</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modal_edit_id" value="">
+                <div class="form-group">
+                    <label for="modal_edit_name">目前圖片:</label><br>
+                    <img id="nowPicture" src="" style="width:100%;">
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="modal_edit_name">更換圖片:</label>
+                    <input type="file" id="editFileInput" accept=".jpg,.jpeg,.png,.gif">
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="editSubmitBtn" onclick="doEdit()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}

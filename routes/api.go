@@ -28,6 +28,16 @@ func GetApiRouters(r *gin.Engine) {
 	productsGroup.GET("/getProductsLog", api.GetProductsLog)
 	// 輸出 csv
 	productsGroup.GET("/export", api.ExportCsv)
+	// 取得圖片列表
+	productsGroup.GET("/getPictures", api.GetPictureLists)
+	// 輸出圖片
+	productsGroup.GET("/showPicture/:id", api.ShowPicture)
+	// 上傳圖片
+	productsGroup.POST("/uploadsPic", api.UploadPic)
+	// 更新圖片
+	productsGroup.PUT("/updatePic", api.UpdatePic)
+	// 刪除圖片
+	productsGroup.DELETE("/deletePic/:id", api.DeletePic)
 	// === orders Groups ===
 	ordersGroup := apiGroup.Group("/orders")
 	// 取得訂購列表

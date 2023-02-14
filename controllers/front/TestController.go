@@ -22,13 +22,15 @@ func Test(c *gin.Context) {
 
 func Test2(c *gin.Context) {
 	form, _ := c.MultipartForm()
+	pid := c.PostForm("pid")
 	files := form.File["files[]"]
+	fmt.Printf("files: %v\n", files)
 	for _, v := range files {
 		file, _ := v.Open()
 		defer file.Close()
 		content, _ := ioutil.ReadAll(file)
-		sql := fmt.Sprintf("INSERT INTO products_picture (pid, picture) VALUES (1, %x)", content)
-		_, err := db.Exec(sql)
+		sql := fmt.Sprintf("INSERT INTO products_picture (pid, picture) VALUES (%s, ?)", pid)
+		_, err := db.Exec(sql, content)
 		if err != nil {
 			fmt.Printf("err: %v\n", err)
 		}

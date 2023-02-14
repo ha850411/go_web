@@ -28,6 +28,7 @@
                     <th></th>
                 </tfoot>
             </table>
+            <div id="lightboxArea"></div>
         </div>
       </div>
     </div>
@@ -55,7 +56,8 @@ $(function(){
         select2ClassIndex++;
         let select2Class = type +'-item-' + select2ClassIndex;
         let amountInputClass = select2Class + '-amount';
-        let template = getTemplate(select2Class, amountInputClass);
+        let imageClass = select2Class + '-image';
+        let template = getTemplate(select2Class, amountInputClass, imageClass);
         $('.productsDetailArea[data-type="'+type+'"]').append(template);
         $("." + select2Class).select2({
             placeholder: '請輸入商品名稱',
@@ -66,15 +68,22 @@ $(function(){
             var data = e.params.data;
             let thisClass = e.target.classList[0];
             orderDetail[thisClass] = {"pid": data.id};
+            $('a[data-lightbox="'+imageClass+'"]').remove();
+            $('.' + imageClass).removeClass("hasPicture");
+            if(data.picturesCnt > 0) {
+                $('.' + imageClass).addClass("hasPicture");
+                loadLightboxImages(data.id, imageClass);
+            }
         });
     });
 });
 
-function getTemplate(select2Class, amountInputClass)
+function getTemplate(select2Class, amountInputClass, imageClass)
 {
     let template = `
     <div id="`+select2Class+`-group" style="display:flex; align-items: center;margin-top:5px;">
         <i class="fa-sharp fa-solid fa-trash" onclick="delGroup(this)" data-group="`+select2Class+`" style="cursor:pointer; color:#ff5151;margin-right:5px;"></i>
+        <i class="fa-regular fa-image `+imageClass+`" title="查看圖片" onclick="showLightBox('`+imageClass+`')" style="margin-right:5px;"></i>
         <select class="`+select2Class+`" style="width:100%;">
             <option value="">請選擇商品</option>
         </select>
@@ -83,10 +92,40 @@ function getTemplate(select2Class, amountInputClass)
     return template;
 }
 
+function showLightBox(imgClass)
+{
+    $('a[data-lightbox="'+imgClass+'"]').eq(0).click();
+}
+
+function loadLightboxImages(pid, imgClass)
+{
+    $.ajax({
+        type: 'GET',
+        url: '/api/products/getPictures?pid=' + pid,
+        dataType: 'json',
+        success: function (result, statusText, xhr) {
+            console.log(result);
+            html = '';
+            if(result.data.length > 0) {
+                for(i=0; i< result.data.length; i++) {
+                    html += `
+                        <a href="/api/products/showPicture/`+result.data[i].id+`"
+                        data-lightbox="`+ imgClass +`"></a>`;
+                }
+                $('#lightboxArea').append(html);
+            }
+        },
+        error: function (thrownError) {
+            console.log(thrownError);
+        }
+    });
+}
+
 function delGroup(obj) {
     let group = $(obj).attr("data-group");
     delete orderDetail[group];
     $('#' + group + "-group").remove();
+    $('a[data-lightbox="'+group+'-image"]').remove();
 }
 
 async function initSelect2Data(){
@@ -173,7 +212,8 @@ function modifyOrder(id)
                     select2ClassIndex++;
                     let select2Class = 'edit-item-' + select2ClassIndex;
                     let amountInputClass = select2Class + '-amount';
-                    let template = getTemplate(select2Class, amountInputClass);
+                    let imageClass = select2Class + '-image';
+                    let template = getTemplate(select2Class, amountInputClass, imageClass);
                     $('.productsDetailArea[data-type="edit"]').append(template);
                     $("." + select2Class).select2({
                         placeholder: '請輸入商品名稱',
@@ -184,6 +224,12 @@ function modifyOrder(id)
                         var data = e.params.data;
                         let thisClass = e.target.classList[0];
                         orderDetail[thisClass] = {"pid": data.id};
+                        $('a[data-lightbox="'+imageClass+'"]').remove();
+                        $('.' + imageClass).removeClass("hasPicture");
+                        if(data.picturesCnt > 0) {
+                            $('.' + imageClass).addClass("hasPicture");
+                            loadLightboxImages(data.id, imageClass);
+                        }
                     });
                     // 賦值
                     orderDetail[select2Class] = {
@@ -192,6 +238,16 @@ function modifyOrder(id)
                     };
                     $('.' + select2Class).val(result.data.detail[key].pid).trigger('change');
                     $('.'+amountInputClass).val(result.data.detail[key].amount);
+                    
+                    for(i=0; i<select2Data.length; i++) {
+                        if(select2Data[i].id == result.data.detail[key].pid) {
+                            if(select2Data[i].picturesCnt > 0) {
+                                $('.' + imageClass).addClass("hasPicture");
+                                loadLightboxImages(select2Data[i].id, imageClass);
+                            }
+                            break;
+                        }
+                    }
                 }
             }
             $('#orderEditModal').modal('show');
@@ -308,6 +364,7 @@ function doDelete(obj, id)
 
 function resetModal(type) {
     orderDetail = {};
+    $('#lightboxArea').html('');
     $('.productsDetailArea').html('');
     select2ClassIndex = 1;
     if(type=='add') {

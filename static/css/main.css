@@ -2356,3 +2356,12 @@ ul.activity-timeline > li:last-child:after {
         display:block;
     }
 }
+
+.fa-image {
+    color:#ADADAD;
+}
+
+.fa-image.hasPicture {
+    color:#3487c6;
+    cursor: pointer;
+}
