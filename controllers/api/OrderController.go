@@ -56,7 +56,7 @@ func GetOrdersLists(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Orders{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Remark, &rowData.UpdateTime)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Address, &rowData.Remark, &rowData.UpdateTime)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		// 取得 orders_detail - begin
 		sql := fmt.Sprintf(`SELECT a.pid, a.amount, b.name FROM orders_detail as a
@@ -96,8 +96,9 @@ func GetOrdersLists(c *gin.Context) {
 func AddOrders(c *gin.Context) {
 	name := c.PostForm("name")
 	contact := c.PostForm("contact")
+	address := c.PostForm("address")
 	remark := c.DefaultPostForm("remark", "")
-	sql := fmt.Sprintf("INSERT INTO orders (name, contact, remark) VALUES ('%s', '%s', '%s')", name, contact, remark)
+	sql := fmt.Sprintf("INSERT INTO orders (name, contact, address, remark) VALUES ('%s', '%s', '%s', '%s')", name, contact, address, remark)
 	rows, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -134,7 +135,7 @@ func GetOrders(c *gin.Context) {
 	sql := fmt.Sprintf("SELECT * FROM orders WHERE id=%s", id)
 
 	rowData := models.Orders{}
-	err := db.QueryRow(sql).Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Remark, &rowData.UpdateTime)
+	err := db.QueryRow(sql).Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Address, &rowData.Remark, &rowData.UpdateTime)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
@@ -174,10 +175,11 @@ func EditOrders(c *gin.Context) {
 		"id":      c.PostForm("id"),
 		"name":    c.PostForm("name"),
 		"contact": c.PostForm("contact"),
+		"address": c.PostForm("address"),
 		"remark":  c.PostForm("remark"),
 		"detail":  c.PostForm("detail"),
 	}
-	sql := fmt.Sprintf("UPDATE orders SET name='%s', contact='%s', remark='%s' WHERE id=%s", postData["name"], postData["contact"], postData["remark"], postData["id"])
+	sql := fmt.Sprintf("UPDATE orders SET name='%s', contact='%s', address='%s', remark='%s' WHERE id=%s", postData["name"], postData["contact"], postData["address"], postData["remark"], postData["id"])
 	fmt.Printf("sql: %v\n", sql)
 	_, err := db.Exec(sql)
 	if err != nil {

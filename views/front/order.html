@@ -21,6 +21,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="orders_address"><span style="color:#FF0000;">*</span>配送地址:</label>
+                    <input type="text" class="form-control" id="orders_address" name="address">
+                </div>
+
+                <div class="form-group">
                     <label for="">備註:</label>
                     <textarea class="form-control" id="orders_remark" rows="3" name="remark"></textarea>
                 </div>
@@ -103,6 +108,7 @@ $(function(){
         let require = [
             {el: '#orders_name', tip: '訂購人姓名為必填'},
             {el: '#orders_contact', tip: '聯絡方式為必填'},
+            {el: '#orders_address', tip: '配送地址為必填'},
         ];
 
         for (const key in require) {

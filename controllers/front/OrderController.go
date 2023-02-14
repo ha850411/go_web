@@ -19,10 +19,11 @@ func OrdersAdd(c *gin.Context) {
 	postData := map[string]string{
 		"name":    c.PostForm("name"),
 		"contact": c.PostForm("contact"),
+		"address": c.PostForm("address"),
 		"remark":  c.PostForm("remark"),
 		"detail":  c.PostForm("detail"),
 	}
-	sql := fmt.Sprintf("INSERT INTO orders (name, contact, remark) VALUES ('%s', '%s', '%s')", postData["name"], postData["contact"], postData["remark"])
+	sql := fmt.Sprintf("INSERT INTO orders (name, contact, address, remark) VALUES ('%s', '%s','%s', '%s')", postData["name"], postData["contact"], postData["address"], postData["remark"])
 	db := database.DbConnect()
 	rows, err := db.Exec(sql)
 	if err != nil {
@@ -37,7 +38,7 @@ func OrdersAdd(c *gin.Context) {
 		var detail map[string]map[string]interface{}
 		_ = json.Unmarshal([]byte(postData["detail"]), &detail)
 		LastInsertId, _ := rows.LastInsertId()
-		lineMessage := fmt.Sprintf("\n*新訂單\n姓名: %s\n聯絡方式: %s\n備註: %s\n訂購商品:", postData["name"], postData["contact"], postData["remark"])
+		lineMessage := fmt.Sprintf("\n*新訂單\n姓名: %s\n聯絡方式: %s\n配送地址: %s\n備註: %s\n訂購商品:", postData["name"], postData["contact"], postData["address"], postData["remark"])
 		for _, jsonMap := range detail {
 			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
 			db.Exec(sql)

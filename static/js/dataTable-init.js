@@ -132,6 +132,9 @@ function initOrdersTable()
                 }
             },
             {
+                data: 'address', 
+            },
+            {
                 data: 'remark', 
             },
             {

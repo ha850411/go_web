@@ -15,6 +15,7 @@
                     <th>姓名</th>
                     <th>聯絡方式</th>
                     <th>商品資訊</th>
+                    <th>配送地址</th>
                     <th>備註</th>
                     <th>訂購時間</th>
                     <th></th>
@@ -23,6 +24,7 @@
                     <th>姓名</th>
                     <th>聯絡方式</th>
                     <th>商品資訊</th>
+                    <th>配送地址</th>
                     <th>備註</th>
                     <th>訂購時間</th>
                     <th></th>
@@ -142,6 +144,7 @@ function doInsert()
     let require = [
         {el: '#modal_add_name', tip: '訂購人姓名為必填'},
         {el: '#modal_add_contact', tip: '聯絡方式為必填'},
+        {el: '#modal_add_address', tip: '配送地址為必填'},
     ];
     for (const key in require) {
        if($(require[key].el).val().length == 0) {
@@ -173,6 +176,7 @@ function doInsert()
         data: { 
             name: $('#modal_add_name').val(),
             contact: $('#modal_add_contact').val(),
+            address: $('#modal_add_address').val(),
             remark: $('#modal_add_remark').val(),
             detail: JSON.stringify(orderDetail),
         },
@@ -253,6 +257,7 @@ function modifyOrder(id)
             $('#orderEditModal').modal('show');
             $('#modal_edit_name').val(result.data.name);
             $('#modal_edit_contact').val(result.data.contact);
+            $('#modal_edit_address').val(result.data.address);
             $('#modal_edit_remark').val(result.data.remark);
         },
         error: function (thrownError) {
@@ -266,6 +271,7 @@ function doEdit()
     let require = [
         {el: '#modal_edit_name', tip: '訂購人姓名為必填'},
         {el: '#modal_edit_contact', tip: '聯絡方式為必填'},
+        {el: '#modal_edit_address', tip: '配送地址為必填'},
     ];
     for (const key in require) {
        if($(require[key].el).val().length == 0) {
@@ -298,6 +304,7 @@ function doEdit()
             id: $('#modal_edit_id').val(),
             name: $('#modal_edit_name').val(),
             contact: $('#modal_edit_contact').val(),
+            address: $('#modal_edit_address').val(),
             remark: $('#modal_edit_remark').val(),
             detail: JSON.stringify(orderDetail),
         },
@@ -371,12 +378,14 @@ function resetModal(type) {
         var require = [
             '#modal_add_name',
             '#modal_add_contact',
+            '#modal_add_address',
             '#modal_add_remark',
         ];
     } else {
         var require = [
             '#modal_edit_name',
             '#modal_edit_contact',
+            '#modal_edit_address',
             '#modal_edit_remark',
         ];
     }
