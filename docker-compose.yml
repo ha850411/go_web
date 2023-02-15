@@ -8,7 +8,6 @@ services:
     container_name: golang1.19
     restart: unless-stopped
     working_dir: /app
-    entrypoint: go run main.go >> ./logs/run.log 2>&1
     ports:
       - 80:8087
     volumes:
