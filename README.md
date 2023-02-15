@@ -5,7 +5,10 @@
 cp conf/config.example.yaml conf/config.yaml
 ```
 
-## 匯入 db : conf/sql
+## 匯入 db
+```
+conf/sql/db-schema.sql
+```
 
 ## 透過 docker-compose 啟動
 ```
