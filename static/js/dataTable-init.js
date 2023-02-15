@@ -53,6 +53,16 @@ function initProductTable(keyword)
                 }
             },
             {
+                data: 'tname',
+                render: function(data, type, row) {
+                    if(row.tname.length > 0) {
+                        return row.tname;
+                    } else {
+                        return "無";
+                    }
+                }
+            },
+            {
                 data: 'formatTime',
             },
             {
@@ -60,7 +70,7 @@ function initProductTable(keyword)
                 render: function(data, type, row) {
                     output = `<div style="display:flex; align-items:center;height:30px;">
                                 <i title="圖片管理" class="fa-sharp fa-solid fa-images" style="cursor:pointer;font-size:20px;margin-right:10px;" onclick="imagesManage(`+row.id+`)"></i>
-                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyProduct(`+row.id+`, '`+row.name+`', `+row.amount+`, `+row.amountNotice+`)"></i>
+                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyProduct(`+row.id+`, '`+row.name+`', `+row.amount+`, `+row.amountNotice+`,`+row.type+`)"></i>
                                 <i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(this, `+row.id+`)"></i>
                             </div>`;
                     return output;
@@ -213,4 +223,56 @@ function initPorductsPicTable(id)
         ],
     });
     return productsPicTable;
+}
+
+
+function initPorductsTypeTable()
+{
+    productTypeTable = $('#productTypeTable').DataTable({
+        searching: false,
+        ordering: false,
+        language: {
+            url: "/static/vendor/dataTables/languages/ch-tw.json"  
+        },
+        oLanguage: {
+            "sProcessing": "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        },
+        processing: true,
+        serverSide:true,
+        ajax: {
+            url: "/api/products/type",
+            type: "GET",
+        },
+        columns:[
+            {
+                data: 'id',
+            },
+            {
+                data: 'name', 
+            },
+            {
+                data: 'formatCreateTime', 
+            },
+            {
+                data: 'formatUpdateTime', 
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    output = `<div style="display:flex; align-items:center;height:30px;">
+                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modify(`+row.id+`, '`+row.name+`')"></i>
+                                <i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(`+row.id+`)"></i>
+                            </div>`;
+                    return output;
+                }
+            }
+        ],
+        columnDefs:[
+            {
+                targets: 1,
+                responsivePriority: 1,
+            },
+        ],
+    });
+    return productTypeTable;
 }

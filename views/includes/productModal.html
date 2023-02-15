@@ -21,6 +21,15 @@
                     <label for="modal_amount_notice">存貨警戒線:</label>
                     <input type="number" class="form-control" id="modal_amount_notice">
                 </div>
+                <div class="form-group">
+                    <label for="modal_type">產品類別:</label>
+                    <select id="modal_type" class="form-control">
+                        <option value="0">無</option>
+                        {{ range $idx,$val := .productsType }}
+                            <option value="{{$val.Id}}">{{$val.Name}}</option>
+                        {{ end }}
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="addSubmitBtn" onclick="doInsert()">新增</button>
@@ -51,6 +60,15 @@
                 <div class="form-group">
                     <label for="modal_edit_amount_notice">存貨警戒線:</label>
                     <input type="number" class="form-control" id="modal_edit_amount_notice">
+                </div>
+                <div class="form-group">
+                    <label for="modal_edit_type">產品類別:</label>
+                    <select id="modal_edit_type" class="form-control">
+                        <option value="0">無</option>
+                        {{ range $idx,$val := .productsType }}
+                            <option value="{{$val.Id}}">{{$val.Name}}</option>
+                        {{ end }}
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">

@@ -10,6 +10,8 @@ type Products struct {
 	Amount       int       `json:"amount"`
 	AmountNotice int       `json:"amountNotice"`
 	Status       int       `json:"status"`
+	Type         int       `json:"type"`
+	Tname        string    `json:"tname"`
 	UpdateTime   time.Time `json:"updateTime"`
 	FormatTime   string    `json:"formatTime"`
 }

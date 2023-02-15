@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func GetProductsList(c *gin.Context) {
 	keyword := c.Query("search[value]")     // 關鍵字
 	where := "1"
 	if keyword != "" {
-		where = fmt.Sprintf("name LIKE '%%%s%%'", keyword)
+		where = fmt.Sprintf("a.name LIKE '%%%s%%' OR b.name LIKE '%%%s%%'", keyword, keyword)
 	}
 	// 定義排序欄位
 	columes := map[string]string{
@@ -41,11 +42,18 @@ func GetProductsList(c *gin.Context) {
 	orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
 	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
 	// count total
-	var count int
-	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE %s AND status=1", where)
-	db.QueryRow(sql).Scan(&count)
+	var ids string
+	sql := fmt.Sprintf(`SELECT GROUP_CONCAT( DISTINCT a.id) as ids
+	FROM products as a
+	LEFT JOIN products_type as b ON a.type = b.id
+	WHERE %s AND a.status=1 `, where)
+	db.QueryRow(sql).Scan(&ids)
+	count := len(strings.Split(ids, ","))
 	// 分頁
-	sql = fmt.Sprintf("SELECT id, name, amount, amountNotice, updateTime FROM products WHERE %s AND status=1 ORDER BY %s %s LIMIT %s OFFSET %s", where, columes[orderBy], orderType, limit, offset)
+	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.updateTime, a.type, IFNULL(b.name, '') as tname
+	FROM products as a
+	LEFT JOIN products_type as b ON a.type = b.id
+	WHERE a.id IN (%s) ORDER BY a.%s %s LIMIT %s OFFSET %s`, ids, columes[orderBy], orderType, limit, offset)
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -59,7 +67,7 @@ func GetProductsList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}
@@ -107,10 +115,8 @@ func AddProduct(c *gin.Context) {
 	if len(amountNotice) == 0 {
 		amountNotice = "0"
 	}
-	fmt.Printf("name: %v\n", name)
-	fmt.Printf("amount: %v\n", amount)
-	fmt.Printf("amountNotice: %v\n", amountNotice)
-	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice) VALUES ('%s', %s, %s)", name, amount, amountNotice)
+	productType := c.PostForm("type")
+	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type) VALUES ('%s', %s, %s, %s)", name, amount, amountNotice, productType)
 	row, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -142,14 +148,15 @@ func EditProduct(c *gin.Context) {
 	if len(amountNotice) == 0 {
 		amountNotice = "0"
 	}
+	productType := c.PostForm("type")
+
 	// 檢查數量是否有變
 	var nowAmount string
 	sql := fmt.Sprintf("SELECT amount FROM products WHERE id=%s", editId)
 	db.QueryRow(sql).Scan(&nowAmount)
-	fmt.Printf("amount: %v\n", amount)
-	fmt.Printf("nowAmount: %v\n", nowAmount)
 
-	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s WHERE id=%s", name, amount, amountNotice, editId)
+	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s WHERE id=%s", name, amount, amountNotice, productType, editId)
+	fmt.Printf("sql: %v\n", sql)
 	row, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -241,7 +248,12 @@ func GetTips(c *gin.Context) {
 }
 
 func GetProductsNameList(c *gin.Context) {
-	sql := "SELECT a.id, a.name, count(b.id) as cnt FROM products as a LEFT JOIN products_picture as b ON a.id=b.pid WHERE a.status=1 GROUP BY a.id ORDER BY a.name asc"
+	// 取得酒類以外的產品
+	sql := `SELECT a.id, a.name, count(b.id) as cnt 
+	FROM products as a 
+	LEFT JOIN products_picture as b ON a.id=b.pid 
+	WHERE a.status=1 AND a.type!=1 
+	GROUP BY a.id ORDER BY a.name asc`
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -545,4 +557,118 @@ func DeletePic(c *gin.Context) {
 		"code": 200,
 		"data": "success",
 	})
+}
+
+func GetProductType(c *gin.Context) {
+	limit := c.DefaultQuery("length", "10") // 分頁筆數
+	offset := c.DefaultQuery("start", "0")  // 起始筆數
+
+	var count int
+	sql := "SELECT count(*) FROM products_type WHERE status=1 "
+	db.QueryRow(sql).Scan(&count)
+
+	sql = fmt.Sprintf("SELECT id, name, createTime, updateTime FROM products_type WHERE status=1 LIMIT %s, %s", offset, limit)
+	fmt.Printf("sql: %v\n", sql)
+	rows, err := db.Query(sql)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 500,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	defer rows.Close()
+	data := make([]interface{}, 0)
+	for rows.Next() {
+		rowData := models.ProductsType{}
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.CreateTime, &rowData.UpdateTime)
+		rowData.FormatCreateTime = rowData.CreateTime.Format("2006-01-02 15:04:05")
+		rowData.FormatUpdateTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
+		data = append(data, rowData)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":            200,
+		"data":            data,
+		"recordsTotal":    count,
+		"recordsFiltered": count,
+	})
+}
+
+func AddProductType(c *gin.Context) {
+	name := c.PostForm("name")
+	sql := fmt.Sprintf("INSERT INTO products_type (name, status,createTime) VALUES ('%s', 1, '%s')", name, time.Now().Format("2006-01-02 15:04:05"))
+	row, err := db.Exec(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	lastInsertID, insertErr := row.LastInsertId()
+	if insertErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  insertErr,
+		})
+		log.Panic(insertErr)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":     http.StatusOK,
+		"insertId": lastInsertID,
+	})
+}
+
+func UpdateProductType(c *gin.Context) {
+	id := c.PostForm("id")
+	name := c.PostForm("name")
+	sql := fmt.Sprintf("UPDATE products_type SET name='%s' WHERE id=%s", name, id)
+	rows, err := db.Exec(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	rowsAffected, _ := rows.RowsAffected()
+	fmt.Printf("sql: %v\n", sql)
+	fmt.Printf("rowsAffected: %v\n", rowsAffected)
+	if rowsAffected > 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":        http.StatusOK,
+			"updatedRows": rowsAffected,
+		})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "無資料更新",
+		})
+	}
+}
+
+func DeleteProductType(c *gin.Context) {
+	id := c.Param("id")
+	sql := fmt.Sprintf("UPDATE products_type SET status=0 WHERE id=%s", id)
+	fmt.Printf("sql: %v\n", sql)
+	row, err := db.Exec(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	rowAffected, _ := row.RowsAffected()
+	if rowAffected > 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":        http.StatusOK,
+			"rowAffected": rowAffected,
+		})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": http.StatusBadRequest,
+			"msg":  "刪除失敗",
+		})
+	}
 }

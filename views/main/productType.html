@@ -1,0 +1,145 @@
+<!--引入共用模板-->
+{{ template "layout.html" .}}
+{{ define "content" }}
+<div class="main">
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="container-fluid">
+      <h3 class="page-title">產品類別管理</h3>
+      <div class="panel panel-headline">
+        <div class="panel-body">
+            <button type="button" id="addBtn" class="btn btn-primary" style="margin-bottom: 10px;">新增產品類別</button>
+            <!-- data table -->
+            <table id="productTypeTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <thead>
+                    <th>流水號</th>
+                    <th>類別名稱</th>
+                    <th>建立時間</th>
+                    <th>更新時間</th>
+                    <th></th>
+                </thead>
+                <tfoot>
+                    <th>流水號</th>
+                    <th>類別名稱</th>
+                    <th>建立時間</th>
+                    <th>更新時間</th>
+                    <th></th>
+                </tfoot>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END MAIN CONTENT -->
+</div>
+
+<script>
+var  productTypeTable;
+$(function(){
+    // init
+    productTypeTable = initPorductsTypeTable();
+
+    $('#addBtn').click(function(){
+        $('#productTypeAddModal').modal('show');
+    });
+
+});
+
+
+function doInsert()
+{
+    let name = $('#modal_add_name').val();
+    if(name.length == 0) {
+        alert('產品類別名稱為必填');
+        $('#modal_add_name').focus();
+        return false;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/api/products/type',
+        dataType: 'json',
+        data: { 
+            name: name,
+        },
+        beforeSend: function(){
+            $('#addSubmitBtn').prop("disabled", true);
+            $('#addSubmitBtn').html("<i class='fa fa-spinner fa-spin' style='font-size:12px;'></i>")
+        },
+        success: function (result, statusText, xhr) {
+            $('#productTypeAddModal').modal('hide');
+            alert('新增成功');
+            productTypeTable.ajax.reload();
+        },
+        error: function (err) {
+            alert('新增失敗')
+            console.log(err);
+        },
+        complete: function(){
+            $('#addSubmitBtn').prop("disabled", false);
+            $('#addSubmitBtn').html("新增")
+        }
+    });
+}
+
+
+function modify(id, name)
+{
+    $('#modal_edit_id').val(id);
+    $('#modal_edit_name').val(name);
+    $('#productTypeEditModal').modal("show");
+}
+
+function doEdit() 
+{
+    let name = $('#modal_edit_name').val();
+    if(name.length == 0) {
+        alert('產品類別名稱為必填');
+        $('#modal_edit_name').focus();
+        return false;
+    }
+    $.ajax({
+        type: 'PUT',
+        url: '/api/products/type',
+        dataType: 'json',
+        data: {
+            id : $('#modal_edit_id').val(),
+            name : $('#modal_edit_name').val(),
+        },
+        success: function (result, statusText, xhr) {
+            alert('修改成功');
+        },
+        error: function (thrownError) {
+            alert('修改失敗');
+        },
+        complete: function(){
+            $('#productTypeEditModal').modal("hide");
+            productTypeTable.ajax.reload();
+        },
+    });   
+}
+
+
+function doDelete(id) 
+{
+    if(confirm("確定刪除?")){
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/products/type/'+id,
+            dataType: 'json',
+            data: {
+                id: id
+            },
+            success: function (result, statusText, xhr) {
+                alert('刪除成功');
+            },
+            error: function (thrownError) {
+                alert('刪除失敗');
+            },
+            complete: function(){
+                productTypeTable.ajax.reload();
+            },
+        });  
+    }
+}
+</script>
+{{end}}

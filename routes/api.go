@@ -38,6 +38,11 @@ func GetApiRouters(r *gin.Engine) {
 	productsGroup.PUT("/updatePic", api.UpdatePic)
 	// 刪除圖片
 	productsGroup.DELETE("/deletePic/:id", api.DeletePic)
+	// 取得產品累吧列表
+	productsGroup.GET("/type", api.GetProductType)
+	productsGroup.POST("/type", api.AddProductType)
+	productsGroup.PUT("/type", api.UpdateProductType)
+	productsGroup.DELETE("/type/:id", api.DeleteProductType)
 	// === orders Groups ===
 	ordersGroup := apiGroup.Group("/orders")
 	// 取得訂購列表
