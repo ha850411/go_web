@@ -1,9 +1,11 @@
 # 使用說明
 
-## 修改 config.yaml
+## 修改 db 連線資訊
 ```
-修改 db 連線資訊
+cp conf/config.example.yaml conf/config.yaml
 ```
+
+## 匯入 db : conf/sql
 
 ## 透過 docker-compose 啟動
 ```
