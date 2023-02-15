@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+	// release mode
+	gin.SetMode(gin.ReleaseMode)
 	// 載入設定檔
 	settings := conf.GetConfig()
 	// 初始化 gin 物件
