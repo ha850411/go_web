@@ -181,7 +181,7 @@ function loadLightboxImages(pid, imgClass)
 
 async function initSelect2Data(){
     try {
-        const response = await axios.get('/api/products/getProductsNameList');
+        const response = await axios.get('/api/products/getProductsNameList?isFront=Y');
         select2Data = response.data.results;
     } catch (error) {
         console.log(error);

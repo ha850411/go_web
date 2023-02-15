@@ -248,12 +248,17 @@ func GetTips(c *gin.Context) {
 }
 
 func GetProductsNameList(c *gin.Context) {
+	isFront := c.DefaultQuery("isFront", "N")
+	where := ""
+	if isFront == "Y" {
+		where += " AND a.type != 1"
+	}
 	// 取得酒類以外的產品
-	sql := `SELECT a.id, a.name, count(b.id) as cnt 
+	sql := fmt.Sprintf(`SELECT a.id, a.name, count(b.id) as cnt 
 	FROM products as a 
 	LEFT JOIN products_picture as b ON a.id=b.pid 
-	WHERE a.status=1 AND a.type!=1 
-	GROUP BY a.id ORDER BY a.name asc`
+	WHERE a.status=1 %s
+	GROUP BY a.id ORDER BY a.name asc`, where)
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
