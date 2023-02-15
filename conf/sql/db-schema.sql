@@ -75,7 +75,7 @@ CREATE TABLE `orders_detail` (
 CREATE TABLE `products_picture` (
   `id` int NOT NULL AUTO_INCREMENT,
   `pid` int NOT NULL,
-  `picture` mediumblob NOT NULL,
+  `picture` LONGBLOB NOT NULL,
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
