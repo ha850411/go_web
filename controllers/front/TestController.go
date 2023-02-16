@@ -36,7 +36,7 @@ func Test(c *gin.Context) {
 		// 寫檔案
 		service.WriteFileAndCompress(targetDir, fileName, picData.Picture)
 		// 回寫 new table
-		_, err := db.Exec(`INSERT INTO products_picture2 (pid, picture) VALUES (?, ?)`, picData.Pid, fileName)
+		_, err := db.Exec(`INSERT INTO products_picture (pid, picture) VALUES (?, ?)`, picData.Pid, fileName)
 		if err != nil {
 			fmt.Printf("err: %v\n", err)
 		}
