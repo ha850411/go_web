@@ -1,0 +1,1 @@
+go run main.go >> ./logs/run.log 2>&1
