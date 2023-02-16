@@ -1,7 +1,8 @@
 FROM --platform=linux/amd64 centos:7
 
 # RUN yum -y update
-RUN yum install gcc git wget ImageMagick -y && yum clean all
+RUN yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm \
+    && yum install gcc git wget ImageMagick -y && yum clean all
 
 ENV GO_VERSION 1.19.5
 
