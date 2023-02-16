@@ -53,10 +53,11 @@ func GetProductsList(c *gin.Context) {
 	db.QueryRow(sql).Scan(&ids)
 	count := len(strings.Split(ids, ","))
 	// 分頁
-	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.updateTime, a.type, IFNULL(b.name, '') as tname
+	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt
 	FROM products as a
 	LEFT JOIN products_type as b ON a.type = b.id
-	WHERE a.id IN (%s) ORDER BY a.%s %s LIMIT %s OFFSET %s`, ids, columes[orderBy], orderType, limit, offset)
+	LEFT JOIN products_picture as c ON a.id=c.pid
+	WHERE a.id IN (%s) GROUP BY a.id ORDER BY a.%s %s LIMIT %s OFFSET %s`, ids, columes[orderBy], orderType, limit, offset)
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -70,7 +71,7 @@ func GetProductsList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}

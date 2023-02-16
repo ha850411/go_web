@@ -2361,7 +2361,7 @@ ul.activity-timeline > li:last-child:after {
     color:#ADADAD;
 }
 
-.fa-image.hasPicture {
+.fa-image.hasPicture, .fa-images.hasPicture {
     color:#3487c6;
     cursor: pointer;
 }

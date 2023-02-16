@@ -68,8 +68,12 @@ function initProductTable(keyword)
             {
                 data: null, 
                 render: function(data, type, row) {
+                    hasPicture = '';
+                    if(row.pictureCnt > 0) {
+                        hasPicture = 'hasPicture';
+                    }
                     output = `<div style="display:flex; align-items:center;height:30px;">
-                                <i title="圖片管理" class="fa-sharp fa-solid fa-images" style="cursor:pointer;font-size:20px;margin-right:10px;" onclick="imagesManage(`+row.id+`)"></i>
+                                <i title="圖片管理" class="fa-sharp fa-solid fa-images `+hasPicture+`" style="cursor:pointer;font-size:20px;margin-right:10px;" onclick="imagesManage(`+row.id+`)"></i>
                                 <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyProduct(`+row.id+`, '`+row.name+`', `+row.amount+`, `+row.amountNotice+`,`+row.type+`)"></i>
                                 <i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(this, `+row.id+`)"></i>
                             </div>`;

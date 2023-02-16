@@ -14,4 +14,5 @@ type Products struct {
 	Tname        string    `json:"tname"`
 	UpdateTime   time.Time `json:"updateTime"`
 	FormatTime   string    `json:"formatTime"`
+	PictureCnt   int       `json:"pictureCnt"`
 }
