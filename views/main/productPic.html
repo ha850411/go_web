@@ -10,7 +10,7 @@
         <div class="panel-body">
             <div style="display: flex; align-items:center;margin-bottom: 10px;">
                 <button type="button" id="addImageBtn" class="btn btn-primary">新增圖片</button>
-                <span id="addImageMsg"></span>
+                <span id="addImageMsg" style="margin-left:10px;"></span>
             </div>
             <button type="button" class="btn btn-success" id="doUploadBtn" style="display:none;margin:10px 0px;">上傳</button>
 
@@ -73,20 +73,22 @@ $(function(){
             data: formData,
             processData: false, // 告诉jQuery不要去处理发送的数据
             contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+            beforeSend: function(){
+                $('#addImageMsg').html(`<i class='fa fa-spinner fa-spin' style='font-size:20px;'></i>上傳中..`);
+                $('#doUploadBtn').css("display", "none");
+            },
             success: function (result, statusText, xhr) {
-                alert('上傳成功');
+                $('#addImageMsg').html(`上傳成功`);
             },
             error: function (thrownError) {
-                alert('上傳失敗');
+                $('#addImageMsg').html(`上傳失敗`);
             },
             complete: function(){
+                $('#addImageMsg').fadeOut(3000);
                 productsPicTable.ajax.reload();
             },
         });
         $('#filesInput').val('');
-        $('#doUploadBtn').css("display", "none");
-        $('#addImageMsg').css("display", "none");
-        $('#addImageMsg').html('');
     })
 });
 
