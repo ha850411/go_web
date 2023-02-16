@@ -5,11 +5,14 @@ import (
 	"database/sql"
 	"encoding/csv"
 	"fmt"
+	"goWeb/conf"
 	"goWeb/database"
 	"goWeb/models"
+	"goWeb/service"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -256,7 +259,7 @@ func GetProductsNameList(c *gin.Context) {
 	// 取得酒類以外的產品
 	sql := fmt.Sprintf(`SELECT a.id, a.name, count(b.id) as cnt 
 	FROM products as a 
-	LEFT JOIN products_picture as b ON a.id=b.pid 
+	LEFT JOIN products_picture2 as b ON a.id=b.pid 
 	WHERE a.status=1 %s
 	GROUP BY a.id ORDER BY a.name asc`, where)
 	rows, err := db.Query(sql)
@@ -465,10 +468,10 @@ func GetPictureLists(c *gin.Context) {
 	offset := c.DefaultQuery("start", "0")  // 起始筆數
 
 	var count int
-	sql := fmt.Sprintf("SELECT count(*) FROM products_picture WHERE pid=%s", pid)
+	sql := fmt.Sprintf("SELECT count(*) FROM products_picture2 WHERE pid=%s", pid)
 	db.QueryRow(sql).Scan(&count)
 
-	sql = fmt.Sprintf("SELECT id,pid,updateTime FROM products_picture WHERE pid = %s LIMIT %s, %s", pid, offset, limit)
+	sql = fmt.Sprintf("SELECT id, pid, picture, updateTime FROM products_picture2 WHERE pid = %s LIMIT %s, %s", pid, offset, limit)
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -482,7 +485,7 @@ func GetPictureLists(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.ProductsPicture{}
-		rows.Scan(&rowData.Id, &rowData.Pid, &rowData.UpdateTime)
+		rows.Scan(&rowData.Id, &rowData.Pid, &rowData.Picture, &rowData.UpdateTime)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}
@@ -510,8 +513,13 @@ func UploadPic(c *gin.Context) {
 		file, _ := v.Open()
 		defer file.Close()
 		content, _ := ioutil.ReadAll(file)
-		sql := fmt.Sprintf("INSERT INTO products_picture (pid, picture) VALUES (%s, ?)", pid)
-		_, err := db.Exec(sql, content)
+		// 寫檔案
+		targetDir := conf.UPLOADS_PATH + "/" + pid
+		var uuid string
+		db.QueryRow("SELECT uuid_short()").Scan(&uuid)
+		fileName := uuid + ".jpg"
+		service.WriteFileAndCompress(targetDir, fileName, content)
+		_, err := db.Exec(`INSERT INTO products_picture2 (pid, picture) VALUES (?, ?)`, pid, fileName)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"code": 400,
@@ -532,8 +540,17 @@ func UpdatePic(c *gin.Context) {
 	file, _ := formFile.Open()
 	defer file.Close()
 	content, _ := ioutil.ReadAll(file)
-	sql := fmt.Sprintf("UPDATE products_picture SET picture=? WHERE id=%s", edit_id)
-	_, err := db.Exec(sql, content)
+	// 刪除舊檔案
+	var productsPic models.ProductsPicture
+	db.QueryRow(`SELECT id, pid, picture FROM products_picture2 WHERE id=?`, edit_id).Scan(&productsPic.Id, &productsPic.Pid, &productsPic.Picture)
+	targetDir := conf.UPLOADS_PATH + "/" + strconv.Itoa(productsPic.Pid)
+	os.Remove(targetDir + "/" + productsPic.Picture)
+	// 更新檔案
+	var uuid string
+	db.QueryRow("SELECT uuid_short()").Scan(&uuid)
+	fileName := uuid + ".jpg"
+	service.WriteFileAndCompress(targetDir, fileName, content)
+	_, err := db.Exec(`UPDATE products_picture2 SET picture = ? WHERE id = ?`, fileName, edit_id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 400,
@@ -549,7 +566,12 @@ func UpdatePic(c *gin.Context) {
 
 func DeletePic(c *gin.Context) {
 	id := c.Param("id")
-	sql := fmt.Sprintf("DELETE FROM products_picture WHERE id=%s", id)
+	// 刪除舊檔案
+	var productsPic models.ProductsPicture
+	db.QueryRow(`SELECT pid, picture FROM products_picture2 WHERE id=?`, id).Scan(&productsPic.Pid, &productsPic.Picture)
+	targetDir := conf.UPLOADS_PATH + "/" + strconv.Itoa(productsPic.Pid)
+	os.Remove(targetDir + "/" + productsPic.Picture)
+	sql := fmt.Sprintf("DELETE FROM products_picture2 WHERE id=%s", id)
 	_, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

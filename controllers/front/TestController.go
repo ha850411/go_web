@@ -3,9 +3,11 @@ package front
 import (
 	"database/sql"
 	"fmt"
+	"goWeb/conf"
 	"goWeb/database"
+	"goWeb/service"
 	"io/ioutil"
-	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +19,28 @@ func init() {
 }
 
 func Test(c *gin.Context) {
-	c.HTML(http.StatusOK, "front-test", gin.H{})
+	rows, _ := db.Query(`SELECT pid, picture FROM products_picture`)
+	defer rows.Close()
+	for rows.Next() {
+		picData := struct {
+			Pid     int
+			Picture []byte
+		}{}
+		rows.Scan(&picData.Pid, &picData.Picture)
+		// 以 pid 建立資料夾
+		targetDir := conf.UPLOADS_PATH + "/" + strconv.Itoa(picData.Pid)
+		service.DirCreateIfNotExist(targetDir)
+		var uuid string
+		db.QueryRow("SELECT uuid_short()").Scan(&uuid)
+		fileName := uuid + ".jpg"
+		// 寫檔案
+		service.WriteFileAndCompress(targetDir, fileName, picData.Picture)
+		// 回寫 new table
+		_, err := db.Exec(`INSERT INTO products_picture2 (pid, picture) VALUES (?, ?)`, picData.Pid, fileName)
+		if err != nil {
+			fmt.Printf("err: %v\n", err)
+		}
+	}
 }
 
 func Test2(c *gin.Context) {

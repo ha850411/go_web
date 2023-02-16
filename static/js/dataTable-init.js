@@ -194,10 +194,10 @@ function initPorductsPicTable(id)
                 data: 'id',
             },
             {
-                data: null, 
+                data: 'picture', 
                 render: function(data, type, row) {
                     output = `
-                    <img src="/api/products/showPicture/`+row.id+`" style="width:150px;">`;
+                    <img src="/static/uploads/`+row.pid+`/`+row.picture+`" style="width:150px;">`;
                     return output;
                 }
             },
@@ -208,7 +208,7 @@ function initPorductsPicTable(id)
                 data: null,
                 render: function(data, type, row) {
                     output = `<div style="display:flex; align-items:center;height:30px;">
-                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modify(`+row.id+`)"></i>
+                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modify(`+row.id+`, `+row.pid+`, '`+row.picture+`')"></i>
                                 <i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(`+row.id+`)"></i>
                             </div>`;
                     return output;

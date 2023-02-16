@@ -7,7 +7,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var Env = "local"
+const Env = "local"
+
+const UPLOADS_PATH = "./static/uploads"
 
 type Conf struct {
 	Server   ServerConf   `yaml:"server"`

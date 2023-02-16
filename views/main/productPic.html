@@ -90,10 +90,10 @@ $(function(){
     })
 });
 
-function modify(id)
+function modify(id, pid, picture)
 {
     $('#modal_edit_id').val(id);
-    $('#nowPicture').attr("src", "/api/products/showPicture/" + id);
+    $('#nowPicture').attr("src", "/static/uploads/" + pid + "/" + picture);
     $('#picEditModal').modal("show");
 }
 

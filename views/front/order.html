@@ -167,7 +167,7 @@ function loadLightboxImages(pid, imgClass)
             if(result.data.length > 0) {
                 for(i=0; i< result.data.length; i++) {
                     html += `
-                        <a href="/api/products/showPicture/`+result.data[i].id+`"
+                        <a href="/static/uploads/`+result.data[i].pid+`/`+result.data[i].picture+`"
                         data-lightbox="`+ imgClass +`"></a>`;
                 }
                 $('#lightboxArea').append(html);
