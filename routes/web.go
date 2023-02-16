@@ -38,9 +38,6 @@ func GetWebRouters(r *gin.Engine) {
 	// ========= 前台 ===========
 	r.GET("/orders", front.Orders)
 	r.POST("/orders/add", front.OrdersAdd)
-	// r.GET("/test", front.Test)
-	// r.POST("/test2", front.Test2)
-	// r.GET("/test3", front.Test3)
 }
 
 /*
