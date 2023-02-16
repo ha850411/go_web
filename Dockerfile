@@ -1,6 +1,6 @@
 FROM --platform=linux/amd64 centos:7
 
-RUN yum -y update
+# RUN yum -y update
 RUN yum install gcc git wget ImageMagick -y && yum clean all
 
 ENV GO_VERSION 1.19.5
