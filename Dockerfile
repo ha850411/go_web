@@ -13,8 +13,7 @@ ENV PATH /usr/local/go/bin:$PATH
 
 ENV GO111MODULE on
 ENV GOROOT /usr/local/go
-ENV GOPROXY https://mirrors.aliyun.com/goproxy/,direct
-
+ENV GOPROXY https://proxy.golang.org,direct
 RUN \cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 ENTRYPOINT go run main.go >> ./logs/run.log 2>&1
