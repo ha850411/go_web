@@ -11,7 +11,9 @@ RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz  \
 
 ENV PATH /usr/local/go/bin:$PATH
 
+ENV GO111MODULE on
 ENV GOROOT /usr/local/go
+ENV GOPROXY https://mirrors.aliyun.com/goproxy/,direct
 
 RUN \cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
