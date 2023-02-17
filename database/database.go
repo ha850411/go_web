@@ -19,13 +19,12 @@ type DbInfo struct {
 }
 
 func DbConnect() *sql.DB {
-	settings := conf.GetConfig()
 	dbInfo := DbInfo{
-		Host:     settings.Database.Host,
-		Port:     settings.Database.Port,
-		Username: settings.Database.Username,
-		Password: settings.Database.Password,
-		Dbname:   settings.Database.Dbname,
+		Host:     conf.Settings.Database.Host,
+		Port:     conf.Settings.Database.Port,
+		Username: conf.Settings.Database.Username,
+		Password: conf.Settings.Database.Password,
+		Dbname:   conf.Settings.Database.Dbname,
 	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbInfo.Username, dbInfo.Password, dbInfo.Host, dbInfo.Port, dbInfo.Dbname)
 	db, err := sql.Open("mysql", dsn)

@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	if conf.Env == "local" {
+	if conf.Settings.Common.ENV == "local" {
 		REDIRECT_URI = "http://localhost:8087/linebot/notify"
 	} else {
 		REDIRECT_URI = "http://107.191.52.212/linebot/notify"

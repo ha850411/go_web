@@ -515,7 +515,7 @@ func UploadPic(c *gin.Context) {
 		defer file.Close()
 		content, _ := ioutil.ReadAll(file)
 		// 寫檔案
-		targetDir := conf.UPLOADS_PATH + "/" + pid
+		targetDir := conf.Settings.Common.UPLOADS_PATH + "/" + pid
 		var uuid string
 		db.QueryRow("SELECT uuid_short()").Scan(&uuid)
 		fileName := uuid + ".jpg"
@@ -544,7 +544,7 @@ func UpdatePic(c *gin.Context) {
 	// 刪除舊檔案
 	var productsPic models.ProductsPicture
 	db.QueryRow(`SELECT id, pid, picture FROM products_picture WHERE id=?`, edit_id).Scan(&productsPic.Id, &productsPic.Pid, &productsPic.Picture)
-	targetDir := conf.UPLOADS_PATH + "/" + strconv.Itoa(productsPic.Pid)
+	targetDir := conf.Settings.Common.UPLOADS_PATH + "/" + strconv.Itoa(productsPic.Pid)
 	os.Remove(targetDir + "/" + productsPic.Picture)
 	// 更新檔案
 	var uuid string
@@ -570,7 +570,7 @@ func DeletePic(c *gin.Context) {
 	// 刪除舊檔案
 	var productsPic models.ProductsPicture
 	db.QueryRow(`SELECT pid, picture FROM products_picture WHERE id=?`, id).Scan(&productsPic.Pid, &productsPic.Picture)
-	targetDir := conf.UPLOADS_PATH + "/" + strconv.Itoa(productsPic.Pid)
+	targetDir := conf.Settings.Common.UPLOADS_PATH + "/" + strconv.Itoa(productsPic.Pid)
 	os.Remove(targetDir + "/" + productsPic.Picture)
 	sql := fmt.Sprintf("DELETE FROM products_picture WHERE id=%s", id)
 	_, err := db.Exec(sql)
