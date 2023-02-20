@@ -63,16 +63,16 @@ $(function(){
 
     let captcha = new CaptchaMini({
         lineWidth: 1,
-        lineNum: 3,
+        lineNum: 1,
         dotR: 2,
-        dotNum: 10,
+        dotNum: 5,
         preGroundColor: [10, 80],
         backGroundColor: [150, 250],
-        fontSize: 30,
+        fontSize: 40,
         fontFamily: ['Georgia', 'Helvetica', 'Arial'],
         fontStyle: 'stroke', // fill & stroke
         content: '0123456789',
-        length: 6
+        length: 4
     }); 
 
     captcha.draw(document.querySelector('#captcha'), val => {
