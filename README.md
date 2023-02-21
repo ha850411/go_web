@@ -1,6 +1,6 @@
 # 使用說明
 
-## 修改 db 連線資訊
+## 複製一份 config.yaml 並修改 db 連線資訊
 ```
 cp conf/config.example.yaml conf/config.yaml
 ```
