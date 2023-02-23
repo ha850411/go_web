@@ -7,6 +7,7 @@ import (
 	"goWeb/service/linebot"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,7 +41,12 @@ func OrdersAdd(c *gin.Context) {
 		LastInsertId, _ := rows.LastInsertId()
 		lineMessage := fmt.Sprintf("\n*新訂單\n姓名: %s\n聯絡方式: %s\n配送地址: %s\n備註: %s\n訂購商品:", postData["name"], postData["contact"], postData["address"], postData["remark"])
 		for _, jsonMap := range detail {
-			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
+			// get price
+			var price int
+			amount, _ := strconv.Atoi(jsonMap["amount"].(string))
+			db.QueryRow(`SELECT price FROM products WHERE id= ?`, jsonMap["pid"]).Scan(&price)
+			// do insert
+			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount, price, total) VALUES (%v, %v, %v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"], price, price*amount)
 			db.Exec(sql)
 			// 推播訊息
 			sql = fmt.Sprintf("SELECT name FROM products WHERE id = %s", jsonMap["pid"])
@@ -51,11 +57,11 @@ func OrdersAdd(c *gin.Context) {
 		// 推播
 		linebot.Request(lineMessage)
 		c.Header("Content-Type", "text/html; charset=utf-8")
-		c.String(200, `<script>alert('新增成功');location='/orders'</script>`)
+		c.String(200, `<script>alert('訂購成功');location='/orders'</script>`)
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
-			"msg":  "刪除失敗",
+			"msg":  "新增失敗",
 		})
 	}
 }

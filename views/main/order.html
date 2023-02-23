@@ -151,9 +151,12 @@ function loadLightboxImages(pid, imgClass)
 
 function delGroup(obj) {
     let group = $(obj).attr("data-group");
+    let type = group.split("-")[0];
     delete orderDetail[group];
     $('#' + group + "-group").remove();
     $('a[data-lightbox="'+group+'-image"]').remove();
+    total = handlerTotalPrice();
+    $('#' + type + 'Total').html(total);
 }
 
 async function initSelect2Data(){
