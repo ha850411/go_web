@@ -14,6 +14,7 @@
                 <thead>
                     <th>姓名</th>
                     <th>聯絡方式</th>
+                    <th>總價</th>
                     <th>商品資訊</th>
                     <th>配送地址</th>
                     <th>備註</th>
@@ -23,6 +24,7 @@
                 <tfoot>
                     <th>姓名</th>
                     <th>聯絡方式</th>
+                    <th>總價</th>
                     <th>商品資訊</th>
                     <th>配送地址</th>
                     <th>備註</th>
@@ -59,8 +61,15 @@ $(function(){
         let select2Class = type +'-item-' + select2ClassIndex;
         let amountInputClass = select2Class + '-amount';
         let imageClass = select2Class + '-image';
-        let template = getTemplate(select2Class, amountInputClass, imageClass);
+        let priceClass = select2Class + '-price';
+        // 產生模板
+        let template = getTemplate(select2Class, amountInputClass, imageClass, priceClass);
         $('.productsDetailArea[data-type="'+type+'"]').append(template);
+        // 監聽input變化
+        $('.' + amountInputClass).on("input", function() {
+            total = handlerTotalPrice();
+            $('#' + type + 'Total').html(total);
+        });
         $("." + select2Class).select2({
             placeholder: '請輸入商品名稱',
             data: select2Data,
@@ -68,19 +77,35 @@ $(function(){
         // 監聽商品名稱變化
         $('.' + select2Class).on('select2:select', function (e) {
             var data = e.params.data;
+            console.log(data);
             let thisClass = e.target.classList[0];
-            orderDetail[thisClass] = {"pid": data.id};
+            orderDetail[thisClass] = {"pid": data.id, "price": data.price};
             $('a[data-lightbox="'+imageClass+'"]').remove();
             $('.' + imageClass).removeClass("hasPicture");
             if(data.picturesCnt > 0) {
                 $('.' + imageClass).addClass("hasPicture");
                 loadLightboxImages(data.id, imageClass);
             }
+            $('#' + priceClass).html('單價: $' + data.price);
+            // 計算總價
+            total = handlerTotalPrice();
+            $('#' + type + 'Total').html(total);
         });
     });
 });
 
-function getTemplate(select2Class, amountInputClass, imageClass)
+function handlerTotalPrice() {
+    total = 0;
+    for (const index in orderDetail) {
+        let amount = parseInt($('.' + index + '-amount').val());
+        if(amount !== undefined && !isNaN(amount)) {
+            total += amount * orderDetail[index].price; 
+        }
+    }
+    return total;
+}
+
+function getTemplate(select2Class, amountInputClass, imageClass, priceClass)
 {
     let template = `
     <div id="`+select2Class+`-group" style="display:flex; align-items: center;margin-top:5px;">
@@ -89,6 +114,7 @@ function getTemplate(select2Class, amountInputClass, imageClass)
         <select class="`+select2Class+`" style="width:100%;">
             <option value="">請選擇商品</option>
         </select>
+        <span style="white-space:nowrap; margin:0 5px;" id="`+priceClass+`"></span>
         <input type="number" min="1" class="form-control `+amountInputClass+`" style="width:100px;margin-left:5px;" placeholder="數量">
     </div>`;
     return template;
@@ -217,8 +243,15 @@ function modifyOrder(id)
                     let select2Class = 'edit-item-' + select2ClassIndex;
                     let amountInputClass = select2Class + '-amount';
                     let imageClass = select2Class + '-image';
-                    let template = getTemplate(select2Class, amountInputClass, imageClass);
+                    let priceClass = select2Class + '-price';
+                    // 產生模板
+                    let template = getTemplate(select2Class, amountInputClass, imageClass, priceClass);
                     $('.productsDetailArea[data-type="edit"]').append(template);
+                    // 監聽input變化
+                    $('.' + amountInputClass).on("input", function() {
+                        total = handlerTotalPrice();
+                        $('#editTotal').html(total);
+                    });
                     $("." + select2Class).select2({
                         placeholder: '請輸入商品名稱',
                         data: select2Data,
@@ -227,22 +260,25 @@ function modifyOrder(id)
                     $('.' + select2Class).on('select2:select', function (e) {
                         var data = e.params.data;
                         let thisClass = e.target.classList[0];
-                        orderDetail[thisClass] = {"pid": data.id};
+                        orderDetail[thisClass] = {"pid": data.id, "price": data.price};
                         $('a[data-lightbox="'+imageClass+'"]').remove();
                         $('.' + imageClass).removeClass("hasPicture");
                         if(data.picturesCnt > 0) {
                             $('.' + imageClass).addClass("hasPicture");
                             loadLightboxImages(data.id, imageClass);
                         }
+                        total = handlerTotalPrice();
+                        $('#editTotal').html(total);
                     });
                     // 賦值
                     orderDetail[select2Class] = {
                         "pid": result.data.detail[key].pid, 
+                        "price": result.data.detail[key].price, 
                         "amount": result.data.detail[key].amount,
                     };
                     $('.' + select2Class).val(result.data.detail[key].pid).trigger('change');
                     $('.'+amountInputClass).val(result.data.detail[key].amount);
-                    
+                    $('#' + priceClass).html('單價: $' + result.data.detail[key].price);
                     for(i=0; i<select2Data.length; i++) {
                         if(select2Data[i].id == result.data.detail[key].pid) {
                             if(select2Data[i].picturesCnt > 0) {
@@ -253,6 +289,8 @@ function modifyOrder(id)
                         }
                     }
                 }
+                total = handlerTotalPrice();
+                $('#editTotal').html(total);
             }
             $('#orderEditModal').modal('show');
             $('#modal_edit_name').val(result.data.name);

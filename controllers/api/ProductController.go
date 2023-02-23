@@ -53,7 +53,7 @@ func GetProductsList(c *gin.Context) {
 	db.QueryRow(sql).Scan(&ids)
 	count := len(strings.Split(ids, ","))
 	// 分頁
-	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt
+	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.price, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt
 	FROM products as a
 	LEFT JOIN products_type as b ON a.type = b.id
 	LEFT JOIN products_picture as c ON a.id=c.pid
@@ -71,7 +71,7 @@ func GetProductsList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.Price, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}
@@ -120,7 +120,9 @@ func AddProduct(c *gin.Context) {
 		amountNotice = "0"
 	}
 	productType := c.PostForm("type")
-	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type) VALUES ('%s', %s, %s, %s)", name, amount, amountNotice, productType)
+	price := c.PostForm("price")
+
+	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type, price) VALUES ('%s', %s, %s, %s, %s)", name, amount, amountNotice, productType, price)
 	row, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -153,13 +155,14 @@ func EditProduct(c *gin.Context) {
 		amountNotice = "0"
 	}
 	productType := c.PostForm("type")
+	price := c.PostForm("price")
 
 	// 檢查數量是否有變
 	var nowAmount string
 	sql := fmt.Sprintf("SELECT amount FROM products WHERE id=%s", editId)
 	db.QueryRow(sql).Scan(&nowAmount)
 
-	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s WHERE id=%s", name, amount, amountNotice, productType, editId)
+	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s, price=%s WHERE id=%s", name, amount, amountNotice, productType, price, editId)
 	fmt.Printf("sql: %v\n", sql)
 	row, err := db.Exec(sql)
 	if err != nil {
@@ -258,7 +261,7 @@ func GetProductsNameList(c *gin.Context) {
 		where += " AND a.type != 1"
 	}
 	// 取得酒類以外的產品
-	sql := fmt.Sprintf(`SELECT a.id, a.name, count(b.id) as cnt 
+	sql := fmt.Sprintf(`SELECT a.id, a.name, count(b.id) as cnt, a.price
 	FROM products as a 
 	LEFT JOIN products_picture as b ON a.id=b.pid 
 	WHERE a.status=1 %s
@@ -278,10 +281,11 @@ func GetProductsNameList(c *gin.Context) {
 		Id          int    `json:"id"`
 		Name        string `json:"text"`
 		PicturesCnt int    `json:"picturesCnt"`
+		Price       int    `json:"price"`
 	}
 	for rows.Next() {
 		product := Result{}
-		rows.Scan(&product.Id, &product.Name, &product.PicturesCnt)
+		rows.Scan(&product.Id, &product.Name, &product.PicturesCnt, &product.Price)
 		data = append(data, product)
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -699,4 +703,15 @@ func DeleteProductType(c *gin.Context) {
 			"msg":  "刪除失敗",
 		})
 	}
+}
+
+func GetProductInfo(c *gin.Context) {
+	pid := c.Param("id")
+	var result models.Products
+	db.QueryRow(`SELECT id, name, amount, amountNotice, price, type
+	FROM products WHERE id= ?`, pid).Scan(&result.Id, &result.Name, &result.Amount, &result.AmountNotice, &result.Price, &result.Type)
+	c.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"data": result,
+	})
 }

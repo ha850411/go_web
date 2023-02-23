@@ -13,4 +13,5 @@ type Orders struct {
 	UpdateTime time.Time     `json:"updateTime"`
 	FormatTime string        `json:"formatTime"`
 	Detail     []interface{} `json:"detail"`
+	Total      int           `json:"total"`
 }

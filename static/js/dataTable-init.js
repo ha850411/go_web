@@ -53,6 +53,9 @@ function initProductTable(keyword)
                 }
             },
             {
+                data: 'price',
+            },
+            {
                 data: 'tname',
                 render: function(data, type, row) {
                     if(row.tname.length > 0) {
@@ -74,7 +77,7 @@ function initProductTable(keyword)
                     }
                     output = `<div style="display:flex; align-items:center;height:30px;">
                                 <i title="圖片管理" class="fa-sharp fa-solid fa-images `+hasPicture+`" style="cursor:pointer;font-size:20px;margin-right:10px;" onclick="imagesManage(`+row.id+`)"></i>
-                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyProduct(`+row.id+`, '`+row.name+`', `+row.amount+`, `+row.amountNotice+`,`+row.type+`)"></i>
+                                <i class="fa-solid fa-pen-to-square" style="cursor:pointer;font-size:20px;" onclick="modifyProduct(`+row.id+`)"></i>
                                 <i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(this, `+row.id+`)"></i>
                             </div>`;
                     return output;
@@ -119,6 +122,9 @@ function initOrdersTable()
                 data: 'contact', 
             },
             {
+                data: 'total', 
+            },
+            {
                 data: null,
                 className: 'none',
                 render : function(data, type, row) {
@@ -129,6 +135,8 @@ function initOrdersTable()
                             <tr>
                                 <th>名稱</th>
                                 <th>數量</th>
+                                <th>單價</th>
+                                <th>總價</th>
                             </tr>
                         </thead>
                         <tbody>`;
@@ -136,6 +144,8 @@ function initOrdersTable()
                             output += `<tr>
                                 <td>` + row.detail[index].pname + `</td>
                                 <td>` + row.detail[index].amount + `</td>
+                                <td>` + row.detail[index].price + `</td>
+                                <td>` + row.detail[index].total + `</td>
                             </tr>`;
                         }
                         output += `</tbody></table>`;

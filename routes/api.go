@@ -10,6 +10,8 @@ func GetApiRouters(r *gin.Engine) {
 	apiGroup := r.Group("api")
 	// === products Groups ===
 	productsGroup := apiGroup.Group("/products")
+	// 取得單一商品資訊
+	productsGroup.GET("/:id", api.GetProductInfo)
 	// 取得商品列表
 	productsGroup.GET("/getList", api.GetProductsList)
 	// 更新數量

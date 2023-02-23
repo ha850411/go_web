@@ -15,6 +15,7 @@
                     <th>產品名稱</th>
                     <th>數量</th>
                     <th>存貨警戒線</th>
+                    <th>價錢</th>
                     <th>產品類別</th>
                     <th>更新時間</th>
                     <th></th>
@@ -23,6 +24,7 @@
                     <th>產品名稱</th>
                     <th>數量</th>
                     <th>存貨警戒線</th>
+                    <th>價錢</th>
                     <th>產品類別</th>
                     <th>更新時間</th>
                     <th></th>
@@ -96,6 +98,7 @@ function doInsert()
 {
     let name = $('#modal_name').val();
     let amount = $('#modal_amount').val();
+    let price = $('#modal_price').val();
     if(name.length == 0) {
         alert('產品名稱為必填');
         $('#modal_name').focus();
@@ -104,6 +107,11 @@ function doInsert()
     if(amount.length == 0) {
         alert('產品數量為必填');
         $('#modal_amount').focus();
+        return false;
+    }
+    if(price.length == 0) {
+        alert('價錢為必填');
+        $('#modal_price').focus();
         return false;
     }
     $.ajax({
@@ -115,6 +123,7 @@ function doInsert()
             amount: amount,
             amount_notice: $('#modal_amount_notice').val(),
             type: $('#modal_type').val(),
+            price: price,
         },
         beforeSend: function(){
             $('#addSubmitBtn').prop("disabled", true);
@@ -136,18 +145,30 @@ function doInsert()
     });
 }
 
-function modifyProduct(id, name, amount, amountNotice, productType)
+function modifyProduct(id)
 {
     $('#productEditModal').modal('show');
-    $('#modal_edit_id').val(id);
-    $('#modal_edit_name').val(name);
-    $('#modal_edit_amount').val(amount);
-    $('#modal_edit_type').val(productType);
-    if(amountNotice == 0) {
-        $('#modal_edit_amount_notice').val('');
-    } else {
-        $('#modal_edit_amount_notice').val(amountNotice);
-    }
+    $.ajax({
+        type: 'GET',
+        url: '/api/products/' + id,
+        dataType: 'json',
+        success: function (result, statusText, xhr) {
+            $('#modal_edit_id').val(result.data.id);
+            $('#modal_edit_name').val(result.data.name);
+            $('#modal_edit_amount').val(result.data.amount);
+            $('#modal_edit_price').val(result.data.price);
+            $('#modal_edit_type').val(result.data.type);
+            if(result.data.amountNotice == 0) {
+                $('#modal_edit_amount_notice').val('');
+            } else {
+                $('#modal_edit_amount_notice').val(result.data.amountNotice);
+            }
+        },
+        error: function (thrownError) {
+            console.log(thrownError);
+        },
+    });
+    
 }
 
 function doEdit()
@@ -164,6 +185,11 @@ function doEdit()
         $('#modal_edit_amount').focus();
         return false;
     }
+    if($('#modal_edit_price').val().length == 0) {
+        alert('產品數量為必填');
+        $('#modal_edit_price').focus();
+        return false;
+    }
     $.ajax({
         type: 'PATCH',
         url: '/api/products/edit',
@@ -174,6 +200,7 @@ function doEdit()
             amount: amount,
             amount_notice: $('#modal_edit_amount_notice').val(),
             type: $('#modal_edit_type').val(),
+            price: $('#modal_edit_price').val(),
         },
         beforeSend: function(){
             $('#editSubmitBtn').prop("disabled", true);

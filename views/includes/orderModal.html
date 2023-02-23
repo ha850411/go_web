@@ -29,6 +29,9 @@
                 <h4>訂購商品</h4>
                 <button type="button" class="btn btn-success addProductBtn" data-type="add">新增商品</button>
                 <div class="productsDetailArea" data-type="add"></div>
+
+                <span style="margin-top:5px;">總價: </span>
+                <span id="addTotal">0</span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="addSubmitBtn" onclick="doInsert()">新增</button>
@@ -40,7 +43,6 @@
 <!-- 修改 -->
 <div id="orderEditModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -66,11 +68,16 @@
                     <label for="modal_edit_amount">備註:</label>
                     <textarea class="form-control" id="modal_edit_remark" rows="3"></textarea>
                 </div>
+
                 <hr>
+
                 <h4>訂購商品</h4>
-                    <button type="button" class="btn btn-success addProductBtn" data-type="edit">新增商品</button>
-                    <div class="productsDetailArea" data-type="edit"></div>
-                </div>
+                <button type="button" class="btn btn-success addProductBtn" data-type="edit">新增商品</button>
+                <div class="productsDetailArea" data-type="edit"></div>
+
+                <span style="margin-top:5px;">總價: </span>
+                <span id="editTotal">0</span>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="editSubmitBtn" onclick="doEdit()">修改</button>
             </div>

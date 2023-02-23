@@ -6,6 +6,7 @@ import (
 	"goWeb/models"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -59,7 +60,8 @@ func GetOrdersLists(c *gin.Context) {
 		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Contact, &rowData.Address, &rowData.Remark, &rowData.UpdateTime)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		// 取得 orders_detail - begin
-		sql := fmt.Sprintf(`SELECT a.pid, a.amount, b.name FROM orders_detail as a
+		sql := fmt.Sprintf(`SELECT a.pid, a.amount, b.name ,a.price, a.total
+		FROM orders_detail as a
 		LEFT JOIN products as b ON a.pid=b.id
 		WHERE a.order_id=%v`, rowData.Id)
 		fmt.Printf("sql: %v\n", sql)
@@ -72,16 +74,20 @@ func GetOrdersLists(c *gin.Context) {
 			log.Panic(err)
 		}
 		defer detailRows.Close() // close
+		var total int
 		for detailRows.Next() {
 			tempDetail := struct {
 				Pid    int    `json:"pid"`
 				Amount int    `json:"amount"`
 				Pname  string `json:"pname"`
+				Price  int    `json:"price"`
+				Total  int    `json:"total"`
 			}{}
-			detailRows.Scan(&tempDetail.Pid, &tempDetail.Amount, &tempDetail.Pname)
-			fmt.Printf("tempDetail: %v\n", tempDetail)
+			detailRows.Scan(&tempDetail.Pid, &tempDetail.Amount, &tempDetail.Pname, &tempDetail.Price, &tempDetail.Total)
+			total += tempDetail.Total
 			rowData.Detail = append(rowData.Detail, tempDetail)
 		}
+		rowData.Total = total
 		// 取得 orders_detail - end
 		data = append(data, rowData)
 	}
@@ -115,7 +121,11 @@ func AddOrders(c *gin.Context) {
 		_ = json.Unmarshal([]byte(tempDetail), &detail)
 		LastInsertId, _ := rows.LastInsertId()
 		for _, jsonMap := range detail {
-			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"])
+			var price int
+			amount, _ := strconv.Atoi(jsonMap["amount"].(string))
+			db.QueryRow(`SELECT price FROM products WHERE id= ?`, jsonMap["pid"]).Scan(&price)
+			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount, price, total) VALUES (%v, %v, %v, %v, %v)", LastInsertId, jsonMap["pid"], jsonMap["amount"], price, price*amount)
+			fmt.Printf("sql: %v\n", sql)
 			db.Exec(sql)
 		}
 		c.JSON(http.StatusOK, gin.H{
@@ -144,7 +154,7 @@ func GetOrders(c *gin.Context) {
 		log.Panic(err)
 	}
 	// 取得 orders_detail - begin
-	sql = fmt.Sprintf(`SELECT pid, amount FROM orders_detail  WHERE order_id=%v`, rowData.Id)
+	sql = fmt.Sprintf(`SELECT pid, amount, price FROM orders_detail  WHERE order_id=%v`, rowData.Id)
 	detailRows, err2 := db.Query(sql)
 	if err2 != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -158,8 +168,9 @@ func GetOrders(c *gin.Context) {
 		tempDetail := struct {
 			Pid    int `json:"pid"`
 			Amount int `json:"amount"`
+			Price  int `json:"price"`
 		}{}
-		detailRows.Scan(&tempDetail.Pid, &tempDetail.Amount)
+		detailRows.Scan(&tempDetail.Pid, &tempDetail.Amount, &tempDetail.Price)
 		rowData.Detail = append(rowData.Detail, tempDetail)
 	}
 	// 取得 orders_detail - end
@@ -197,7 +208,12 @@ func EditOrders(c *gin.Context) {
 	var detail map[string]map[string]interface{}
 	_ = json.Unmarshal([]byte(postData["detail"]), &detail)
 	for _, jsonMap := range detail {
-		sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount) VALUES (%v, %v, %v)", postData["id"], jsonMap["pid"], jsonMap["amount"])
+		// 取價錢
+		var price int
+		amount, _ := strconv.Atoi(jsonMap["amount"].(string))
+		db.QueryRow(`SELECT price FROM products WHERE id= ?`, jsonMap["pid"]).Scan(&price)
+		// do insert
+		sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount, price, total) VALUES (%v, %v, %v, %v, %v)", postData["id"], jsonMap["pid"], jsonMap["amount"], price, price*amount)
 		db.Exec(sql)
 	}
 	c.JSON(http.StatusOK, gin.H{
