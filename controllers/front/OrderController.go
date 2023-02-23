@@ -40,6 +40,7 @@ func OrdersAdd(c *gin.Context) {
 		_ = json.Unmarshal([]byte(postData["detail"]), &detail)
 		LastInsertId, _ := rows.LastInsertId()
 		lineMessage := fmt.Sprintf("\n*新訂單\n姓名: %s\n聯絡方式: %s\n配送地址: %s\n備註: %s\n訂購商品:", postData["name"], postData["contact"], postData["address"], postData["remark"])
+		var total int
 		for _, jsonMap := range detail {
 			// get price
 			var price int
@@ -52,8 +53,11 @@ func OrdersAdd(c *gin.Context) {
 			sql = fmt.Sprintf("SELECT name FROM products WHERE id = %s", jsonMap["pid"])
 			var pname string
 			db.QueryRow(sql).Scan(&pname)
-			lineMessage += fmt.Sprintf("\n- 商品: %s\n  數量: %s", pname, jsonMap["amount"])
+			lineMessage += fmt.Sprintf("\n  商品: %s\n  數量: %s\n  單價: %v\n", pname, jsonMap["amount"], price)
+			// 計算總價
+			total += price * amount
 		}
+		lineMessage += fmt.Sprintf("===============\n總價: %v", total)
 		// 推播
 		linebot.Request(lineMessage)
 		c.Header("Content-Type", "text/html; charset=utf-8")
