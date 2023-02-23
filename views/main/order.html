@@ -216,7 +216,7 @@ function doInsert()
         success: function (result, statusText, xhr) {
             $('#productAddModal').modal('hide');
             alert('新增成功');
-            orderTable.ajax.reload();
+            orderTable.ajax.reload(null, false);
         },
         error: function (err) {
             alert('新增失敗')
@@ -356,7 +356,7 @@ function doEdit()
         success: function (result, statusText, xhr) {
             $('#orderEditModal').modal('hide');
             alert('修改成功');
-            orderTable.ajax.reload();
+            orderTable.ajax.reload(null, false);
         },
         error: function (err) {
             $('#orderEditModal').modal('hide');
@@ -390,7 +390,7 @@ function doDelete(obj, id)
             },
             success: function (result, statusText, xhr) {
                 alert('刪除成功');
-                orderTable.ajax.reload();
+                orderTable.ajax.reload(null, false);
             },
             error: function (err) {
                 if(err.responseJSON.msg.Message !== undefined) {

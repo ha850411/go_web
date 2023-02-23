@@ -85,7 +85,7 @@ $(function(){
             },
             complete: function(){
                 $('#addImageMsg').fadeOut(3000);
-                productsPicTable.ajax.reload();
+                productsPicTable.ajax.reload(null, false);
             },
         });
         $('#filesInput').val('');
@@ -124,7 +124,7 @@ function doEdit()
         },
         complete: function(){
             $('#picEditModal').modal("hide");
-            productsPicTable.ajax.reload();
+            productsPicTable.ajax.reload(null, false);
         },
     });   
 }
@@ -144,7 +144,7 @@ function doDelete(id)
                 alert('刪除失敗');
             },
             complete: function(){
-                productsPicTable.ajax.reload();
+                productsPicTable.ajax.reload(null, false);
             },
         });  
     }

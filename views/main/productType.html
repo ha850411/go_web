@@ -68,7 +68,7 @@ function doInsert()
         success: function (result, statusText, xhr) {
             $('#productTypeAddModal').modal('hide');
             alert('新增成功');
-            productTypeTable.ajax.reload();
+            productTypeTable.ajax.reload(null, false);
         },
         error: function (err) {
             alert('新增失敗')
@@ -113,7 +113,7 @@ function doEdit()
         },
         complete: function(){
             $('#productTypeEditModal').modal("hide");
-            productTypeTable.ajax.reload();
+            productTypeTable.ajax.reload(null, false);
         },
     });   
 }
@@ -136,7 +136,7 @@ function doDelete(id)
                 alert('刪除失敗');
             },
             complete: function(){
-                productTypeTable.ajax.reload();
+                productTypeTable.ajax.reload(null, false);
             },
         });  
     }

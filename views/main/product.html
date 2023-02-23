@@ -70,7 +70,7 @@ function updateAmount(obj, id)
             $('.success_'+id).css("display", "block");
             $('.success_'+id).fadeOut(3000);
             setTimeout(() => {
-                productTable.ajax.reload();
+                productTable.ajax.reload(null, false);
             }, 1000);
         },
         error: function (err) {
@@ -132,7 +132,7 @@ function doInsert()
         success: function (result, statusText, xhr) {
             $('#productAddModal').modal('hide');
             alert('新增成功');
-            productTable.ajax.reload();
+            productTable.ajax.reload(null, false);
         },
         error: function (err) {
             alert('新增失敗')
@@ -209,7 +209,7 @@ function doEdit()
         success: function (result, statusText, xhr) {
             $('#productEditModal').modal('hide');
             alert('修改成功');
-            productTable.ajax.reload();
+            productTable.ajax.reload(null, false);
         },
         error: function (err) {
             $('#productEditModal').modal('hide');
@@ -242,7 +242,7 @@ function doDelete(obj, id)
             },
             success: function (result, statusText, xhr) {
                 alert('刪除成功');
-                productTable.ajax.reload();
+                productTable.ajax.reload(null, false);
             },
             error: function (err) {
                 if(err.responseJSON.msg.Message !== undefined) {
