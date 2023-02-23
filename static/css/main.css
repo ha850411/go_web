@@ -2365,3 +2365,10 @@ ul.activity-timeline > li:last-child:after {
     color:#3487c6;
     cursor: pointer;
 }
+
+.example-title {
+    display:flex;
+    font-size:16px;
+    margin: 15px 0px;
+    font-weight: bold;
+}
