@@ -54,10 +54,11 @@ func createMyRender() multitemplate.Renderer {
 		"front-header": "views/front/front-header.html",
 	}
 	includes := map[string]string{
-		"productModal":     "views/includes/productModal.html",
-		"orderModal":       "views/includes/orderModal.html",
-		"productPicModal":  "views/includes/productPicModal.html",
-		"productTypeModal": "views/includes/productTypeModal.html",
+		"productModal":      "views/includes/productModal.html",
+		"orderModal":        "views/includes/orderModal.html",
+		"productPicModal":   "views/includes/productPicModal.html",
+		"productTypeModal":  "views/includes/productTypeModal.html",
+		"front-order-modal": "views/includes/frontOrderModal.html",
 	}
 	// 存貨分析
 	r.AddFromFiles("analysis", common["layout"], common["header"], common["menu"], "views/main/analysis.html")
@@ -74,7 +75,7 @@ func createMyRender() multitemplate.Renderer {
 	// 設定
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
 	// === 前端 ===
-	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], "views/front/order.html")
+	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], includes["front-order-modal"], "views/front/order.html")
 	r.AddFromFiles("front-test", common["front-layout"], common["front-header"], "views/front/test.html")
 
 	// 404 page

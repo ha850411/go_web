@@ -7,7 +7,8 @@
     <div class="container-fluid">
       <div class="panel panel-headline" style="max-width:600px; margin:0 auto;">
         <div class="panel-body" >
-            <h3>訂購單</h3><br>
+            <h3>訂購單<a href="#frontOrderModal" data-toggle="modal" data-target="#frontOrderModal" style="font-size:20px;">( 訂購說明 )</a></h3>
+
             <form action="/orders/add" method="POST" id="mainFm">
 
                 <div class="form-group">
@@ -227,7 +228,7 @@ function getTemplate(select2Class, amountInputClass, imageClass, priceClass)
             <option value="">請選擇商品</option>
         </select>
         <span style="white-space:nowrap; margin:0 5px;" id="`+priceClass+`"></span>
-        <input type="number" min="1" class="form-control `+amountInputClass+`" style="width:100px;margin-left:5px;" placeholder="數量">
+        <input type="number" min="1" class="form-control `+amountInputClass+`" style="width:100px;margin-left:5px;" placeholder="數量" value="1">
     </div>`;
     return template;
 }
