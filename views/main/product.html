@@ -15,7 +15,7 @@
                     <th>產品名稱</th>
                     <th>數量</th>
                     <th>存貨警戒線</th>
-                    <th>價錢</th>
+                    <th>價格</th>
                     <th>產品類別</th>
                     <th>更新時間</th>
                     <th></th>
@@ -24,7 +24,7 @@
                     <th>產品名稱</th>
                     <th>數量</th>
                     <th>存貨警戒線</th>
-                    <th>價錢</th>
+                    <th>價格</th>
                     <th>產品類別</th>
                     <th>更新時間</th>
                     <th></th>
@@ -110,7 +110,7 @@ function doInsert()
         return false;
     }
     if(price.length == 0) {
-        alert('價錢為必填');
+        alert('產品價格為必填');
         $('#modal_price').focus();
         return false;
     }
@@ -186,7 +186,7 @@ function doEdit()
         return false;
     }
     if($('#modal_edit_price').val().length == 0) {
-        alert('產品數量為必填');
+        alert('產品價格為必填');
         $('#modal_edit_price').focus();
         return false;
     }
