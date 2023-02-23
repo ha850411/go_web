@@ -86,7 +86,7 @@ function initProductTable(keyword)
         ],
         columnDefs:[
             {
-                targets: 4,
+                targets: 6,
                 orderable: false,
                 responsivePriority: 2,
             },
@@ -181,10 +181,6 @@ function initOrdersTable()
         columnDefs:[
             {
                 targets: 2,
-                orderable: false,
-            },
-            {
-                targets: 5,
                 orderable: false,
             },
             {

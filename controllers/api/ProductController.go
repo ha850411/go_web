@@ -40,7 +40,9 @@ func GetProductsList(c *gin.Context) {
 		"0": "name",
 		"1": "amount",
 		"2": "amountNotice",
-		"3": "updateTime",
+		"3": "price",
+		"4": "type",
+		"5": "updateTime",
 	}
 	orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
 	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
