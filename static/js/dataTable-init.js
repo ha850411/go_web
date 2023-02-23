@@ -110,6 +110,9 @@ function initOrdersTable()
         },
         processing: true,
         serverSide:true,
+        order: [
+            [6, 'desc']
+        ],
         ajax: {
             url: "/api/orders/getLists",
             type: "GET",
@@ -177,7 +180,15 @@ function initOrdersTable()
         ],
         columnDefs:[
             {
+                targets: 2,
+                orderable: false,
+            },
+            {
                 targets: 5,
+                orderable: false,
+            },
+            {
+                targets: 7,
                 orderable: false,
                 responsivePriority: 2,
             },

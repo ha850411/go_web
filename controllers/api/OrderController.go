@@ -25,8 +25,7 @@ func GetOrdersLists(c *gin.Context) {
 	columes := map[string]string{
 		"0": "name",
 		"1": "contact",
-		"3": "remark",
-		"4": "updateTime",
+		"6": "updateTime",
 	}
 	orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
 	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
