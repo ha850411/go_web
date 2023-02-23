@@ -2367,7 +2367,7 @@ ul.activity-timeline > li:last-child:after {
 }
 
 .example-title {
-    display:flex;
+    display: inline-flex;
     font-size:16px;
     margin: 15px 0px;
     font-weight: bold;
