@@ -364,6 +364,7 @@ func GetProductsLog(c *gin.Context) {
 func ExportCsv(c *gin.Context) {
 	var sql string
 	pid := c.DefaultQuery("pid", "0")
+	month := c.DefaultQuery("month", "1")
 	mode := c.Query("mode")
 	productList := make(map[string]map[string]string)
 	type ProductList struct {
@@ -372,7 +373,8 @@ func ExportCsv(c *gin.Context) {
 		Amount string
 	}
 	// 日期區間
-	startDate := time.Now().AddDate(-1, 0, 0).Format("2006-01-02")
+	startMonth, _ := strconv.Atoi(month)
+	startDate := time.Now().AddDate(0, 0-startMonth, 0).Format("2006-01-02")
 	endDate := time.Now().AddDate(0, 0, 0).Format("2006-01-02")
 	if mode == "single" {
 		// 取得商品名稱 map
