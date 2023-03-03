@@ -2,6 +2,7 @@ package routes
 
 import (
 	"goWeb/controllers/api"
+	"goWeb/controllers/api/front"
 
 	"github.com/gin-gonic/gin"
 )
@@ -60,4 +61,8 @@ func GetApiRouters(r *gin.Engine) {
 	// === setting Groups ===
 	settingGroup := apiGroup.Group("/settings")
 	settingGroup.GET("/unsetLine/:username", api.UnsetLine)
+
+	// === front ===
+	frontGroup := apiGroup.Group("/front")
+	frontGroup.GET("/products", front.GetProductsList)
 }

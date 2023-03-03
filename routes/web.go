@@ -36,6 +36,8 @@ func GetWebRouters(r *gin.Engine) {
 	linebotGroup := r.Group("/linebot")
 	linebotGroup.GET("/notify", middleware.Auth(), controllers.LineBotNotify)
 	// ========= 前台 ===========
+	r.GET("/", front.Index)
+	r.GET("/product/:id", front.Product)
 	r.GET("/orders", front.Orders)
 	r.POST("/orders/add", front.OrdersAdd)
 }
@@ -60,6 +62,12 @@ func createMyRender() multitemplate.Renderer {
 		"productTypeModal":  "views/includes/productTypeModal.html",
 		"front-order-modal": "views/includes/frontOrderModal.html",
 	}
+	index := map[string]string{
+		"layout": "views/index/layout.html",
+		"header": "views/index/header.html",
+		"banner": "views/index/banner.html",
+		"footer": "views/index/footer.html",
+	}
 	// 存貨分析
 	r.AddFromFiles("analysis", common["layout"], common["header"], common["menu"], "views/main/analysis.html")
 	// 登入頁
@@ -77,8 +85,12 @@ func createMyRender() multitemplate.Renderer {
 	// === 前端 ===
 	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], includes["front-order-modal"], "views/front/order.html")
 	r.AddFromFiles("front-test", common["front-layout"], common["front-header"], "views/front/test.html")
+	// 首頁
+	r.AddFromFiles("index", index["layout"], index["header"], index["banner"], index["footer"], "views/index/index.html")
+	// 商品資訊
+	r.AddFromFiles("product", index["layout"], index["header"], index["footer"], "views/index/product.html")
 
-	// 404 page
+	// === 404 page ===
 	r.AddFromFiles("404", "views/main/404.html")
 	return r
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>雪國魚沼</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/static/css/front/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/front/form.css" rel="stylesheet" type="text/css" media="all" />
+
+<link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+<!-- js -->
+<script type="text/javascript" src="/static/js/axios.min.js"></script>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
+<!-- start menu -->
+<link href="/static/css/front/megamenu.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/static/js/front/megamenu.js"></script>
+<!--start slider -->
+<link rel="stylesheet" href="/static/css/front/fwslider.css" media="all">
+<script type="text/javascript" src="/static/js/front/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/js/front/css3-mediaqueries.js"></script>
+<script type="text/javascript" src="/static/js/front/fwslider.js"></script>
+<!--end slider -->
+<script type="text/javascript" src="/static/js/front/jquery.easydropdown.js"></script>
+
+<link href="/static/css/front/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/front/nivo-slider.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/static/js/front/jquery.nivo.slider.js"></script>
+<script type="text/javascript" src="/static/js/front/jquery.flexisel.js"></script>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+    
+    <div id="header">
+        {{ block "index/header" . }}{{end}}
+    </div>
+    
+    <div id="banner">
+        {{ block "index/banner" . }}{{end}}
+    </div>
+
+    <div id="app">
+        {{ block "index/content" . }}{{end}}
+    </div>
+
+    {{ block "index/footer" . }}{{end}}
+</div>
+
+</body>
+</html>
