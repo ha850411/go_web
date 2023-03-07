@@ -16,20 +16,27 @@ var db *sql.DB
 func init() {
 	db = database.DbConnect()
 }
+
+// - 取得商品列表
 func GetProductsList(c *gin.Context) {
-	var count int
 	page := c.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(page)
+	data, count := GetFrontProducts(pageInt)
+	c.JSON(http.StatusOK, gin.H{
+		"count": count,
+		"data":  data,
+	})
+}
+
+func GetFrontProducts(page int) ([]interface{}, int) {
+	var count int
 	perpage := 8
+
 	db.QueryRow(`SELECT count(*) FROM products WHERE status=1 AND type=0`).Scan(&count)
 	// data
 	rows, err := db.Query(`SELECT id, name, price FROM products 
-	WHERE status=1 AND type=0 ORDER BY name asc LIMIT ? OFFSET ?`, perpage, perpage*pageInt-perpage)
+	WHERE status=1 AND type=0 ORDER BY name asc LIMIT ? OFFSET ?`, perpage, perpage*page-perpage)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 500,
-			"msg":  err,
-		})
 		log.Panic(err)
 	}
 	defer rows.Close() // close connection
@@ -49,8 +56,5 @@ func GetProductsList(c *gin.Context) {
 		}
 		data = append(data, rowData)
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"count": count,
-		"data":  data,
-	})
+	return data, count
 }
