@@ -37,7 +37,11 @@ func GetWebRouters(r *gin.Engine) {
 	linebotGroup.GET("/notify", middleware.Auth(), controllers.LineBotNotify)
 	// ========= 前台 ===========
 	r.GET("/", front.Index)
-	r.GET("/product/:id", front.Product)
+	r.GET("/product", front.Product)
+	r.GET("/product/:id", front.ProductDetail)
+	r.GET("/cart", front.ShoppingCart)
+	r.GET("/about", front.About)
+	r.GET("/contact", front.Contact)
 	r.GET("/orders", front.Orders)
 	r.POST("/orders/add", front.OrdersAdd)
 }
@@ -87,8 +91,13 @@ func createMyRender() multitemplate.Renderer {
 	r.AddFromFiles("front-test", common["front-layout"], common["front-header"], "views/front/test.html")
 	// 首頁
 	r.AddFromFiles("index", index["layout"], index["header"], index["banner"], index["footer"], "views/index/index.html")
+	// 所有商品頁
+	r.AddFromFiles("front_product", index["layout"], index["header"], index["footer"], "views/index/product.html")
 	// 商品資訊
-	r.AddFromFiles("product", index["layout"], index["header"], index["footer"], "views/index/product.html")
+	r.AddFromFiles("front_product_detail", index["layout"], index["header"], index["footer"], "views/index/product-detail.html")
+	r.AddFromFiles("front_cart", index["layout"], index["header"], index["footer"], "views/index/cart.html")
+	r.AddFromFiles("front_about", index["layout"], index["header"], index["footer"], "views/index/about.html")
+	r.AddFromFiles("front_contact", index["layout"], index["header"], index["footer"], "views/index/contact.html")
 
 	// === 404 page ===
 	r.AddFromFiles("404", "views/main/404.html")

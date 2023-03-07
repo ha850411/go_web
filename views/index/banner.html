@@ -1,40 +1,83 @@
 {{define "index/banner"}}
-<!-- start slider -->
-<div id="fwslider">
-    <div class="slider_container">
-        <div class="slide"> 
-            <!-- Slide image -->
-                <img src="/static/images/front/banner.jpg" alt=""/>
-            <!-- /Slide image -->
-            <!-- Texts container -->
-            <div class="slide_content">
-                <div class="slide_content_wrap">
-                    <!-- Text title -->
-                    <h4 class="title">Aluminium Club</h4>
-                    <!-- /Text title -->
-                    
-                    <!-- Text description -->
-                    <p class="description">Experiance ray ban</p>
-                    <!-- /Text description -->
+<!-- Slider -->
+<section class="section-slide">
+    <div class="wrap-slick1">
+        <div class="slick1">
+            <div class="item-slick1" style="background-image: url(/static/images/front/slide-01.jpg);">
+                <div class="container h-full">
+                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
+                            <span class="ltext-101 cl2 respon2">
+                                Women Collection 2018
+                            </span>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
+                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                NEW SEASON
+                            </h2>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
+                            <a href="product.html"
+                                class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- /Texts container -->
-        </div>
-        <!-- /Duplicate to create more slides -->
-        <div class="slide">
-            <img src="/static/images/front/banner1.jpg" alt=""/>
-            <div class="slide_content">
-                <div class="slide_content_wrap">
-                    <h4 class="title">consectetuer adipiscing </h4>
-                    <p class="description">diam nonummy nibh euismod</p>
+
+            <div class="item-slick1" style="background-image: url(/static/images/front/slide-02.jpg);">
+                <div class="container h-full">
+                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
+                            <span class="ltext-101 cl2 respon2">
+                                Men New-Season
+                            </span>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
+                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                Jackets & Coats
+                            </h2>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
+                            <a href="product.html"
+                                class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-slick1" style="background-image: url(/static/images/front/slide-03.jpg);">
+                <div class="container h-full">
+                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft" data-delay="0">
+                            <span class="ltext-101 cl2 respon2">
+                                Men Collection 2018
+                            </span>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight" data-delay="800">
+                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                New arrivals
+                            </h2>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
+                            <a href="product.html"
+                                class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!--/slide -->
     </div>
-    <div class="timers"></div>
-    <div class="slidePrev"><span></span></div>
-    <div class="slideNext"><span></span></div>
-</div>
-<!--/slider -->
+</section>
 {{end}}

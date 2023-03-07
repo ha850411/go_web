@@ -5,30 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="/static/css/front/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href="/static/css/front/form.css" rel="stylesheet" type="text/css" media="all" />
-
-<link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
 <!-- js -->
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
-<script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
-<!-- start menu -->
-<link href="/static/css/front/megamenu.css" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="/static/js/front/megamenu.js"></script>
-<!--start slider -->
-<link rel="stylesheet" href="/static/css/front/fwslider.css" media="all">
-<script type="text/javascript" src="/static/js/front/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/static/js/front/css3-mediaqueries.js"></script>
-<script type="text/javascript" src="/static/js/front/fwslider.js"></script>
-<!--end slider -->
-<script type="text/javascript" src="/static/js/front/jquery.easydropdown.js"></script>
-
-<link href="/static/css/front/default.css" rel="stylesheet" type="text/css" media="all" />
-<link href="/static/css/front/nivo-slider.css" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="/static/js/front/jquery.nivo.slider.js"></script>
-<script type="text/javascript" src="/static/js/front/jquery.flexisel.js"></script>
-
+<!--===============================================================================================-->
+<script type="text/javascript" src="/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap4/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/static/fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="/static/fonts/linearicons-v1.0.0/icon-font.min.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/select2/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/slick/slick.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" type="text/css" href="/static/vendor/MagnificPopup/magnific-popup.css">
+<link rel="stylesheet" type="text/css" href="/static/css/front/util.css">
+<link rel="stylesheet" type="text/css" href="/static/css/front/main.css">
+<!--===============================================================================================-->
 </head>
 
 <body>
@@ -50,5 +43,58 @@
     {{ block "index/footer" . }}{{end}}
 </div>
 
+<script src="/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script src="/static/vendor/bootstrap4/js/popper.js"></script>
+<script src="/static/vendor/bootstrap4/js/bootstrap.min.js"></script>
+<script src="/static/vendor/select2/js/select2.min.js"></script>
+<script src="/static/vendor/slick/slick.min.js"></script>
+<script src="/static/js/front/slick-custom.js"></script>
+<script src="/static/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+
+<script>
+$(function(){
+    $(".js-select2").each(function(){
+        $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+        });
+    });
+
+    $('.js-addcart-detail').each(function(){
+        var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+        $(this).on('click', function(){
+            swal(nameProduct, "is added to cart !", "success");
+        });
+    });
+
+    $('.js-pscroll').each(function(){
+        $(this).css('position','relative');
+        $(this).css('overflow','hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+
+        $(window).on('resize', function(){
+            ps.update();
+        })
+    });
+
+    $('.gallery-lb').each(function() { // the containers for all your galleries
+        $(this).magnificPopup({
+            delegate: 'a', // the selector for gallery item
+            type: 'image',
+            gallery: {
+                enabled:true
+            },
+            mainClass: 'mfp-fade'
+        });
+    });
+});
+</script>
+<script src="/static/js/front/main.js"></script>
 </body>
 </html>
