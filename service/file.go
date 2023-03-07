@@ -23,5 +23,5 @@ func WriteFileAndCompress(targetDir string, fileName string, content []byte) {
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 	}
-	fmt.Printf("returnData: %v\n", returnData)
+	fmt.Printf("returnData: %v\n", string(returnData))
 }
