@@ -10,7 +10,7 @@
                 <!-- Logo desktop -->
                 <a href="/" class="logo">
                     <img src="/static/images/logo.jpg" alt="IMG-LOGO">
-                    <span class="ml-2" style="color:#000;">雪国魚沼商行</span>
+                    <span class="ml-2" style="color:#000;">雪国魚沼</span>
                 </a>
 
                 <!-- Menu desktop -->
@@ -37,7 +37,7 @@
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-                        data-notify="2">
+                    :data-notify="Object.keys(orderDetail).length">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
                 </div>
@@ -51,13 +51,14 @@
         <div class="logo-mobile">
             <a href="/">
                 <img src="/static/images/logo.jpg" alt="IMG-LOGO">
+                <span class="ml-2" style="color:#000;">雪国魚沼</span>
             </a>
         </div>
 
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
-                data-notify="2">
+                :data-notify="Object.keys(orderDetail).length">
                 <i class="zmdi zmdi-shopping-cart"></i>
             </div>
         </div>
@@ -110,58 +111,31 @@
 
         <div class="header-cart-content flex-w js-pscroll">
             <ul class="header-cart-wrapitem w-full">
-                <li class="header-cart-item flex-w flex-t m-b-12">
-                    <div class="header-cart-item-img">
-                        <img src="/static/images/front/item-cart-01.jpg" alt="IMG">
+
+                <template v-if="Object.keys(orderDetail).length == 0">
+                    <span>購物車為空!</span>
+                </template>
+                <li class="header-cart-item flex-w flex-t m-b-12" velse v-for="data in orderDetail">
+                    <div class="header-cart-item-img" @click="removeProduct(data.id)">
+                        <img :src="data.picture" alt="IMG">
                     </div>
 
                     <div class="header-cart-item-txt p-t-8">
                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                            White Shirt Pleat
+                            @{ data.name }
                         </a>
 
                         <span class="header-cart-item-info">
-                            1 x $19.00
+                            @{ data.amount + ' x ' + data.price }
                         </span>
                     </div>
                 </li>
 
-                <li class="header-cart-item flex-w flex-t m-b-12">
-                    <div class="header-cart-item-img">
-                        <img src="/static/images/front/item-cart-02.jpg" alt="IMG">
-                    </div>
-
-                    <div class="header-cart-item-txt p-t-8">
-                        <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                            Converse All Star
-                        </a>
-
-                        <span class="header-cart-item-info">
-                            1 x $39.00
-                        </span>
-                    </div>
-                </li>
-
-                <li class="header-cart-item flex-w flex-t m-b-12">
-                    <div class="header-cart-item-img">
-                        <img src="/static/images/front/item-cart-03.jpg" alt="IMG">
-                    </div>
-
-                    <div class="header-cart-item-txt p-t-8">
-                        <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                            Nixon Porter Leather
-                        </a>
-
-                        <span class="header-cart-item-info">
-                            1 x $17.00
-                        </span>
-                    </div>
-                </li>
             </ul>
 
             <div class="w-full">
                 <div class="header-cart-total w-full p-tb-40">
-                    Total: $75.00
+                    Total: $<span>@{totalPrice}</span>
                 </div>
 
                 <div class="header-cart-buttons flex-w w-full">
@@ -174,4 +148,46 @@
         </div>
     </div>
 </div>
+<script>
+const vueHeader = Vue.createApp({
+    delimiters : ["@{", "}"],
+    data() {
+        return {
+           orderDetail: {},
+           totalPrice: 0,
+        }
+    },
+    mounted() {
+        if(Cookies.get('orderDetail') !== undefined) {
+            this.orderDetail = JSON.parse(Cookies.get('orderDetail'));
+        }
+    },
+    watch: {
+        orderDetail: {
+            handler: function() {
+                console.log('header - orderDetail');
+                str = JSON.stringify(this.orderDetail);
+                Cookies.set('orderDetail', str, { expires: 7, path: '/' });
+                this.totalPrice = 0
+                for (const key in this.orderDetail) {
+                    this.totalPrice += parseInt(this.orderDetail[key].amount) * parseInt(this.orderDetail[key].price);
+                }
+            },
+            deep: true,
+        }
+    },
+    computed: {
+    },
+    methods: {
+        removeProduct: function(id) {
+            if(confirm("確定刪除?")) {
+                if(this.orderDetail[id] !== undefined) {
+                    delete this.orderDetail[id];
+                }
+            }
+        }
+    },
+});
+const vm_header = vueHeader.mount('#header');
+</script>
 {{end}}

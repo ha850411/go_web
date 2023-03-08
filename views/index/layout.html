@@ -32,6 +32,7 @@
 <script src="/static/vendor/sweetalert/sweetalert.min.js"></script>
 <script src="/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
 <div id="wrapper">
     
@@ -60,12 +61,7 @@ $(function(){
         });
     });
 
-    $('.js-addcart-detail').each(function(){
-        var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-        $(this).on('click', function(){
-            swal(nameProduct, "is added to cart !", "success");
-        });
-    });
+
 
     $('.js-pscroll').each(function(){
         $(this).css('position','relative');
