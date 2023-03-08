@@ -33,8 +33,7 @@ func ProductDetail(c *gin.Context) {
 		fmt.Printf("err: %v\n", err)
 	}
 	// 取得推薦商品
-	relatedData, _ := front.GetFrontProducts(1)
-
+	relatedData, _ := front.GetFrontProducts(1, "")
 	c.HTML(http.StatusOK, "front_product_detail", gin.H{
 		"id":          id,
 		"data":        rowData,

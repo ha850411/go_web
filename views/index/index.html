@@ -29,8 +29,7 @@
                     <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                         <i class="zmdi zmdi-search"></i>
                     </button>
-
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search" v-model="keyword">
                 </div>	
             </div>
         </div>
@@ -78,6 +77,7 @@ const vueApp = Vue.createApp({
     delimiters : ["@{", "}"],
     data() {
         return {
+            keyword: '',
             productPage: 1,
             productTotalPage: 1,
             productData: [],
@@ -89,13 +89,17 @@ const vueApp = Vue.createApp({
         this.getProduct();
     },
     watch: {
+        keyword: function(){
+            this.productPage = 1;
+            this.getProduct();
+        }
     },
     computed: {
     },
     methods: {
         getProduct: async function() {
             try {
-                const response = await axios.get('/api/front/products?page=' + this.productPage);
+                const response = await axios.get('/api/front/products?page=' + this.productPage + '&keyword=' + this.keyword);
                 this.productData = response.data.data;
                 this.productTotalPage = Math.ceil(response.data.count/8);
             } catch (error) {

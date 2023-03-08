@@ -25,38 +25,36 @@
                         <i class="zmdi zmdi-search"></i>
                     </button>
 
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search" v-model="keyword">
                 </div>	
             </div>
         </div>
 
         <div class="row isotope-grid">
-            <template v-for="data in products">
+            <template v-if="productLoading">
+                <i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            </template>
+            <template v-else v-for="data in productData">
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35">
-                    <!-- Block2 -->
                     <div class="block2">
-                        <a href="/product/1">
+                        <a :href="'/product/' + data.id">
                             <div class="block2-pic hov-img0" style="cursor:pointer;">
-                                <img :src="data[0]" alt="IMG-PRODUCT">
+                                <img v-if="data.picture === null" src="/static/images/front/product-01.jpg">
+                                <img v-else :src="'/static/uploads/'+data.id+'/'+data.picture[0]" alt="IMG-PRODUCT">
                             </div>
                         </a>
-    
                         <div class="block2-txt flex-w flex-t p-t-14">
                             <div class="block2-txt-child1 flex-col-l ">
-                                <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                    @{ data[1] }
+                                <a :href="'/product/' + data.id" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    @{ data.name }
                                 </a>
-    
                                 <span class="stext-105 cl3">
-                                    @{ '$' + data[2] }
+                                    @{ '$' + data.price }
                                 </span>
                             </div>
-    
                             <div class="block2-txt-child2 flex-r p-t-3">
                                 <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <!-- <img class="icon-heart1 dis-block trans-04" src="/static/images/front/icons/icon-heart-01.png" alt="ICON">
-                                    <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/static/images/front/icons/icon-heart-02.png" alt="ICON"> -->
-                                    <i class="zmdi zmdi-shopping-cart cl2"></i>
+                                    <i class="zmdi zmdi-shopping-cart cl2" style="font-size:20px;"></i>
                                 </a>
                             </div>
                         </div>
@@ -64,10 +62,9 @@
                 </div>
             </template>
         </div>
-
         <!-- Load more -->
         <div class="flex-c-m flex-w w-full p-t-45">
-            <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">Load More</a>
+            <a v-if="productPage<productTotalPage" href="javascript:void(0)" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04" @click="loadMoreProduct()">Load More</a>
         </div>
     </div>
 </section>
@@ -76,25 +73,56 @@ const vueApp = Vue.createApp({
     delimiters : ["@{", "}"],
     data() {
         return {
-            products: [
-                ['/static/images/front/product-01.jpg', 'product1', '16.64'],
-                ['/static/images/front/product-02.jpg', 'product2', '16.64'],
-                ['/static/images/front/product-03.jpg', 'product3', '16.64'],
-                ['/static/images/front/product-04.jpg', 'product4', '16.64'],
-                ['/static/images/front/product-05.jpg', 'product5', '16.64'],
-                ['/static/images/front/product-06.jpg', 'product6', '16.64'],
-                ['/static/images/front/product-07.jpg', 'product7', '16.64'],
-                ['/static/images/front/product-08.jpg', 'product8', '16.64'],
-            ]
+            keyword: '',
+            productPage: 1,
+            productTotalPage: 1,
+            productData: [],
+            productLoading: true,
+            apiCallSuccess: true,
         }
     },
     mounted() {
+        this.getProduct();
     },
     watch: {
+        keyword: function(){
+            this.productPage = 1;
+            this.getProduct();
+        }
     },
     computed: {
     },
     methods: {
+        getProduct: async function() {
+            try {
+                const response = await axios.get('/api/front/products?page=' + this.productPage + '&keyword=' + this.keyword);
+                this.productData = response.data.data;
+                this.productTotalPage = Math.ceil(response.data.count/8);
+            } catch (error) {
+                this.apiCallSuccess = false;
+                if (error.response !== undefined) {
+                    this.errorMsg = error.response.data.message;
+                } else {
+                    this.errorMsg = error.message;
+                }
+            }
+            this.productLoading = false;
+        },
+        loadMoreProduct: async function() {
+            this.productPage ++;
+            try {
+                const response = await axios.get('/api/front/products?page=' + this.productPage);
+                if(response.data.data.length > 0) {
+                    this.productData = this.productData.concat(response.data.data);
+                }
+            } catch (error) {
+                if (error.response !== undefined) {
+                    console.log(error.response.data.message);
+                } else {
+                    console.log(error.message);
+                }
+            }
+        }
     },
 });
 const vm_app = vueApp.mount('#app');

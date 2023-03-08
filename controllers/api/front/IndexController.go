@@ -2,6 +2,7 @@ package front
 
 import (
 	"database/sql"
+	"fmt"
 	"goWeb/database"
 	"log"
 	"net/http"
@@ -21,21 +22,29 @@ func init() {
 func GetProductsList(c *gin.Context) {
 	page := c.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(page)
-	data, count := GetFrontProducts(pageInt)
+	keyword := c.DefaultQuery("keyword", "")
+	data, count := GetFrontProducts(pageInt, keyword)
 	c.JSON(http.StatusOK, gin.H{
 		"count": count,
 		"data":  data,
 	})
 }
 
-func GetFrontProducts(page int) ([]interface{}, int) {
+func GetFrontProducts(page int, keyword string) ([]interface{}, int) {
 	var count int
 	perpage := 8
+	where := ""
+	if keyword != "" {
+		where = fmt.Sprintf("AND name LIKE '%%%s%%'", keyword)
+	}
+	fmt.Printf("keyword: %v\n", keyword)
+	fmt.Printf("where: %v\n", where)
 
-	db.QueryRow(`SELECT count(*) FROM products WHERE status=1 AND type=0`).Scan(&count)
+	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE status=1 AND type=0 %s", where)
+	db.QueryRow(sql).Scan(&count)
 	// data
-	rows, err := db.Query(`SELECT id, name, price FROM products 
-	WHERE status=1 AND type=0 ORDER BY name asc LIMIT ? OFFSET ?`, perpage, perpage*page-perpage)
+	sql = fmt.Sprintf("SELECT id, name, price FROM products WHERE status=1 AND type=0 %v ORDER BY name asc LIMIT %v OFFSET %v", where, perpage, perpage*page-perpage)
+	rows, err := db.Query(sql)
 	if err != nil {
 		log.Panic(err)
 	}

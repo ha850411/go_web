@@ -6,10 +6,10 @@
 <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <!-- js -->
+<script type="text/javascript" src="/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/static/js/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/vue.js"></script>
 <!--===============================================================================================-->
-<script type="text/javascript" src="/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap4/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/static/fonts/iconic/css/material-design-iconic-font.min.css">
@@ -25,6 +25,13 @@
 </head>
 
 <body>
+<script src="/static/vendor/bootstrap4/js/popper.js"></script>
+<script src="/static/vendor/bootstrap4/js/bootstrap.min.js"></script>
+<script src="/static/vendor/select2/js/select2.min.js"></script>
+<script src="/static/vendor/slick/slick.min.js"></script>
+<script src="/static/vendor/sweetalert/sweetalert.min.js"></script>
+<script src="/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 
 <div id="wrapper">
     
@@ -42,17 +49,8 @@
 
     {{ block "index/footer" . }}{{end}}
 </div>
-
-<script src="/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"></script>
-<script src="/static/vendor/bootstrap4/js/popper.js"></script>
-<script src="/static/vendor/bootstrap4/js/bootstrap.min.js"></script>
-<script src="/static/vendor/select2/js/select2.min.js"></script>
-<script src="/static/vendor/slick/slick.min.js"></script>
 <script src="/static/js/front/slick-custom.js"></script>
-<script src="/static/vendor/sweetalert/sweetalert.min.js"></script>
-<script src="/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
-
+<script src="/static/js/front/main.js"></script>
 <script>
 $(function(){
     $(".js-select2").each(function(){
@@ -95,6 +93,5 @@ $(function(){
     });
 });
 </script>
-<script src="/static/js/front/main.js"></script>
 </body>
 </html>
