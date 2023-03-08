@@ -14,6 +14,15 @@ func DirCreateIfNotExist(dir string) {
 	}
 }
 
+func WriteFile(targetDir string, fileName string, content []byte) {
+
+	DirCreateIfNotExist(targetDir)
+	// 將檔案寫入
+	f, _ := os.OpenFile(targetDir+"/"+fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, os.ModePerm)
+	defer f.Close()
+	f.Write(content)
+}
+
 func WriteFileAndCompress(targetDir string, fileName string, content []byte) {
 
 	DirCreateIfNotExist(targetDir)

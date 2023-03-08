@@ -14,7 +14,8 @@ INSERT INTO `menu` (`id`, `name`, `icon`, `path`, `active`, `sort`, `updateTime`
 (2, '存貨分析', 'fa-solid fa-chart-simple', '/analysis', 'analysis', 2, '2023-02-10 11:07:22'),
 (3, '訂單管理', 'fa-solid fa-list', '/order', 'order', 3, '2023-02-10 11:17:56'),
 (4, '產品類別', 'fa-solid fa-tag', '/product/type', 'product.type', 4, '2023-02-15 10:10:48'),
-(5, '設定', 'fa-solid fa-gear', '/setting', 'setting', 5, '2023-02-15 10:10:58');
+(5, '輪播管理', 'fa-regular fa-image', '/banner', 'banner', 5, '2023-03-08 18:05:41'),
+(6, '設定', 'fa-solid fa-gear', '/setting', 'setting', 6, '2023-03-08 18:05:44');
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -97,3 +98,12 @@ CREATE TABLE `products_type` (
 
 INSERT INTO `products_type` (`id`, `name`, `status`, `createTime`, `updateTime`) VALUES
 (1, '酒類', 1, '2023-02-14 09:49:43', '2023-02-15 10:45:52');
+
+CREATE TABLE `banner` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `picture` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sort` int NOT NULL,
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

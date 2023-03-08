@@ -32,6 +32,9 @@ func GetWebRouters(r *gin.Engine) {
 	adminGroup.GET("/setting", middleware.Auth(), controllers.SettingManage)
 	// 變更密碼
 	adminGroup.POST("/setting/updatePassword", middleware.Auth(), controllers.UpdatePassword)
+	// 輪播管理
+	adminGroup.GET("/banner", middleware.Auth(), controllers.BannerManage)
+
 	// === line bot ===
 	linebotGroup := r.Group("/linebot")
 	linebotGroup.GET("/notify", middleware.Auth(), controllers.LineBotNotify)
@@ -64,6 +67,7 @@ func createMyRender() multitemplate.Renderer {
 		"orderModal":        "views/includes/orderModal.html",
 		"productPicModal":   "views/includes/productPicModal.html",
 		"productTypeModal":  "views/includes/productTypeModal.html",
+		"bannerModal":       "views/includes/bannerModal.html",
 		"front-order-modal": "views/includes/frontOrderModal.html",
 	}
 	index := map[string]string{
@@ -86,6 +90,9 @@ func createMyRender() multitemplate.Renderer {
 	r.AddFromFiles("order", common["layout"], common["header"], common["menu"], includes["orderModal"], "views/main/order.html")
 	// 設定
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
+	// 輪播管理
+	r.AddFromFiles("bannerManage", common["layout"], common["header"], common["menu"], includes["bannerModal"], "views/main/banner.html")
+
 	// === 前端 ===
 	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], includes["front-order-modal"], "views/front/order.html")
 	r.AddFromFiles("front-test", common["front-layout"], common["front-header"], "views/front/test.html")

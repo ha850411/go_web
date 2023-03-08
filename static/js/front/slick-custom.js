@@ -138,7 +138,4 @@
           var nameTab = $(e.target).attr('href'); 
           $(nameTab).find('.slick2').slick('reinit');          
         });      
-        
-        /*==================================================================
-        [ Slick3 ]*/
 })(jQuery);

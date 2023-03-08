@@ -2,6 +2,7 @@ package front
 
 import (
 	"fmt"
+	"goWeb/controllers/api"
 	"goWeb/controllers/api/front"
 	"goWeb/database"
 	"net/http"
@@ -18,14 +19,17 @@ type ProductInfo struct {
 }
 
 func Index(c *gin.Context) {
+	banner, _ := api.GetBannerData("10", "0")
+	fmt.Printf("banner: %v\n", banner)
 	c.HTML(http.StatusOK, "index", gin.H{
 		"active": "index",
+		"banner": banner,
 	})
 }
 
 func Product(c *gin.Context) {
 	c.HTML(http.StatusOK, "front_product", gin.H{
-		"active": "product",
+		"banner": "product",
 	})
 }
 

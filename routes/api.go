@@ -61,7 +61,11 @@ func GetApiRouters(r *gin.Engine) {
 	// === setting Groups ===
 	settingGroup := apiGroup.Group("/settings")
 	settingGroup.GET("/unsetLine/:username", api.UnsetLine)
-
+	// === banner Gropu ===
+	apiGroup.GET("/banner", api.GetBannerList)
+	apiGroup.POST("/banner", api.UploadBanner)
+	apiGroup.PUT("/banner", api.UpdateBanner)
+	apiGroup.DELETE("/banner/:id", api.DeleteBanner)
 	// === front ===
 	frontGroup := apiGroup.Group("/front")
 	frontGroup.GET("/products", front.GetProductsList)
