@@ -16,19 +16,19 @@
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
                     <ul class="main-menu">
-                        <li class="active-menu">
+                        <li :class="(active=='index')?'active-menu':''">
                             <a href="/">首頁</a>
                         </li>
 
-                        <li>
+                        <li :class="(active=='product')?'active-menu':''">
                             <a href="/product">所有商品</a>
                         </li>
 
-                        <li>
+                        <li :class="(active=='about')?'active-menu':''">
                             <a href="/about">關於我們</a>
                         </li>
 
-                        <li>
+                        <li :class="(active=='contact')?'active-menu':''">
                             <a href="/contact">聯絡我們</a>
                         </li>
                     </ul>
@@ -155,6 +155,7 @@ const vueHeader = Vue.createApp({
         return {
            orderDetail: {},
            totalPrice: 0,
+           active: '{{ .active }}',
         }
     },
     mounted() {

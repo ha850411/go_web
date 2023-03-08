@@ -18,11 +18,15 @@ type ProductInfo struct {
 }
 
 func Index(c *gin.Context) {
-	c.HTML(http.StatusOK, "index", gin.H{})
+	c.HTML(http.StatusOK, "index", gin.H{
+		"active": "index",
+	})
 }
 
 func Product(c *gin.Context) {
-	c.HTML(http.StatusOK, "front_product", gin.H{})
+	c.HTML(http.StatusOK, "front_product", gin.H{
+		"active": "product",
+	})
 }
 
 func ProductDetail(c *gin.Context) {
@@ -35,6 +39,7 @@ func ProductDetail(c *gin.Context) {
 	// 取得推薦商品
 	relatedData, _ := front.GetFrontProducts(1, "")
 	c.HTML(http.StatusOK, "front_product_detail", gin.H{
+		"active":      "detail",
 		"id":          id,
 		"data":        rowData,
 		"relatedData": relatedData,
@@ -46,11 +51,15 @@ func ShoppingCart(c *gin.Context) {
 }
 
 func About(c *gin.Context) {
-	c.HTML(http.StatusOK, "front_about", gin.H{})
+	c.HTML(http.StatusOK, "front_about", gin.H{
+		"active": "about",
+	})
 }
 
 func Contact(c *gin.Context) {
-	c.HTML(http.StatusOK, "front_contact", gin.H{})
+	c.HTML(http.StatusOK, "front_contact", gin.H{
+		"active": "contact",
+	})
 }
 
 func getProductById(id string) (ProductInfo, error) {
