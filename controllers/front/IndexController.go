@@ -19,7 +19,7 @@ type ProductInfo struct {
 }
 
 func Index(c *gin.Context) {
-	banner, _ := api.GetBannerData("10", "0")
+	banner, _, _ := api.GetBannerData("10", "0")
 	fmt.Printf("banner: %v\n", banner)
 	c.HTML(http.StatusOK, "index", gin.H{
 		"active": "index",
@@ -55,8 +55,23 @@ func ShoppingCart(c *gin.Context) {
 }
 
 func About(c *gin.Context) {
+	aboutData := struct {
+		Title1   string
+		Title2   string
+		Content1 string
+		Content2 string
+		Picture1 string
+		Picture2 string
+	}{}
+	db := database.DbConnect()
+	err := db.QueryRow("SELECT IFNULL(title1, ''), IFNULL(content1, ''), IFNULL(picture1, ''), IFNULL(title2, ''), IFNULL(content2, ''), IFNULL(picture2, '') FROM about WHERE id=1").Scan(&aboutData.Title1, &aboutData.Content1, &aboutData.Picture1, &aboutData.Title2, &aboutData.Content2, &aboutData.Picture2)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Printf("aboutData: %v\n", aboutData)
 	c.HTML(http.StatusOK, "front_about", gin.H{
-		"active": "about",
+		"active":    "about",
+		"aboutData": aboutData,
 	})
 }
 

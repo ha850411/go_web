@@ -16,7 +16,7 @@ import (
 func GetBannerList(c *gin.Context) {
 	limit := c.DefaultQuery("length", "10") // 分頁筆數
 	offset := c.DefaultQuery("start", "0")  // 起始筆數
-	data, count := GetBannerData(limit, offset)
+	data, count, _ := GetBannerData(limit, offset)
 	c.JSON(http.StatusOK, gin.H{
 		"code":            200,
 		"data":            data,
@@ -25,7 +25,7 @@ func GetBannerList(c *gin.Context) {
 	})
 }
 
-func GetBannerData(limit string, offset string) ([]interface{}, error) {
+func GetBannerData(limit string, offset string) ([]interface{}, int, error) {
 	var count int
 	db.QueryRow("SELECT count(*) FROM banner").Scan(&count)
 	data := make([]interface{}, 0)
@@ -33,7 +33,7 @@ func GetBannerData(limit string, offset string) ([]interface{}, error) {
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
-		return data, err
+		return data, count, err
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -42,7 +42,7 @@ func GetBannerData(limit string, offset string) ([]interface{}, error) {
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}
-	return data, nil
+	return data, count, nil
 }
 
 func UploadBanner(c *gin.Context) {

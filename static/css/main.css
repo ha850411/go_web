@@ -2371,3 +2371,8 @@ ul.activity-timeline > li:last-child:after {
     margin: 15px 0px;
     font-weight: bold;
 }
+
+.ck-editor__editable[role="textbox"] {
+    /* editing area */
+    min-height: 150px;
+}

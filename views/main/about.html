@@ -1,0 +1,208 @@
+<!--引入共用模板-->
+{{ template "layout.html" .}}
+{{ define "content" }}
+<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <h3 class="page-title">關於我們</h3>
+            <div class="panel panel-headline">
+                <div class="panel-body">
+                    
+                    <div class="form-group">
+                        <label>標題一</label>
+                        <input type="text" class="form-control" v-model="title1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>內文一</label>
+                        <div id="content1" style="height:300px;" v-html="content1"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>圖片一</label><br>
+                        <input type="file" ref="picture1" accept=".jpg,.jpeg,.png,.gif">
+                        <template v-if="picture1!=''">
+                            <img :src="'/static/uploads/about/' + picture1" style="width:50%;">
+                        </template>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        <label>標題二</label>
+                        <input type="text" class="form-control" v-model="title2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>內文二</label>
+                        <div id="content2" style="height:300px;" v-html="content2"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>圖片二</label><br>
+                        <input type="file" ref="picture2" accept=".jpg,.jpeg,.png,.gif">
+                        <template v-if="picture2!=''">
+                            <img :src="'/static/uploads/about/' + picture2" style="width:50%;">
+                        </template>
+                    </div>
+
+                    <button type="button" class="btn btn-success" @click="doSave()">儲存</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/inline/ckeditor.js"></script>
+<script>
+const vmApp = Vue.createApp({
+    delimiters: ["@{", "}"],
+    data() {
+        return {
+            title1: '{{ .aboutData.Title1 }}',
+            content1: '{{ .aboutData.Content1 }}',
+            picture1: '{{ .aboutData.Picture1 }}',
+            title2: '{{ .aboutData.Title2 }}',
+            content2: '{{ .aboutData.Content2 }}',
+            picture2: '{{ .aboutData.Picture2 }}',
+            apiLoading: false,
+        }
+    },
+    mounted() {
+        // init content1
+        ClassicEditor
+        .create( document.querySelector( '#content1'), {
+            extraPlugins: [MyCustomUploadAdapterPlugin],
+        })
+        .then( newEditor => {
+            editor1 = newEditor;
+        })
+        .catch( error => {
+            console.error( error );
+        });
+        // init content2
+        ClassicEditor
+        .create( document.querySelector( '#content2' ) )
+        .then( newEditor => {
+            editor2 = newEditor;
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+    },
+    watch: {
+    },
+    computed: {
+    },
+    methods: {
+        doSave: async function() {
+            this.apiLoading = true;
+            try {
+                var form = new FormData();
+                form.append("title1", this.title1);
+                form.append("content1", editor1.getData());
+                form.append("picture1", this.$refs.picture1.files[0]);
+                form.append("title2", this.title2);
+                form.append("content2", editor2.getData());
+                form.append("picture2", this.$refs.picture2.files[0]);
+                const response = await axios.post('/api/about', form, {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+                swal("修改成功", {
+                    icon: "success",
+                    buttons: false,
+                    timer: 1000,
+                });
+            } catch (error) {
+                if (error.response !== undefined) {
+                    this.errorMsg = error.response.data.message;
+                } else {
+                    this.errorMsg = error.message;
+                }
+                console.log(error);
+                console.log(this.errorMsg);
+                swal("修改失敗", {
+                    icon: "error",
+                    buttons: false,
+                    timer: 1000,
+                });
+            }
+            this.apiLoading = false;
+        }
+    },
+});
+const vm_app = vmApp.mount('#app');
+
+
+class MyUploadAdapter {
+	constructor(loader) {
+		this.loader = loader;
+	}
+	upload() {
+		return this.loader.file.then(
+			file =>
+				new Promise((resolve, reject) => {
+					this._initRequest();
+					this._initListeners(resolve, reject, file);
+					this._sendRequest(file);
+				})
+		);
+	}
+	abort() {
+		if (this.xhr) {
+			this.xhr.abort();
+		}
+	}
+	_initRequest() {
+		const xhr = (this.xhr = new XMLHttpRequest());
+		xhr.open("POST", "/api/ckeditor/uploads", true);
+		xhr.responseType = "json";
+	}
+
+	// Initializes XMLHttpRequest listeners.
+	_initListeners(resolve, reject, file) {
+		const xhr = this.xhr;
+		const loader = this.loader;
+		const genericErrorText = `Couldn't upload file: ${file.name}.`;
+
+		xhr.addEventListener("error", () => reject(genericErrorText));
+		xhr.addEventListener("abort", () => reject());
+		xhr.addEventListener("load", () => {
+			const response = xhr.response;
+            console.log(response);
+			if (!response || response.error) {
+				return reject(response && response.error ? response.error.message : genericErrorText);
+			}
+			resolve({
+				default: response.url,
+			});
+		});
+
+		if (xhr.upload) {
+			xhr.upload.addEventListener("progress", evt => {
+				if (evt.lengthComputable) {
+					loader.uploadTotal = evt.total;
+					loader.uploaded = evt.loaded;
+				}
+			});
+		}
+	}
+	_sendRequest(file) {
+		const data = new FormData();
+		data.append("upload", file);
+		this.xhr.send(data);
+	}
+}
+
+function MyCustomUploadAdapterPlugin(editor) {
+	editor.plugins.get("FileRepository").createUploadAdapter = loader => {
+		return new MyUploadAdapter(loader);
+	};
+}
+</script>
+{{end}}

@@ -15,7 +15,9 @@ INSERT INTO `menu` (`id`, `name`, `icon`, `path`, `active`, `sort`, `updateTime`
 (3, '訂單管理', 'fa-solid fa-list', '/order', 'order', 3, '2023-02-10 11:17:56'),
 (4, '產品類別', 'fa-solid fa-tag', '/product/type', 'product.type', 4, '2023-02-15 10:10:48'),
 (5, '輪播管理', 'fa-regular fa-image', '/banner', 'banner', 5, '2023-03-08 18:05:41'),
-(6, '設定', 'fa-solid fa-gear', '/setting', 'setting', 6, '2023-03-08 18:05:44');
+(6, '關於我們', 'fa-solid fa-circle-info', '/about', 'about', 6, '2023-03-09 10:08:02'),
+(7, '聯絡我們', 'fa-solid fa-phone', '/contact', 'contact', 7, '2023-03-09 10:08:08'),
+(8, '設定', 'fa-solid fa-gear', '/setting', 'setting', 8, '2023-03-09 10:08:14');
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -107,3 +109,16 @@ CREATE TABLE `banner` (
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE `about` (
+  `id` int NOT NULL DEFAULT '1',
+  `title1` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content1` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `picture1` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title2` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content2` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `picture2` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -34,7 +34,10 @@ func GetWebRouters(r *gin.Engine) {
 	adminGroup.POST("/setting/updatePassword", middleware.Auth(), controllers.UpdatePassword)
 	// 輪播管理
 	adminGroup.GET("/banner", middleware.Auth(), controllers.BannerManage)
-
+	// 關於我們
+	adminGroup.GET("/about", middleware.Auth(), controllers.AboutManage)
+	// 聯絡我們
+	adminGroup.GET("/contact", middleware.Auth(), controllers.ContactManage)
 	// === line bot ===
 	linebotGroup := r.Group("/linebot")
 	linebotGroup.GET("/notify", middleware.Auth(), controllers.LineBotNotify)
@@ -92,6 +95,10 @@ func createMyRender() multitemplate.Renderer {
 	r.AddFromFiles("setting", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/setting.html")
 	// 輪播管理
 	r.AddFromFiles("bannerManage", common["layout"], common["header"], common["menu"], includes["bannerModal"], "views/main/banner.html")
+	// 關於我們
+	r.AddFromFiles("aboutManage", common["layout"], common["header"], common["menu"], includes["bannerModal"], "views/main/about.html")
+	// 聯絡我們
+	r.AddFromFiles("contactManage", common["layout"], common["header"], common["menu"], includes["bannerModal"], "views/main/contact.html")
 
 	// === 前端 ===
 	r.AddFromFiles("front-order", common["front-layout"], common["front-header"], includes["front-order-modal"], "views/front/order.html")
