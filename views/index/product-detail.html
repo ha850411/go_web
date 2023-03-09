@@ -112,7 +112,7 @@
                             {{ if eq .data.Content "" }}
                             <span>無</span>
                             {{ else }}
-                            <p class="stext-102 cl6">{{ .data.Content }}</p>
+                            <p class="stext-102 cl6" v-html="content"></p>
                             {{ end }}
                         </div>
                     </div>
@@ -172,10 +172,13 @@ const vueApp = Vue.createApp({
         return {
             picture: '{{ .data.Picture }}',
             productName: '{{ .data.Name }}',
+            content: '{{ .data.Content }}',
             amount: 1,
         }
     },
     mounted() {
+        this.content = this.content.replaceAll("\n", "<br>");
+
         if(this.picture == "[]") {
             this.picture = "/static/images/front/product-01.jpg";
         } else {
