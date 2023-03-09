@@ -86,8 +86,6 @@
         }
     });
 
-
-
     $('.js-show-search').on('click',function(){
         $(this).toggleClass('show-search');
         $('.panel-search').slideToggle(400);
@@ -97,8 +95,6 @@
             $('.panel-filter').slideUp(400);
         }    
     });
-
-
 
     /*==================================================================
     [ Cart ]*/
