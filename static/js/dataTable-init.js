@@ -347,3 +347,54 @@ function initBannerTable()
     });
     return bannerTable;
 }
+
+
+function initContactTable()
+{
+    contactTable = $('#contactTable').DataTable({
+        searching: false,
+        ordering: false,
+        language: {
+            url: "/static/vendor/dataTables/languages/ch-tw.json"  
+        },
+        oLanguage: {
+            "sProcessing": "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        },
+        processing: true,
+        serverSide:true,
+        ajax: {
+            url: "/api/contact",
+            type: "GET",
+        },
+        columns:[
+            {
+                data: 'name', 
+            },
+            {
+                data: 'contact', 
+            },
+            {
+                data: 'message', 
+            },
+            {
+                data: 'formatTime', 
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    output = `<div style="display:flex; align-items:center;height:30px;">
+                                <i class="fa-sharp fa-solid fa-trash" style="cursor:pointer;font-size:20px;margin-left:10px;" onclick="doDelete(`+row.id+`)"></i>
+                            </div>`;
+                    return output;
+                }
+            }
+        ],
+        columnDefs:[
+            {
+                targets: 1,
+                responsivePriority: 1,
+            },
+        ],
+    });
+    return contactTable;
+}

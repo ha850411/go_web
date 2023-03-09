@@ -10,26 +10,26 @@
     <div class="container">
         <div class="flex-w flex-tr">
             <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                <form>
-                    <h4 class="mtext-105 cl2 txt-center p-b-30">
-                        Send Us A Message
-                    </h4>
+                <h4 class="mtext-105 cl2 txt-center p-b-30">
+                    傳送訊息給我們
+                </h4>
 
-                    <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email"
-                            placeholder="Your Email Address">
-                        <img class="how-pos4 pointer-none" src="/static/images/front/icons/icon-email.png" alt="ICON">
-                    </div>
+                <div class="bor8 m-b-20 how-pos4-parent">
+                    <input class="stext-111 cl2 plh3 size-116 p-l-28 " type="text" name="name" placeholder="您的大名" v-model="name">
+                </div>
+                
+                <div class="bor8 m-b-20 how-pos4-parent">
+                    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="contact" placeholder="您的聯絡方式: email 或 手機" v-model="contact">
+                    <img class="how-pos4 pointer-none" src="/static/images/front/icons/icon-email.png" alt="ICON">
+                </div>
 
-                    <div class="bor8 m-b-30">
-                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg"
-                            placeholder="How Can We Help?"></textarea>
-                    </div>
+                <div class="bor8 m-b-30">
+                    <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="想傳送什麼訊息給我們?" v-model="message"></textarea>
+                </div>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
-                        Submit
-                    </button>
-                </form>
+                <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" @click="submit()">
+                    送出
+                </button>
             </div>
 
             <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
@@ -40,11 +40,11 @@
 
                     <div class="size-212 p-t-2">
                         <span class="mtext-110 cl2">
-                            Address
+                            地址
                         </span>
 
                         <p class="stext-115 cl6 size-213 p-t-18">
-                            Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018 US
+                            804高雄市鼓山區美術北三路68號
                         </p>
                     </div>
                 </div>
@@ -55,34 +55,87 @@
                     </span>
 
                     <div class="size-212 p-t-2">
-                        <span class="mtext-110 cl2">
-                            Lets Talk
-                        </span>
+                        <span class="mtext-110 cl2">聯絡電話</span>
 
-                        <p class="stext-115 cl1 size-213 p-t-18">
-                            +1 800 1236879
-                        </p>
+                        <p class="stext-115 cl1 size-213 p-t-18">(07) 522-3772</p>
                     </div>
                 </div>
 
-                <div class="flex-w w-full">
-                    <span class="fs-18 cl5 txt-center size-211">
-                        <span class="lnr lnr-envelope"></span>
-                    </span>
-
-                    <div class="size-212 p-t-2">
-                        <span class="mtext-110 cl2">
-                            Sale Support
-                        </span>
-
-                        <p class="stext-115 cl1 size-213 p-t-18">
-                            contact@example.com
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </section>
-
+<script>
+    const vmApp = Vue.createApp({
+        delimiters: ["@{", "}"],
+        data() {
+            return {
+                name: "",
+                contact: "",
+                message: "",
+            }
+        },
+        mounted() {
+        },
+        watch: {
+        },
+        computed: {
+        },
+        methods: {
+            submit: async function() {
+                if (this.name == "") {
+                    swal("請輸入您的大名", {
+                        icon: "error",
+                        buttons: false,
+                        timer: 1000,
+                    });
+                    return;
+                }
+                if (this.contact == "") {
+                    swal("請輸入您的聯絡方式", {
+                        icon: "error",
+                        buttons: false,
+                        timer: 1000,
+                    });
+                    return;
+                }
+                if (this.message == "") {
+                    swal("請輸入您的訊息", {
+                        icon: "error",
+                        buttons: false,
+                        timer: 1000,
+                    });
+                    return;
+                }
+                try {
+                    const response = await axios.post('/api/front/contact', {
+                        "name": this.name,
+                        "contact": this.contact,
+                        "message": this.message,
+                    });
+                } catch (error) {
+                    if (error.response !== undefined) {
+                        console.log(error.response.data.message);
+                    } else {
+                        console.log(error.message);
+                    }
+                    swal("送出失敗", {
+                        icon: "error",
+                        buttons: false,
+                        timer: 1000,
+                    });
+                }
+                swal("送出成功", {
+                    icon: "success",
+                    buttons: false,
+                    timer: 1000,
+                });
+                this.name = "";
+                this.contact = "";
+                this.message = "";
+            }
+        },
+    });
+    const vm_app = vmApp.mount('#app');
+</script>
 {{end}}

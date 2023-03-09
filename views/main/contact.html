@@ -10,15 +10,19 @@
         <div class="panel-body">
             <input type="file" multiple="multiple" id="filesInput" accept=".jpg,.jpeg,.png,.gif" style="display:none">
             <!-- data table -->
-            <table id="bannerTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+            <table id="contactTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                 <thead>
-                    <th>圖片</th>
-                    <th>更新時間</th>
+                    <th>姓名</th>
+                    <th>聯絡方式</th>
+                    <th>訊息</th>
+                    <th>反應時間</th>
                     <th></th>
                 </thead>
                 <tfoot>
-                    <th>圖片</th>
-                    <th>更新時間</th>
+                    <th>姓名</th>
+                    <th>聯絡方式</th>
+                    <th>訊息</th>
+                    <th>反應時間</th>
                     <th></th>
                 </tfoot>
             </table>
@@ -30,102 +34,18 @@
 </div>
 
 <script>
-var bannerTable;
+var contactTable;
 $(function(){
     // init
-    bannerTable = initBannerTable();
-
-    $('#addImageBtn').click(function(){
-        $('#filesInput').click();
-    });
-
-    $('#filesInput').on('change', function(){
-        let len = $('#filesInput')[0].files.length;
-        $('#doUploadBtn').css("display", "none");
-        $('#addImageMsg').css("display", "none");
-        $('#addImageMsg').html('');
-        if(len > 0) {
-            $('#doUploadBtn').css("display", "block");
-            $('#addImageMsg').css("display", "block");
-            $('#addImageMsg').html("已選擇" + $('#filesInput')[0].files.length + "個檔案");
-        }
-    });
-
-    $('#doUploadBtn').click(function(){
-        var formData = new FormData();
-        for(i=0; i < $('#filesInput')[0].files.length; i++) {
-            formData.append("files[]", $('#filesInput')[0].files[i])
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/api/banner',
-            dataType: 'text',
-            data: formData,
-            processData: false, // 告诉jQuery不要去处理发送的数据
-            contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-            beforeSend: function(){
-                $('#addImageMsg').html(`<i class='fa fa-spinner fa-spin' style='font-size:20px;'></i>上傳中..`);
-                $('#doUploadBtn').css("display", "none");
-            },
-            success: function (result, statusText, xhr) {
-                $('#addImageMsg').html(`上傳成功`);
-            },
-            error: function (thrownError) {
-                $('#addImageMsg').html(`上傳失敗`);
-            },
-            complete: function(){
-                $('#addImageMsg').fadeOut(3000);
-                bannerTable.ajax.reload(null, false);
-            },
-        });
-        $('#filesInput').val('');
-    })
+    contactTable = initContactTable();
 });
-
-function modify(id, picture)
-{
-    $('#modal_edit_id').val(id);
-    $('#nowPicture').attr("src", "/static/uploads/banner/" + picture);
-    $('#picEditModal').modal("show");
-}
-
-function doEdit() 
-{
-    if($('#editFileInput')[0].files.length <= 0) {
-        alert('請選擇檔案');
-        $('#editFileInput').focus();
-        return false;
-    }
-    var formData = new FormData();
-    formData.append("edit_id", $('#modal_edit_id').val());
-    formData.append("file", $('#editFileInput')[0].files[0]);
-    $.ajax({
-        type: 'PUT',
-        url: '/api/banner',
-        dataType: 'json',
-        data: formData,
-        processData: false, // 告诉jQuery不要去处理发送的数据
-        contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-        success: function (result, statusText, xhr) {
-            alert('修改成功');
-        },
-        error: function (thrownError) {
-            alert('修改失敗');
-        },
-        complete: function(){
-            $('#picEditModal').modal("hide");
-            bannerTable.ajax.reload(null, false);
-        },
-    });   
-}
-
 
 function doDelete(id) 
 {
     if(confirm("確定刪除?")){
         $.ajax({
             type: 'DELETE',
-            url: '/api/banner/' + id,
+            url: '/api/contact/' + id,
             dataType: 'json',
             success: function (result, statusText, xhr) {
                 alert('刪除成功');
@@ -134,7 +54,7 @@ function doDelete(id)
                 alert('刪除失敗');
             },
             complete: function(){
-                bannerTable.ajax.reload(null, false);
+                contactTable.ajax.reload(null, false);
             },
         });  
     }

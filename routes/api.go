@@ -69,8 +69,12 @@ func GetApiRouters(r *gin.Engine) {
 	// === about Group
 	apiGroup.POST("/about", api.UpdateAbout)
 	apiGroup.POST("/ckeditor/uploads", api.CkeditorUploads)
+	// === contact Group ===
+	apiGroup.GET("/contact", api.GetContactList)
+	apiGroup.DELETE("/contact/:id", api.DeleteContact)
 
 	// === front ===
 	frontGroup := apiGroup.Group("/front")
 	frontGroup.GET("/products", front.GetProductsList)
+	frontGroup.POST("/contact", front.InsertContact)
 }

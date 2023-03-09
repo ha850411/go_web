@@ -67,3 +67,26 @@ func GetFrontProducts(page int, keyword string) ([]interface{}, int) {
 	}
 	return data, count
 }
+
+func InsertContact(c *gin.Context) {
+	var param struct {
+		Name    string `json:"name"`
+		Contact string `json:"contact"`
+		Message string `json:"message"`
+	}
+	c.Bind(&param)
+	sql := fmt.Sprintf("INSERT INTO contact (name, contact, message) VALUES ('%v', '%v', '%v')", param.Name, param.Contact, param.Message)
+	fmt.Printf("sql: %v\n", sql)
+	_, err := db.Exec(sql)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 500,
+			"msg":  err,
+		})
+		log.Panic(err)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":         200,
+		"AffectedRows": 1,
+	})
+}
