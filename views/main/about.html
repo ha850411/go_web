@@ -23,7 +23,9 @@
                         <label>圖片一</label><br>
                         <input type="file" ref="picture1" accept=".jpg,.jpeg,.png,.gif">
                         <template v-if="picture1!=''">
-                            <img :src="'/static/uploads/about/' + picture1" style="width:50%;">
+                            <hr>
+                            <div style="margin-bottom:5px;">目前圖片:</div>
+                            <img ref="showPicture1" :src="'/static/uploads/about/' + picture1" style="width:50%;">
                         </template>
                     </div>
 
@@ -43,6 +45,8 @@
                         <label>圖片二</label><br>
                         <input type="file" ref="picture2" accept=".jpg,.jpeg,.png,.gif">
                         <template v-if="picture2!=''">
+                            <hr>
+                            <div style="margin-bottom:5px;">目前圖片:</div>
                             <img :src="'/static/uploads/about/' + picture2" style="width:50%;">
                         </template>
                     </div>
@@ -118,6 +122,9 @@ const vmApp = Vue.createApp({
                     buttons: false,
                     timer: 1000,
                 });
+                setTimeout(function(){
+                    location.reload();
+                }, 1000)
             } catch (error) {
                 if (error.response !== undefined) {
                     this.errorMsg = error.response.data.message;
