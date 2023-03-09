@@ -7,6 +7,7 @@ import (
 	"goWeb/database"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,19 +20,23 @@ type ProductInfo struct {
 	Content string   `json:"content"`
 }
 
+func GetCommonOutput(active string) map[string]interface{} {
+	output := make(map[string]interface{})
+	output["active"] = active
+	output["staticFreshFlag"] = time.Now().Unix()
+	return output
+}
+
 func Index(c *gin.Context) {
 	banner, _, _ := api.GetBannerData("10", "0")
-	fmt.Printf("banner: %v\n", banner)
-	c.HTML(http.StatusOK, "index", gin.H{
-		"active": "index",
-		"banner": banner,
-	})
+	output := GetCommonOutput("index")
+	output["banner"] = banner
+	c.HTML(http.StatusOK, "index", output)
 }
 
 func Product(c *gin.Context) {
-	c.HTML(http.StatusOK, "front_product", gin.H{
-		"active": "product",
-	})
+	output := GetCommonOutput("product")
+	c.HTML(http.StatusOK, "front_product", output)
 }
 
 func ProductDetail(c *gin.Context) {
@@ -43,16 +48,16 @@ func ProductDetail(c *gin.Context) {
 	}
 	// 取得推薦商品
 	relatedData, _ := front.GetFrontProducts(1, "")
-	c.HTML(http.StatusOK, "front_product_detail", gin.H{
-		"active":      "detail",
-		"id":          id,
-		"data":        rowData,
-		"relatedData": relatedData,
-	})
+	output := GetCommonOutput("detail")
+	output["id"] = id
+	output["data"] = rowData
+	output["relatedData"] = relatedData
+	c.HTML(http.StatusOK, "front_product_detail", output)
 }
 
 func ShoppingCart(c *gin.Context) {
-	c.HTML(http.StatusOK, "front_cart", gin.H{})
+	output := GetCommonOutput("cart")
+	c.HTML(http.StatusOK, "front_cart", output)
 }
 
 func About(c *gin.Context) {
@@ -77,9 +82,8 @@ func About(c *gin.Context) {
 }
 
 func Contact(c *gin.Context) {
-	c.HTML(http.StatusOK, "front_contact", gin.H{
-		"active": "contact",
-	})
+	output := GetCommonOutput("contact")
+	c.HTML(http.StatusOK, "front_contact", output)
 }
 
 func getProductById(id string) (ProductInfo, error) {
