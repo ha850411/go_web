@@ -30,7 +30,7 @@ func Index(c *gin.Context) {
 
 func Product(c *gin.Context) {
 	c.HTML(http.StatusOK, "front_product", gin.H{
-		"banner": "product",
+		"active": "product",
 	})
 }
 
