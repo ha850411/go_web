@@ -16,6 +16,7 @@ type ProductInfo struct {
 	Name    string   `json:"name"`
 	Price   int      `json:"price"`
 	Picture []string `json:"picture"`
+	Content string   `json:"content"`
 }
 
 func Index(c *gin.Context) {
@@ -84,8 +85,8 @@ func Contact(c *gin.Context) {
 func getProductById(id string) (ProductInfo, error) {
 	rowData := ProductInfo{}
 	db = database.DbConnect()
-	err := db.QueryRow(`SELECT id, name, price FROM products 
-	WHERE id = ?`, id).Scan(&rowData.Id, &rowData.Name, &rowData.Price)
+	err := db.QueryRow(`SELECT id, name, price, IFNULL(content, '') FROM products 
+	WHERE id = ?`, id).Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.Content)
 	if err != nil {
 		return rowData, err
 	}

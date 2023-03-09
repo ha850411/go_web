@@ -13,6 +13,7 @@ type Products struct {
 	Status       int       `json:"status"`
 	Type         int       `json:"type"`
 	Tname        string    `json:"tname"`
+	Content      string    `json:"content"`
 	UpdateTime   time.Time `json:"updateTime"`
 	FormatTime   string    `json:"formatTime"`
 	PictureCnt   int       `json:"pictureCnt"`

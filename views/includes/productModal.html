@@ -39,6 +39,12 @@
                         {{ end }}
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="">產品介紹:</label>
+                    <textarea class="form-control" id="modal_content" rows="3"></textarea>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="addSubmitBtn" onclick="doInsert()">新增</button>
@@ -84,6 +90,12 @@
                         {{ end }}
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label for="">產品介紹:</label>
+                    <textarea class="form-control" id="modal_edit_content"></textarea>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="editSubmitBtn" onclick="doEdit()">修改</button>
