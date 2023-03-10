@@ -4,6 +4,7 @@ import (
 	"goWeb/controllers"
 	"goWeb/controllers/front"
 	"goWeb/middleware"
+	"net/http"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
@@ -50,6 +51,10 @@ func GetWebRouters(r *gin.Engine) {
 	r.GET("/contact", front.Contact)
 	r.GET("/orders", front.Orders)
 	r.POST("/orders/add", front.OrdersAdd)
+
+	r.GET("/.well-known/acme-challenge/2nkLvsDb4su80JwJJOzwFrL8xMjbWrWVTY3L87MfwEk", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "2nkLvsDb4su80JwJJOzwFrL8xMjbWrWVTY3L87MfwEk.6iozbQeFsi7dh3i8U6fBWPZw6hb6CrNAGXNaD32zEV8")
+	})
 }
 
 /*
