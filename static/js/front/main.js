@@ -55,10 +55,21 @@
 
     /*==================================================================
     [ Menu mobile ]*/
-    $('.btn-show-menu-mobile').on('click', function(){
+    $('.btn-show-menu-mobile').on('click', function(e){
         $(this).toggleClass('is-active');
         $('.menu-mobile').slideToggle();
+
+        $(document).one("click", function(){
+            $('.btn-show-menu-mobile').removeClass('is-active');
+            $('.menu-mobile').slideUp();
+        });
+        e.stopPropagation();
     });
+
+    $('.menu-mobile').click(function(e){
+        e.stopPropagation();
+    });
+
 
     var arrowMainMenu = $('.arrow-main-menu-m');
 
@@ -116,5 +127,6 @@
         $('.js-sidebar').removeClass('show-sidebar');
     });
 
+   
 
 })(jQuery);

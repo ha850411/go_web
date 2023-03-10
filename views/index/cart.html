@@ -43,7 +43,7 @@
                                             <i class="fs-16 zmdi zmdi-minus"></i>
                                         </div>
 
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number" min="0"
                                             name="num-product1" :value="orderDetail[index].amount" v-model="orderDetail[index].amount">
 
                                         <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" @click="updateAmount(data.id, 'add')">
@@ -55,6 +55,14 @@
                             </tr>
 
                         </table>
+                    </div>
+                    <div class="flex-w flex-t p-t-27">
+                        <div class="size-208" style="width:100%;">
+                            <span class="mtext-101 cl2">
+                                <span class="mr-2">總價格:</span>
+                                <span>@{ '$' + totalPrice }</span>
+                            </span>
+                        </div>
                     </div>
 
                     
@@ -114,22 +122,13 @@
                         </div>
                     </div>
 
-                    <div class="flex-w flex-t bor12 p-b-13" style="align-items:center;">
+                    <div class="flex-w flex-t p-b-13" style="align-items:center;">
                         <div class="size-208 mb-2" style="width: 100%;">
                             <span class="mtext-107 cl2" style="white-space: nowrap;">備註:</span>
                         </div>
 
                         <div class="bor8 bg0" style="width:100%;">
                             <textarea class="form-control" rows="3" v-model="orderInfo.remark"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="flex-w flex-t p-t-27 p-b-33">
-                        <div class="size-208" style="width:100%;">
-                            <span class="mtext-101 cl2">
-                                <span class="mr-2">總價格:</span>
-                                <span>@{ '$' + totalPrice }</span>
-                            </span>
                         </div>
                     </div>
 
@@ -189,6 +188,9 @@ const vueApp = Vue.createApp({
             handler: function() {
                 this.totalPrice = 0
                 for (const key in this.orderDetail) {
+                    if(this.orderDetail[key].amount == "") {
+                        this.orderDetail[key].amount = 1;
+                    }
                     this.totalPrice += parseInt(this.orderDetail[key].amount) * parseInt(this.orderDetail[key].price);
                 }
             },
