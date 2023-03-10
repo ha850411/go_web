@@ -13,6 +13,6 @@ func main() {
 	// 載入 Router
 	routes.SetRouter(ginServer)
 	// 啟動
-	go ginServer.RunTLS(":443", "./certs/server.crt", "./certs/server.key")
+	go ginServer.RunTLS(":443", "./certs/fullchain.pem", "./certs/privkey.pem")
 	ginServer.Run(conf.Settings.Server.Port)
 }
