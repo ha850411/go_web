@@ -1,8 +1,6 @@
 FROM --platform=linux/amd64 centos:7
 
 RUN mkdir /app \
-    && firewall-cmd --zone=public --add-port=443/tcp --permanent \
-    && firewall-cmd --reload \
     && yum -y update \
     && yum install gcc git wget ImageMagick -y && yum clean all
 
