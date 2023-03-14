@@ -140,9 +140,9 @@
                     <div class="block2">
                         <a href="/product/{{ $data.Id }}">
                         {{ if eq (len $data.Picture) 0 }}
-                            <div class="block2-pic hov-img0" style="background-image:url('/static/images/front/product-01.jpg'); background-size: cover; background-position: center; max-height: 250px; height:100vh;"></div>
+                            <div class="block2-pic hov-img0" style="background-image:url('/static/images/front/product-01.jpg');"></div>
                         {{ else }}
-                            <div class="block2-pic hov-img0" style="background-image:url('/static/uploads/{{$data.Id}}/{{ (index $data.Picture 0) }}'); background-size: cover; background-position: center; max-height: 250px;height:100vh;"></div>
+                            <div class="block2-pic hov-img0" style="background-image:url('/static/uploads/{{$data.Id}}/{{ (index $data.Picture 0) }}');"></div>
                         {{ end }}
                         </a>
                         <div class="block2-txt flex-w flex-t p-t-14">

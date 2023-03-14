@@ -2051,6 +2051,17 @@ input.num-product::-webkit-inner-spin-button {
 [ Block2 ]*/
 .block2-pic {
   position: relative;
+  background-size: cover; 
+  background-position: center;
+  max-height: 250px; 
+  height:100vh;
+}
+
+@media (max-width: 575px) {
+    .block2-pic {
+        max-height: 350px; 
+        height:100vh;
+    }
 }
 
 .block2-btn {
