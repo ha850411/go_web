@@ -42,10 +42,13 @@
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35">
                     <div class="block2">
                         <a :href="'/product/' + data.id">
-                            <div class="block2-pic hov-img0" style="cursor:pointer;">
-                                <img v-if="data.picture === null" src="/static/images/front/product-01.jpg">
-                                <img v-else :src="'/static/uploads/'+data.id+'/'+data.picture[0]" alt="IMG-PRODUCT">
-                            </div>
+                            <template v-if="data.picture === null">
+                                <div class="block2-pic hov-img0" style="background-image:url('/static/images/front/product-01.jpg'); background-size: cover; background-position: center; max-height: 250px; height:100vh;"></div>
+                            </template>
+                            <template v-else>
+                                <div class="block2-pic hov-img0" :style="'background-image:url(/static/uploads/'+data.id+'/'+data.picture[0]+'); background-size: cover; background-position: center; max-height: 250px;height:100vh;'"></div>
+                            </template>
+                         
                         </a>
                         <div class="block2-txt flex-w flex-t p-t-14">
                             <div class="block2-txt-child1 flex-col-l ">
