@@ -1,5 +1,14 @@
-# crontab : * * 0 0 0 每日儲存 log
-sourceFile=/home/gopath/go_web/logs/run.log
-targetFile=/home/gopath/go_web/logs/log_$(date '+%Y%m%d').log
+# 每日儲存 log
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    SOURCE="$( readlink "$SOURCE" )"
+    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+sourceFile=$DIR/logs/run.log
+targetFile=$DIR/logs/log_$(date '+%Y%m%d').log
+
 cp $sourceFile $targetFile
 cat /dev/null > $sourceFile
