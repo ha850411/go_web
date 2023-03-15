@@ -4,7 +4,7 @@
     <div class="container p-5">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
-                所有商品
+                @{ categoryTitle }
             </h3>
         </div>
 
@@ -86,6 +86,7 @@ const vueApp = Vue.createApp({
         return {
             keyword: '',
             kind: '{{ .kind }}',
+            categoryTitle: '{{ .categoryTitle }}',
             productPage: 1,
             productTotalPage: 1,
             productData: [],
@@ -161,9 +162,11 @@ const vueApp = Vue.createApp({
         category: function(kind) {
             switch(kind) {
                 case 'all':
+                    this.categoryTitle = '所有商品';
                     this.kind = 'all';
                     break;
                 case 'wine':
+                    this.categoryTitle = '酒類';
                     this.kind = 'wine';
                     break;
             }

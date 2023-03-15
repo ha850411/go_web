@@ -38,7 +38,15 @@ func Index(c *gin.Context) {
 func Product(c *gin.Context) {
 	output := GetCommonOutput("product")
 	kind := c.DefaultQuery("kind", "all")
+	var categoryTitle string
+	switch kind {
+	case "wine":
+		categoryTitle = "酒類"
+	default:
+		categoryTitle = "所有商品"
+	}
 	output["kind"] = kind
+	output["categoryTitle"] = categoryTitle
 	c.HTML(http.StatusOK, "front_product", output)
 }
 
