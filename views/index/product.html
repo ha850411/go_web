@@ -85,7 +85,7 @@ const vueApp = Vue.createApp({
     data() {
         return {
             keyword: '',
-            kind: 'all',
+            kind: '{{ .kind }}',
             productPage: 1,
             productTotalPage: 1,
             productData: [],

@@ -37,6 +37,8 @@ func Index(c *gin.Context) {
 
 func Product(c *gin.Context) {
 	output := GetCommonOutput("product")
+	kind := c.DefaultQuery("kind", "all")
+	output["kind"] = kind
 	c.HTML(http.StatusOK, "front_product", output)
 }
 
