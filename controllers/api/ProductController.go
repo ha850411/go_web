@@ -36,16 +36,16 @@ func GetProductsList(c *gin.Context) {
 		where = fmt.Sprintf("a.name LIKE '%%%s%%' OR b.name LIKE '%%%s%%'", keyword, keyword)
 	}
 	// 定義排序欄位
-	columes := map[string]string{
-		"0": "name",
-		"1": "amount",
-		"2": "amountNotice",
-		"3": "price",
-		"4": "type",
-		"5": "updateTime",
-	}
-	orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
-	orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
+	// columes := map[string]string{
+	// 	"0": "name",
+	// 	"1": "amount",
+	// 	"2": "amountNotice",
+	// 	"3": "price",
+	// 	"4": "type",
+	// 	"5": "updateTime",
+	// }
+	// orderBy := c.DefaultQuery("order[0][column]", "0")   // 分頁筆數
+	// orderType := c.DefaultQuery("order[0][dir]", "desc") // 起始筆數
 	// count total
 	var ids string
 	sql := fmt.Sprintf(`SELECT GROUP_CONCAT( DISTINCT a.id) as ids
@@ -59,7 +59,7 @@ func GetProductsList(c *gin.Context) {
 	FROM products as a
 	LEFT JOIN products_type as b ON a.type = b.id
 	LEFT JOIN products_picture as c ON a.id=c.pid
-	WHERE a.id IN (%s) GROUP BY a.id ORDER BY a.%s %s LIMIT %s OFFSET %s`, ids, columes[orderBy], orderType, limit, offset)
+	WHERE a.id IN (%s) GROUP BY a.id ORDER BY a.sort asc LIMIT %s OFFSET %s`, ids, limit, offset)
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -259,17 +259,18 @@ func GetTips(c *gin.Context) {
 }
 
 func GetProductsNameList(c *gin.Context) {
-	isFront := c.DefaultQuery("isFront", "N")
-	where := ""
-	if isFront == "Y" {
-		where += " AND a.type != 1"
+	simple := c.DefaultQuery("simple", "")
+	var sql string
+	if simple == "Y" {
+		sql = "SELECT id, name, 0, 0 FROM products WHERE status=1 ORDER BY sort asc"
+	} else {
+		sql = `SELECT a.id, a.name, count(b.id) as cnt, a.price
+		FROM products as a 
+		LEFT JOIN products_picture as b ON a.id=b.pid 
+		WHERE a.status=1 
+		GROUP BY a.id ORDER BY a.sort asc`
 	}
-	// 取得酒類以外的產品
-	sql := fmt.Sprintf(`SELECT a.id, a.name, count(b.id) as cnt, a.price
-	FROM products as a 
-	LEFT JOIN products_picture as b ON a.id=b.pid 
-	WHERE a.status=1 %s
-	GROUP BY a.id ORDER BY a.name asc`, where)
+
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -719,5 +720,27 @@ func GetProductInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"data": result,
+	})
+}
+
+func SortProducts(c *gin.Context) {
+	sortStr := c.PostForm("sortArr")
+	sortArr := strings.Split(sortStr, ",")
+	fmt.Printf("sortArr: %v\n", sortArr)
+
+	for index, id := range sortArr {
+		sort := index + 1
+		sql := fmt.Sprintf("UPDATE products SET sort=%v WHERE id=%v", sort, id)
+		_, err := db.Exec(sql)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code": http.StatusBadRequest,
+				"msg":  err,
+			})
+			log.Panic(err)
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
 	})
 }

@@ -73,6 +73,7 @@ func createMyRender() multitemplate.Renderer {
 	includes := map[string]string{
 		"productModal":      "views/includes/productModal.html",
 		"orderModal":        "views/includes/orderModal.html",
+		"productSortModal":  "views/includes/productSortModal.html",
 		"productPicModal":   "views/includes/productPicModal.html",
 		"productTypeModal":  "views/includes/productTypeModal.html",
 		"bannerModal":       "views/includes/bannerModal.html",
@@ -89,7 +90,7 @@ func createMyRender() multitemplate.Renderer {
 	// 登入頁
 	r.AddFromFiles("login", common["layout"], "views/main/login.html")
 	// 存貨管理
-	r.AddFromFiles("product", common["layout"], common["header"], common["menu"], includes["productModal"], "views/main/product.html")
+	r.AddFromFiles("product", common["layout"], common["header"], common["menu"], includes["productModal"], includes["productSortModal"], "views/main/product.html")
 	// 圖片管理
 	r.AddFromFiles("product.picture", common["layout"], common["header"], common["menu"], includes["productPicModal"], "views/main/productPic.html")
 	// 產品類別管理

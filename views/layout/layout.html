@@ -37,6 +37,7 @@
     <script src="/static/vendor/lightbox/js/lightbox.min.js"></script>
     <link rel="stylesheet" href="/static/vendor/lightbox/css/lightbox.min.css">
     <script src="/static/vendor/sweetalert/sweetalert.min.js"></script>
+    <script src="/static/vendor/sortable/Sortable.min.js"></script>
 
 
 </head>
@@ -51,6 +52,7 @@
     <div id="app">
         {{ block "content" . }}{{end}}
         {{ block "modals" . }}{{end}}
+        {{ block "others" . }}{{end}}
     </div>
     
 </div>

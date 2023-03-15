@@ -45,7 +45,7 @@ func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) (
 	if kind != "all" && kind != "" {
 		where += fmt.Sprintf(" AND type=%v", kind)
 	}
-	orderby := "name asc"
+	orderby := "sort asc"
 	if orderbyRand {
 		orderby = "RAND()"
 	}

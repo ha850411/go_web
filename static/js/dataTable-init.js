@@ -7,6 +7,7 @@ function initProductTable(keyword)
         oLanguage: {
             "sProcessing": "<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i><span class='sr-only'>Loading...</span>"
         },
+        ordering: false,
         processing: true,
         serverSide:true,
         ajax: {

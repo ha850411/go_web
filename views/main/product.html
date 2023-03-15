@@ -9,6 +9,7 @@
       <div class="panel panel-headline">
         <div class="panel-body">
             <button type="button" id="addProductBtn" class="btn btn-primary" style="margin-bottom: 10px;">新增產品</button>
+            <button type="button" id="sortProductBtn" class="btn btn-primary" style="margin-bottom: 10px;">調整排序</button>
             <!-- data table -->
             <table id="productTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                 <thead>
@@ -46,6 +47,36 @@ $(function(){
 
     $('#addProductBtn').click(function(){
         $('#productAddModal').modal('show');
+    });
+
+    $('#sortProductBtn').click(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/api/products/getProductsNameList?simple=Y',
+            dataType: 'json',
+            success: function (response, statusText, xhr) {
+                results = response.results;
+                output = '';
+                if(results.length > 0) {
+                    for(i=0; i<results.length; i++) {
+                        output += `<div class="list-group-item" data-id="`+results[i].id+`">
+                            <i class="fa-solid fa-sort"></i>
+                            <span style="margin-left:3px;">`+results[i].text+`</span>
+                        </div>`;
+                    }
+                }
+                $('#sortItems').html(output);
+            },
+            error: function (thrownError) {
+                console.log(thrownError);
+            },
+        });
+        $('#productSortModal').modal('show');
+        var el = $('#sortItems')[0]
+        new Sortable( el, {
+            animation: 150,
+            ghostClass: 'blue-background-class'
+        });
     });
 
 });
@@ -267,6 +298,40 @@ function doDelete(obj, id)
 
 function imagesManage(pid) {
     location.href = "/admin/product/pic/" + pid;
+}
+
+function SaveSort() {
+    let sortArr = [];
+    $('#sortItems').children().each(function(){
+        sortArr.push($(this).attr("data-id"))
+    });
+    sortArr = sortArr.join(",");
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/products/sort',
+        dataType: 'json',
+        data: {
+            sortArr: sortArr
+        },
+        beforeSend: function(){
+            $('#saveSortBtn').prop("disabled", true);
+            $('#saveSortBtn').html("<i class='fa fa-spinner fa-spin' style='font-size:12px;'></i>")
+        },
+        success: function (result, statusText, xhr) {
+            $('#productSortModal').modal('hide');
+            alert('排序成功');
+            productTable.ajax.reload(null, false);
+        },
+        error: function (err) {
+            alert('排序失敗')
+            console.log(err);
+        },
+        complete: function(){
+            $('#saveSortBtn').prop("disabled", false);
+            $('#saveSortBtn').html("儲存排序")
+        }
+    });
 }
 </script>
 {{end}}

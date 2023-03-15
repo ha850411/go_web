@@ -46,6 +46,8 @@ func GetApiRouters(r *gin.Engine) {
 	productsGroup.POST("/type", api.AddProductType)
 	productsGroup.PUT("/type", api.UpdateProductType)
 	productsGroup.DELETE("/type/:id", api.DeleteProductType)
+	// 排序商品
+	productsGroup.POST("/sort", api.SortProducts)
 	// === orders Groups ===
 	ordersGroup := apiGroup.Group("/orders")
 	// 取得訂購列表
