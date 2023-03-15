@@ -3353,14 +3353,16 @@ input.num-product::-webkit-inner-spin-button {
 
 .wine_notice {
     width:100%;
+    background-color: #000000;
     position:fixed;
     bottom:0px;
     z-index: 100;
 }
 
 .wine_logo {
-    width: 100%;
+    width: 80%;
     display: block;
+    margin:0 auto;
 }
 
 .wine_logo_m {
