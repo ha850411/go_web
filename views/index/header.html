@@ -22,9 +22,16 @@
 
                         <li :class="(active=='product')?'active-menu':''">
                             <a href="/product">所有商品</a>
-                            <ul class="sub-menu">
-                                <li><a href="/product?kind=wine">酒類</a></li>
-                            </ul>
+                            {{ if gt (len .productType) 0 }}
+                                <ul class="sub-menu">
+                                {{ range $data := .productType }}
+                                    <li><a href="/product?kind={{$data.id}}">{{$data.name}}</a></li>
+                                {{ end }}
+                                </ul>
+                                <span class="arrow-main-menu-m">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </span>
+                            {{ end }}
                         </li>
 
                         <li :class="(active=='about')?'active-menu':''">
@@ -84,12 +91,16 @@
 
             <li>
                 <a href="/product">所有商品</a>
-                <ul class="sub-menu-m">
-                    <li><a href="/product?kind=wine">酒類</a></li>
-                </ul>
-                <span class="arrow-main-menu-m">
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </span>
+                {{ if gt (len .productType) 0 }}
+                    {{ range $data := .productType }}
+                    <ul class="sub-menu-m">
+                        <li><a href="/product?kind={{$data.id}}">{{$data.name}}</a></li>
+                    </ul>
+                    {{ end }}
+                    <span class="arrow-main-menu-m">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                {{ end }}
             </li>
 
             <li>

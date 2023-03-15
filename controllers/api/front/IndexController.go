@@ -42,9 +42,8 @@ func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) (
 	if keyword != "" {
 		where = fmt.Sprintf(" AND name LIKE '%%%s%%'", keyword)
 	}
-	switch kind {
-	case "wine":
-		where += " AND type=1"
+	if kind != "all" && kind != "" {
+		where += fmt.Sprintf(" AND type=%v", kind)
 	}
 	orderby := "name asc"
 	if orderbyRand {
@@ -56,6 +55,7 @@ func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) (
 	db.QueryRow(sql).Scan(&count)
 	// data
 	sql = fmt.Sprintf("SELECT id, name, price FROM products WHERE status=1 %v ORDER BY %s LIMIT %v OFFSET %v", where, orderby, perpage, perpage*page-perpage)
+	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
 		log.Panic(err)

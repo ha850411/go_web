@@ -13,9 +13,12 @@
                 <button :class="(kind=='all')?'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1':'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5'" @click="category('all')" ref="category_all">
                     所有商品
                 </button>
-                <button :class="(kind=='wine')?'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1':'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5'" @click="category('wine')" ref="category_wine">
-                    酒類
-                </button>
+                
+                {{ range $data := .productType }}
+                    <button :class="(kind=='{{$data.id}}')?'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1':'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5'" @click="category('{{$data.id}}')" ref="category_{{$data.id}}">
+                        {{$data.name}}
+                    </button>
+                {{ end }}
             </div>
 
             <div class="flex-w flex-c-m m-tb-10">
@@ -163,9 +166,9 @@ const vueApp = Vue.createApp({
                     this.categoryTitle = '所有商品';
                     this.kind = 'all';
                     break;
-                case 'wine':
-                    this.categoryTitle = '酒類';
-                    this.kind = 'wine';
+                default:
+                    this.categoryTitle = this.$refs["category_" + kind].innerText;
+                    this.kind = kind;
                     break;
             }
             this.productPage = 1;

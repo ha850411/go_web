@@ -25,12 +25,13 @@ func GetCommonOutput(active string) map[string]interface{} {
 	output := make(map[string]interface{})
 	output["active"] = active
 	output["staticFreshFlag"] = time.Now().Unix()
+	output["productType"] = GetProductType()
 	return output
 }
 
 func Index(c *gin.Context) {
-	banner, _, _ := api.GetBannerData("10", "0")
 	output := GetCommonOutput("index")
+	banner, _, _ := api.GetBannerData("10", "0")
 	output["banner"] = banner
 	c.HTML(http.StatusOK, "index", output)
 }
@@ -38,14 +39,17 @@ func Index(c *gin.Context) {
 func Product(c *gin.Context) {
 	output := GetCommonOutput("product")
 	kind := c.DefaultQuery("kind", "all")
-	var categoryTitle string
-	switch kind {
-	case "wine":
-		categoryTitle = "酒類"
-	default:
-		categoryTitle = "所有商品"
-	}
+	categoryTitle := "所有商品"
 	output["kind"] = kind
+	if productType, ok := output["productType"].([]map[string]string); ok {
+		for _, v := range productType {
+			if kind == v["id"] {
+				categoryTitle = v["name"]
+				output["kind"] = kind
+				break
+			}
+		}
+	}
 	output["categoryTitle"] = categoryTitle
 	c.HTML(http.StatusOK, "front_product", output)
 }
@@ -72,6 +76,7 @@ func ShoppingCart(c *gin.Context) {
 }
 
 func About(c *gin.Context) {
+	output := GetCommonOutput("about")
 	aboutData := struct {
 		Title1   string
 		Title2   string
@@ -85,11 +90,8 @@ func About(c *gin.Context) {
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 	}
-	fmt.Printf("aboutData: %v\n", aboutData)
-	c.HTML(http.StatusOK, "front_about", gin.H{
-		"active":    "about",
-		"aboutData": aboutData,
-	})
+	output["aboutData"] = aboutData
+	c.HTML(http.StatusOK, "front_about", output)
 }
 
 func Contact(c *gin.Context) {
@@ -116,4 +118,23 @@ func getProductById(id string) (ProductInfo, error) {
 	}
 	fmt.Printf("rowData: %v\n", rowData)
 	return rowData, nil
+}
+
+func GetProductType() []map[string]string {
+	var data []map[string]string
+	db := database.DbConnect()
+	rows, err := db.Query("SELECT id, name FROM products_type WHERE status=1")
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		rowData := struct {
+			Id   string
+			Name string
+		}{}
+		rows.Scan(&rowData.Id, &rowData.Name)
+		data = append(data, map[string]string{"id": rowData.Id, "name": rowData.Name})
+	}
+	return data
 }
