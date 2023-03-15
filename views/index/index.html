@@ -10,8 +10,11 @@
 
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" >
+                <button :class="(kind=='all')?'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1':'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5'" @click="category('all')" ref="category_all">
                     所有商品
+                </button>
+                <button :class="(kind=='wine')?'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1':'stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5'" @click="category('wine')" ref="category_wine">
+                    酒類
                 </button>
             </div>
 
@@ -80,6 +83,7 @@ const vueApp = Vue.createApp({
     data() {
         return {
             keyword: '',
+            kind: 'all',
             productPage: 1,
             productTotalPage: 1,
             productData: [],
@@ -101,7 +105,7 @@ const vueApp = Vue.createApp({
     methods: {
         getProduct: async function() {
             try {
-                const response = await axios.get('/api/front/products?page=' + this.productPage + '&keyword=' + this.keyword);
+                const response = await axios.get('/api/front/products?page=' + this.productPage + '&keyword=' + this.keyword + '&kind=' + this.kind);
                 this.productData = response.data.data;
                 this.productTotalPage = Math.ceil(response.data.count/8);
             } catch (error) {
@@ -116,18 +120,7 @@ const vueApp = Vue.createApp({
         },
         loadMoreProduct: async function() {
             this.productPage ++;
-            try {
-                const response = await axios.get('/api/front/products?page=' + this.productPage);
-                if(response.data.data.length > 0) {
-                    this.productData = this.productData.concat(response.data.data);
-                }
-            } catch (error) {
-                if (error.response !== undefined) {
-                    console.log(error.response.data.message);
-                } else {
-                    console.log(error.message);
-                }
-            }
+            this.getProduct();
         },
         addToCart: function(id, name, price, picture) {
             if(typeof(vm_header.orderDetail[id]) === "undefined") {
@@ -146,6 +139,18 @@ const vueApp = Vue.createApp({
                 vm_header.orderDetail[id]["amount"] += 1;
             }
             swal(name, "已新增到購物車 !", "success");
+        },
+        category: function(kind) {
+            switch(kind) {
+                case 'all':
+                    this.kind = 'all';
+                    break;
+                case 'wine':
+                    this.kind = 'wine';
+                    break;
+            }
+            this.productPage = 1;
+            this.getProduct();
         }
     },
 });

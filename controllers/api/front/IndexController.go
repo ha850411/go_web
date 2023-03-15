@@ -23,27 +23,39 @@ func GetProductsList(c *gin.Context) {
 	page := c.DefaultQuery("page", "1")
 	pageInt, _ := strconv.Atoi(page)
 	keyword := c.DefaultQuery("keyword", "")
-	data, count := GetFrontProducts(pageInt, keyword)
+	kind := c.DefaultQuery("kind", "all")
+	rand := false
+	if c.Query("rand") == "Y" {
+		rand = true
+	}
+	data, count := GetFrontProducts(pageInt, keyword, kind, rand)
 	c.JSON(http.StatusOK, gin.H{
 		"count": count,
 		"data":  data,
 	})
 }
 
-func GetFrontProducts(page int, keyword string) ([]interface{}, int) {
+func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) ([]interface{}, int) {
 	var count int
 	perpage := 8
 	where := ""
 	if keyword != "" {
-		where = fmt.Sprintf("AND name LIKE '%%%s%%'", keyword)
+		where = fmt.Sprintf(" AND name LIKE '%%%s%%'", keyword)
+	}
+	switch kind {
+	case "wine":
+		where += " AND type=1"
+	}
+	orderby := "name asc"
+	if orderbyRand {
+		orderby = "RAND()"
 	}
 	fmt.Printf("keyword: %v\n", keyword)
 	fmt.Printf("where: %v\n", where)
-
-	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE status=1 AND type=0 %s", where)
+	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE status=1 %s", where)
 	db.QueryRow(sql).Scan(&count)
 	// data
-	sql = fmt.Sprintf("SELECT id, name, price FROM products WHERE status=1 AND type=0 %v ORDER BY name asc LIMIT %v OFFSET %v", where, perpage, perpage*page-perpage)
+	sql = fmt.Sprintf("SELECT id, name, price FROM products WHERE status=1 %v ORDER BY %s LIMIT %v", where, orderby, perpage*page)
 	rows, err := db.Query(sql)
 	if err != nil {
 		log.Panic(err)

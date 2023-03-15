@@ -3350,3 +3350,29 @@ input.num-product::-webkit-inner-spin-button {
   }
 
 }
+
+.wine_notice {
+    width:100%;
+    position:fixed;
+    bottom:0px;
+    z-index: 100;
+}
+
+.wine_logo {
+    width: 100%;
+    display: block;
+}
+
+.wine_logo_m {
+    width: 100%;
+    display: none;
+}
+
+@media (max-width: 575px) {
+    .wine_logo {
+        display: none;
+    }
+    .wine_logo_m {
+        display: block;
+    }
+}
