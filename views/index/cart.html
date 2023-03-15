@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="bor8 bg0" style="width:100%;">
-                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" placeholder="請輸入聯絡方式" v-model="orderInfo.contact" ref="orderInfoContact">
+                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" placeholder="請輸入聯絡方式 Email 或 手機" v-model="orderInfo.contact" ref="orderInfoContact">
                         </div>
                     </div>
 
@@ -271,7 +271,14 @@ const vueApp = Vue.createApp({
                     remark: this.orderInfo["remark"],
                     detail: JSON.stringify(this.orderDetail),
                 });
-                swal("訂購成功", "已收到您的訂單 !", "success");
+                swal("訂購成功", "已收到您的訂單!", {
+                    icon: "success",
+                    buttons: false,
+                    timer: 1000,
+                });
+                setTimeout(function(){
+                    location.href = "/";
+                }, 1000)
             } catch (error) {
                 if (error.response !== undefined) {
                     this.errorMsg = error.response.data.message;

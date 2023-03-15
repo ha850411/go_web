@@ -245,7 +245,11 @@ const vueApp = Vue.createApp({
             } else {
                 vm_header.orderDetail[id]["amount"] += this.amount;
             }
-            swal(this.productName, "已新增到購物車 !", "success");
+            swal(this.productName, "已新增到購物車!", {
+                icon: "success",
+                buttons: false,
+                timer: 1000,
+            });
         }
     },
 });

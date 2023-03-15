@@ -41,7 +41,7 @@
 
         <div class="row isotope-grid">
             <template v-if="productLoading">
-                <i class='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+                <i class='fa fa-spinner fa-spin fa-3x fa-fw' style="margin: 0 auto;"></i>
             </template>
             <template v-else v-for="data in productData">
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35">
@@ -123,7 +123,18 @@ const vueApp = Vue.createApp({
         },
         loadMoreProduct: async function() {
             this.productPage ++;
-            this.getProduct();
+            try {
+                const response = await axios.get('/api/front/products?page=' + this.productPage + '&keyword=' + this.keyword + '&kind=' + this.kind);
+                if(response.data.data.length > 0) {
+                    this.productData = this.productData.concat(response.data.data);
+                }
+            } catch (error) {
+                if (error.response !== undefined) {
+                    console.log(error.response.data.message);
+                } else {
+                    console.log(error.message);
+                }
+            }
         },
         addToCart: function(id, name, price, picture) {
             if(typeof(vm_header.orderDetail[id]) === "undefined") {
@@ -141,7 +152,11 @@ const vueApp = Vue.createApp({
             } else {
                 vm_header.orderDetail[id]["amount"] += 1;
             }
-            swal(name, "已新增到購物車 !", "success");
+            swal(name, "已新增到購物車!", {
+                icon: "success",
+                buttons: false,
+                timer: 1000,
+            });
         },
         category: function(kind) {
             switch(kind) {

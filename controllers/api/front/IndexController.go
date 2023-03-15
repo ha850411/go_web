@@ -55,7 +55,7 @@ func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) (
 	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE status=1 %s", where)
 	db.QueryRow(sql).Scan(&count)
 	// data
-	sql = fmt.Sprintf("SELECT id, name, price FROM products WHERE status=1 %v ORDER BY %s LIMIT %v", where, orderby, perpage*page)
+	sql = fmt.Sprintf("SELECT id, name, price FROM products WHERE status=1 %v ORDER BY %s LIMIT %v OFFSET %v", where, orderby, perpage, perpage*page-perpage)
 	rows, err := db.Query(sql)
 	if err != nil {
 		log.Panic(err)
