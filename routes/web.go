@@ -4,6 +4,7 @@ import (
 	"goWeb/controllers"
 	"goWeb/controllers/front"
 	"goWeb/middleware"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-contrib/multitemplate"
@@ -52,8 +53,10 @@ func GetWebRouters(r *gin.Engine) {
 	r.GET("/orders", middleware.CsrfHandler(), front.Orders)
 	r.POST("/orders/add", middleware.CsrfHandler(), front.OrdersAdd)
 
-	r.GET("/.well-known/acme-challenge/2nkLvsDb4su80JwJJOzwFrL8xMjbWrWVTY3L87MfwEk", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "2nkLvsDb4su80JwJJOzwFrL8xMjbWrWVTY3L87MfwEk.6iozbQeFsi7dh3i8U6fBWPZw6hb6CrNAGXNaD32zEV8")
+	r.GET("/.well-known/acme-challenge/*files", func(ctx *gin.Context) {
+		filename := ctx.Param("files")
+		b, _ := ioutil.ReadFile("./.well-known/acme-challenge/" + filename)
+		ctx.String(http.StatusOK, string(b))
 	})
 }
 
