@@ -1,4 +1,4 @@
-#自動更新憑證(需重啟 docker 重新掛載證書)
+# autocert.sh -> 自動更新憑證
 
 #go project path
 projectPath=/home/gopath/go_web
@@ -14,4 +14,5 @@ certbot certonly --webroot -w /home/gopath/go_web -d easonweb.site --email le850
 cp /etc/letsencrypt/live/easonweb.site/fullchain.pem $projectPath/certs/fullchain.crt
 cp /etc/letsencrypt/live/easonweb.site/privkey.pem $projectPath/certs/privkey.key
 
+#重啟 docker 重新掛載證書)
 docker-compose restart
