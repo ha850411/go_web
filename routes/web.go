@@ -43,14 +43,14 @@ func GetWebRouters(r *gin.Engine) {
 	linebotGroup := r.Group("/linebot")
 	linebotGroup.GET("/notify", middleware.Auth(), controllers.LineBotNotify)
 	// ========= 前台 ===========
-	r.GET("/", front.Index)
-	r.GET("/product", front.Product)
-	r.GET("/product/:id", front.ProductDetail)
-	r.GET("/cart", front.ShoppingCart)
-	r.GET("/about", front.About)
-	r.GET("/contact", front.Contact)
-	r.GET("/orders", front.Orders)
-	r.POST("/orders/add", front.OrdersAdd)
+	r.GET("/", middleware.CsrfHandler(), front.Index)
+	r.GET("/product", middleware.CsrfHandler(), front.Product)
+	r.GET("/product/:id", middleware.CsrfHandler(), front.ProductDetail)
+	r.GET("/cart", middleware.CsrfHandler(), front.ShoppingCart)
+	r.GET("/about", middleware.CsrfHandler(), front.About)
+	r.GET("/contact", middleware.CsrfHandler(), front.Contact)
+	r.GET("/orders", middleware.CsrfHandler(), front.Orders)
+	r.POST("/orders/add", middleware.CsrfHandler(), front.OrdersAdd)
 
 	r.GET("/.well-known/acme-challenge/2nkLvsDb4su80JwJJOzwFrL8xMjbWrWVTY3L87MfwEk", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "2nkLvsDb4su80JwJJOzwFrL8xMjbWrWVTY3L87MfwEk.6iozbQeFsi7dh3i8U6fBWPZw6hb6CrNAGXNaD32zEV8")

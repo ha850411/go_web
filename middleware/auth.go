@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 中間件
+// 後台中間件
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		loginToken, err := c.Cookie("loginToken")

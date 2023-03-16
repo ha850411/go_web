@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"goWeb/database"
+	"goWeb/service/linebot"
 	"log"
 	"net/http"
 	"strconv"
@@ -97,6 +98,8 @@ func InsertContact(c *gin.Context) {
 		})
 		log.Panic(err)
 	}
+	lineMessage := fmt.Sprintf("\n- 聯絡我們\n姓名: %v\n聯絡方式: %v\n訊息:\n%v", param.Name, param.Contact, param.Message)
+	linebot.Request(lineMessage)
 	c.JSON(http.StatusOK, gin.H{
 		"code":         200,
 		"AffectedRows": 1,

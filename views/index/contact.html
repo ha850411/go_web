@@ -29,6 +29,10 @@
                     <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="想傳送什麼訊息給我們?" v-model="message"></textarea>
                 </div>
 
+                <label><span style="color:#FF0000;">*</span>驗證碼:</label>
+                <canvas width="240" height="60" id="captcha"></canvas>
+                <input type="number" class="form-control mb-3" v-model="inputCaptchaCode" style="width:240px;" placeholder="請輸入驗證碼">
+
                 <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" @click="submit()">
                     送出
                 </button>
@@ -72,12 +76,32 @@
         delimiters: ["@{", "}"],
         data() {
             return {
+                captchaCode: "",
+                inputCaptchaCode: "",
                 name: "",
                 contact: "",
                 message: "",
+                captcha: "",
             }
         },
         mounted() {
+            this.captcha = new CaptchaMini({
+                lineWidth: 1,
+                lineNum: 1,
+                dotR: 2,
+                dotNum: 5,
+                preGroundColor: [10, 80],
+                backGroundColor: [150, 250],
+                fontSize: 40,
+                fontFamily: ['Georgia', 'Helvetica', 'Arial'],
+                fontStyle: 'stroke', // fill & stroke
+                content: '0123456789',
+                length: 4
+            }); 
+
+            this.captcha.draw(document.querySelector('#captcha'), val => {
+                this.captchaCode = val;
+            });
         },
         watch: {
         },
@@ -86,13 +110,14 @@
         methods: {
             submit: async function() {
                 if (this.name == "") {
-                    swal("請輸入您的大名", {
+                    swal("請輸入您的姓名", {
                         icon: "error",
                         buttons: false,
                         timer: 1000,
                     });
                     return;
                 }
+
                 if (this.contact == "") {
                     swal("請輸入您的聯絡方式", {
                         icon: "error",
@@ -101,6 +126,7 @@
                     });
                     return;
                 }
+
                 if (this.message == "") {
                     swal("請輸入您的訊息", {
                         icon: "error",
@@ -109,6 +135,26 @@
                     });
                     return;
                 }
+
+                if(this.inputCaptchaCode.length === 0) {
+                    swal("驗證碼不得為空", {
+                        icon: "error",
+                        buttons: false,
+                        timer: 1000,
+                    });
+                    return;
+                }
+
+                if(this.captchaCode != this.inputCaptchaCode) {
+                    this.captcha.drawAgain()
+                    swal("驗證碼錯誤", {
+                        icon: "error",
+                        buttons: false,
+                        timer: 1000,
+                    });
+                    return;
+                }
+
                 try {
                     const response = await axios.post('/api/front/contact', {
                         "name": this.name,

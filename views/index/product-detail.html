@@ -161,12 +161,6 @@
             </div>
         </div>
     </div>
-    <template v-if="productType=='1'">
-        <div class="wine_notice">
-            <img class="wine_logo" src="/static/images/wine_notice.jpg">
-            <img class="wine_logo_m" src="/static/images/wine_notice_m.jpg">
-        </div>
-    </template>
 </section>
 <script>
 const vueApp = Vue.createApp({
@@ -175,7 +169,6 @@ const vueApp = Vue.createApp({
         return {
             picture: '{{ .data.Picture }}',
             productName: '{{ .data.Name }}',
-            productType: '{{ .data.Type }}',
             content: '{{ .data.Content }}',
             amount: 1,
         }

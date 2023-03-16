@@ -3,6 +3,7 @@ package routes
 import (
 	"goWeb/controllers/api"
 	"goWeb/controllers/api/front"
+	"goWeb/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -78,5 +79,5 @@ func GetApiRouters(r *gin.Engine) {
 	// === front ===
 	frontGroup := apiGroup.Group("/front")
 	frontGroup.GET("/products", front.GetProductsList)
-	frontGroup.POST("/contact", front.InsertContact)
+	frontGroup.POST("/contact", middleware.CsrfAuth(), front.InsertContact)
 }
