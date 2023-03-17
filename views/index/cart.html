@@ -20,6 +20,7 @@
                     <div class="wrap-table-shopping-cart">
                         <table class="table-shopping-cart">
                             <tr class="table_head">
+                                <th></th>
                                 <th class="column-1">商品名稱</th>
                                 <th class="column-2"></th>
                                 <th class="column-3">價格</th>
@@ -27,9 +28,12 @@
                                 <th class="column-5">總價</th>
                             </tr>
                             <tr v-if="Object.keys(orderDetail).length == 0">
-                                <td style="padding:15px;" colspan="5" >購物車為空!</td>
+                                <td style="padding:15px;" colspan="6" >購物車為空!</td>
                             </tr>
                             <tr class="table_row" v-else v-for="(data, index) in orderDetail">
+                                <td class="pr-2 pl-3">
+                                    <i class="fa-solid fa-trash" @click="removeProduct(data.id)" style="cursor: pointer; font-size:20px;"></i>
+                                </td>
                                 <td class="column-1">
                                     <div class="how-itemcart1" @click="removeProduct(data.id)">
                                         <img :src="data.picture" alt="IMG">
