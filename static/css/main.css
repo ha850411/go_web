@@ -401,6 +401,11 @@ html.fullscreen-bg #wrapper {
   margin-right: 8px;
 }
 
+.notifications {
+    height: 400px;
+    overflow-y: scroll
+}
+
 ul.notifications > li {
   border-bottom: 1px solid #f0f0f0;
 }
