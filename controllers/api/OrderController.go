@@ -37,7 +37,7 @@ func GetOrdersLists(c *gin.Context) {
 	FROM orders as a 
 	LEFT JOIN orders_detail as b ON a.id=b.order_id
 	LEFT JOIN products as c ON b.pid=c.id
-	WHERE %s ORDER BY a.%s %s LIMIT %s OFFSET %s`, where, columes[orderBy], orderType, limit, offset)
+	WHERE %s ORDER BY a.%s %s`, where, columes[orderBy], orderType)
 	fmt.Printf("sql: %v\n", sql)
 	db.QueryRow(sql).Scan(&ids)
 	count := len(strings.Split(ids, ","))
