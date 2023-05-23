@@ -105,16 +105,6 @@ function amountHandler(action, id)
     }
 }
 
-function checkInput(id)
-{
-    let amount = parseInt($('.amountInput[data-id="'+id+'"]').val());
-    if($('.amountInput[data-id="'+id+'"]').val() !== "") {
-        if(isNaN(amount)) {
-            $('.amountInput[data-id="'+id+'"]').val('');
-        }
-    }
-}
-
 function updateAmount(obj, id)
 {
     $.ajax({

@@ -26,11 +26,11 @@ function initProductTable(keyword)
                 render: function(data, type, row) {
                     output = '<div style="display:flex; align-items:center;">';
                     // - button
-                    output += '<button type="button" class="btn" style="padding: 5px;" onclick="amountHandler(\'sub\', '+row.id+')"><i class="fa-solid fa-minus"></i></button>';
+                    output += '<button type="button" class="btn" style="padding: 5px 10px;" onclick="amountHandler(\'sub\', '+row.id+')"><i class="fa-solid fa-minus"></i></button>';
                     // input
-                    output += '<input type="text" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'" onchange="checkInput('+row.id+')">';
+                    output += '<input type="number" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'">';
                     // + button
-                    output += '<button type="button" class="btn" style="padding: 5px;" onclick="amountHandler(\'add\', '+row.id+')"><i class="fa-sharp fa-solid fa-plus"></i></button>';
+                    output += '<button type="button" class="btn" style="padding: 5px 10px;" onclick="amountHandler(\'add\', '+row.id+')"><i class="fa-sharp fa-solid fa-plus"></i></button>';
                     // updateBtn
                     output += '<button type="button" class="btn btn-success btn-sm mdfBtn_'+row.id+'" style="margin-left:5px" onclick="updateAmount(this, '+row.id+')">修改</button>';
                     // loading icon
