@@ -28,7 +28,7 @@ function initProductTable(keyword)
                     // - button
                     output += '<button type="button" class="btn" style="padding: 5px;" onclick="amountHandler(\'sub\', '+row.id+')"><i class="fa-solid fa-minus"></i></button>';
                     // input
-                    output += '<input type="text" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'" oninput="checkInput('+row.id+')">';
+                    output += '<input type="text" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'" onchange="checkInput('+row.id+')">';
                     // + button
                     output += '<button type="button" class="btn" style="padding: 5px;" onclick="amountHandler(\'add\', '+row.id+')"><i class="fa-sharp fa-solid fa-plus"></i></button>';
                     // updateBtn
