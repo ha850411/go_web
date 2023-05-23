@@ -25,8 +25,13 @@ function initProductTable(keyword)
                 data: null,
                 render: function(data, type, row) {
                     output = '<div style="display:flex; align-items:center;">';
-                    // input & updateBtn
-                    output += '<input type="number" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'">';
+                    // - button
+                    output += '<button type="button" class="btn" style="padding: 5px;" onclick="amountHandler(\'sub\', '+row.id+')"><i class="fa-solid fa-minus"></i></button>';
+                    // input
+                    output += '<input type="text" class="amountInput form-control" style="width:100px;" data-id="'+row.id+'" value="'+row.amount+'" oninput="checkInput('+row.id+')">';
+                    // + button
+                    output += '<button type="button" class="btn" style="padding: 5px;" onclick="amountHandler(\'add\', '+row.id+')"><i class="fa-sharp fa-solid fa-plus"></i></button>';
+                    // updateBtn
                     output += '<button type="button" class="btn btn-success btn-sm mdfBtn_'+row.id+'" style="margin-left:5px" onclick="updateAmount(this, '+row.id+')">修改</button>';
                     // loading icon
                     output += '<i class="fa fa-spinner fa-spin loading_'+row.id+'" style="margin-left:5px;font-size:20px;display:none;"></i>';

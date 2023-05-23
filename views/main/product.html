@@ -85,6 +85,38 @@ $(function(){
 
 });
 
+function amountHandler(action, id)
+{
+    let amount = parseInt($('.amountInput[data-id="'+id+'"]').val());
+    if(!isNaN(amount)) {
+        switch(action) {
+            case "sub":
+                if(amount > 1) {
+                    amount = amount - 1;
+                }
+                break;
+            case "add":
+                amount = amount + 1;
+                break;
+        }
+        $('.amountInput[data-id="'+id+'"]').each(function(){
+            $(this).val(amount);
+        });
+    }
+}
+
+function checkInput(id)
+{
+    let amount = parseInt($('.amountInput[data-id="'+id+'"]').val());
+    if($('.amountInput[data-id="'+id+'"]').val() !== "") {
+        if(isNaN(amount)) {
+            $('.amountInput[data-id="'+id+'"]').val('');
+        } else {
+            $('.amountInput[data-id="'+id+'"]').val(amount);   
+        }
+    }
+}
+
 function updateAmount(obj, id)
 {
     $.ajax({
@@ -93,7 +125,7 @@ function updateAmount(obj, id)
         dataType: 'json',
         data: { 
             id: id,
-            amount: $(obj).siblings().eq(0).val()
+            amount: $('.amountInput[data-id="'+id+'"]').val()
         },
         beforeSend: function(){
             $('.statusIcon').css("display", "none");
