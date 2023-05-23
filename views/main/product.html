@@ -113,7 +113,7 @@ function updateAmount(obj, id)
         dataType: 'json',
         data: { 
             id: id,
-            amount: $('.amountInput[data-id="'+id+'"]').val()
+            amount: $(obj).siblings().eq(1).val(),
         },
         beforeSend: function(){
             $('.statusIcon').css("display", "none");
