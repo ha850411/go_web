@@ -111,8 +111,6 @@ function checkInput(id)
     if($('.amountInput[data-id="'+id+'"]').val() !== "") {
         if(isNaN(amount)) {
             $('.amountInput[data-id="'+id+'"]').val('');
-        } else {
-            $('.amountInput[data-id="'+id+'"]').val(amount);   
         }
     }
 }
