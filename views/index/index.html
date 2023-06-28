@@ -60,9 +60,21 @@
                                 <a :href="'/product/' + data.id" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size:18px;">
                                     @{ data.name }
                                 </a>
-                                <span class="stext-105 cl3">
-                                    @{ '$' + data.price }
-                                </span>
+                                <template v-if="data.discount_price > 0">
+                                    <div style="display: flex">
+                                        <span class="mr-1" style="text-decoration:line-through;">
+                                            @{ '$' + data.price }
+                                        </span>
+                                        <span class="stext-105 cl3">
+                                            @{ '$' + data.discount_price }
+                                        </span>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <span class="stext-105 cl3">
+                                        @{ '$' + data.price }
+                                    </span>
+                                </template>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
                                 <a href="javascript:void(0)" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" @click="addToCart(data.id, data.name, data.price, data.picture)">

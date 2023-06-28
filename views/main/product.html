@@ -17,6 +17,7 @@
                     <th>數量</th>
                     <th>存貨警戒線</th>
                     <th>價格</th>
+                    <th>優惠價格</th>
                     <th>產品類別</th>
                     <th>更新時間</th>
                     <th></th>
@@ -26,6 +27,7 @@
                     <th>數量</th>
                     <th>存貨警戒線</th>
                     <th>價格</th>
+                    <th>優惠價格</th>
                     <th>產品類別</th>
                     <th>更新時間</th>
                     <th></th>
@@ -179,6 +181,7 @@ function doInsert()
             amount_notice: $('#modal_amount_notice').val(),
             type: $('#modal_type').val(),
             price: price,
+            discount_price: $('#modal_discount_price').val(),
             content: $('#modal_content').val(),
         },
         beforeSend: function(){
@@ -213,6 +216,7 @@ function modifyProduct(id)
             $('#modal_edit_name').val(result.data.name);
             $('#modal_edit_amount').val(result.data.amount);
             $('#modal_edit_price').val(result.data.price);
+            $('#modal_edit_discount_price').val(result.data.discount_price);
             $('#modal_edit_type').val(result.data.type);
             $('#modal_edit_content').val(result.data.content);
             if(result.data.amountNotice == 0) {
@@ -258,6 +262,7 @@ function doEdit()
             amount_notice: $('#modal_edit_amount_notice').val(),
             type: $('#modal_edit_type').val(),
             price: $('#modal_edit_price').val(),
+            discount_price: $('#modal_edit_discount_price').val(),
             content: $('#modal_edit_content').val(),
         },
         beforeSend: function(){

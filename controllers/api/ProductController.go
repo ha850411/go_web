@@ -55,7 +55,7 @@ func GetProductsList(c *gin.Context) {
 	db.QueryRow(sql).Scan(&ids)
 	count := len(strings.Split(ids, ","))
 	// 分頁
-	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.price, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt
+	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.price, a.discount_price, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt
 	FROM products as a
 	LEFT JOIN products_type as b ON a.type = b.id
 	LEFT JOIN products_picture as c ON a.id=c.pid
@@ -73,7 +73,7 @@ func GetProductsList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.Price, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.Price, &rowData.DiscountPrice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
 		data = append(data, rowData)
 	}
@@ -123,9 +123,10 @@ func AddProduct(c *gin.Context) {
 	}
 	productType := c.PostForm("type")
 	price := c.PostForm("price")
+	discount_price := c.PostForm("discount_price")
 	content := c.DefaultPostForm("content", "")
 
-	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type, price, content) VALUES ('%s', %s, %s, %s, %s, '%s')", name, amount, amountNotice, productType, price, content)
+	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type, price, discount_price, content) VALUES ('%s', %s, %s, %s, %s, %s, '%s')", name, amount, amountNotice, productType, price, discount_price, content)
 	row, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -159,6 +160,7 @@ func EditProduct(c *gin.Context) {
 	}
 	productType := c.PostForm("type")
 	price := c.PostForm("price")
+	discount_price := c.PostForm("discount_price")
 	content := c.DefaultPostForm("content", "")
 
 	// 檢查數量是否有變
@@ -166,7 +168,7 @@ func EditProduct(c *gin.Context) {
 	sql := fmt.Sprintf("SELECT amount FROM products WHERE id=%s", editId)
 	db.QueryRow(sql).Scan(&nowAmount)
 
-	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s, price=%s, content='%s' WHERE id=%s", name, amount, amountNotice, productType, price, content, editId)
+	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s, price=%s, discount_price=%s, content='%s' WHERE id=%s", name, amount, amountNotice, productType, price, discount_price, content, editId)
 	fmt.Printf("sql: %v\n", sql)
 	row, err := db.Exec(sql)
 	if err != nil {

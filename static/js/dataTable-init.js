@@ -62,6 +62,9 @@ function initProductTable(keyword)
                 data: 'price',
             },
             {
+                data: 'discount_price',
+            },
+            {
                 data: 'tname',
                 render: function(data, type, row) {
                     if(row.tname.length > 0) {

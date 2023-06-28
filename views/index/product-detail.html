@@ -59,9 +59,24 @@
                         {{ .data.Name }}
                     </h4>
 
-                    <span class="mtext-106 cl2">
-                        ${{ .data.Price }}
-                    </span>
+
+                    <template v-if="discount_price > 0">
+                        <div style="display: flex">
+                            <span class="mtext-106 cl2 mr-1" style="text-decoration:line-through;">
+                                @{ '$' + price }
+                            </span>
+                            <span class="mtext-106 cl2">
+                                @{ '$' + discount_price }
+                            </span>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <span class="mtext-106 cl2">
+                            @{ '$' + price }
+                        </span>
+                    </template>
+
+                    
 
                     <!-- <p class="stext-102 cl3 p-t-23">
                         產品簡介...
@@ -168,6 +183,8 @@ const vueApp = Vue.createApp({
     data() {
         return {
             picture: '{{ .data.Picture }}',
+            price: '{{ .data.Price }}',
+            discount_price: '{{ .data.DiscountPrice }}',
             productName: '{{ .data.Name }}',
             content: '{{ .data.Content }}',
             amount: 1,
