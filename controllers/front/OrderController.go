@@ -48,9 +48,15 @@ func OrdersAdd(c *gin.Context) {
 		var total int
 		for _, jsonMap := range detail {
 			// get price
-			var price int
+			var price, originPrice, discountPrice int
+
 			amount := int(jsonMap["amount"].(float64))
-			db.QueryRow(`SELECT price FROM products WHERE id= ?`, jsonMap["id"]).Scan(&price)
+			db.QueryRow(`SELECT price, discount_price FROM products WHERE id= ?`, jsonMap["id"]).Scan(&originPrice, &discountPrice)
+			price = originPrice
+			if discountPrice > 0 {
+				price = discountPrice
+			}
+
 			// do insert
 			sql := fmt.Sprintf("INSERT INTO orders_detail (order_id, pid, amount, price, total) VALUES (%v, %v, %v, %v, %v)", LastInsertId, jsonMap["id"], jsonMap["amount"], price, price*amount)
 			db.Exec(sql)

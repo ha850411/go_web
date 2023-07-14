@@ -79,7 +79,7 @@
                                 </template>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="javascript:void(0)" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" @click="addToCart(data.id, data.name, data.price, data.picture)">
+                                <a href="javascript:void(0)" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" @click="addToCart(data.id, data.name, data.price, data.discount_price, data.picture)">
                                     <i class="zmdi zmdi-shopping-cart cl2" style="font-size:20px;"></i>
                                 </a>
                             </div>
@@ -152,12 +152,16 @@ const vueApp = Vue.createApp({
                 }
             }
         },
-        addToCart: function(id, name, price, picture) {
+        addToCart: function(id, name, price, discountPrice, picture) {
+            let insertPrice = price;
+            if(discountPrice !== undefined && discountPrice > 0) {
+                insertPrice = discountPrice;
+            }
             if(typeof(vm_header.orderDetail[id]) === "undefined") {
                 vm_header.orderDetail[id] = {
                     "id": id,
                     "name": name,
-                    "price": price,
+                    "price": insertPrice,
                     "amount": 1,
                 }
                 if(picture !== null && picture.length > 0) {

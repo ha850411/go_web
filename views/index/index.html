@@ -1,6 +1,17 @@
 {{define "index/content"}}
+<section class="bg0 ">
+    <div class="container pt-5">
+        <div style="background-color: #bbb4b4; height: 150px; width: 100%; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+            <div style="background-color: #FFFFFF; width: 135px; height: 135px; display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 50%;">
+                <i class="fa-solid fa-cart-shopping" style="font-size: 40px; color: rgb(126, 57, 57);"></i>
+                <span style="color: #000000; font-weight: bold;">全館滿<span style="color: red; font-weight: bold;">1,000</span>免運</span>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Product -->
-<section class="bg0 p-t-23 p-b-140">
+<section class="bg0 p-b-140">
     <div class="container p-5">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
@@ -77,7 +88,7 @@
                                 </template>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="javascript:void(0)" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" @click="addToCart(data.id, data.name, data.price, data.picture)">
+                                <a href="javascript:void(0)" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" @click="addToCart(data.id, data.name, data.price, data.discount_price, data.picture)">
                                     <i class="zmdi zmdi-shopping-cart cl2" style="font-size:20px;"></i>
                                 </a>
                             </div>
@@ -150,12 +161,16 @@ const vueApp = Vue.createApp({
                 }
             }
         },
-        addToCart: function(id, name, price, picture) {
+        addToCart: function(id, name, price, discountPrice, picture) {
+            let insertPrice = price;
+            if(discountPrice !== undefined && discountPrice > 0) {
+                insertPrice = discountPrice;
+            }
             if(typeof(vm_header.orderDetail[id]) === "undefined") {
                 vm_header.orderDetail[id] = {
                     "id": id,
                     "name": name,
-                    "price": price,
+                    "price": insertPrice,
                     "amount": 1,
                 }
                 if(picture !== null && picture.length > 0) {

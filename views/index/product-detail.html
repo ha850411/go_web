@@ -61,14 +61,12 @@
 
 
                     <template v-if="discount_price > 0">
-                        <div style="display: flex">
-                            <span class="mtext-106 cl2 mr-1" style="text-decoration:line-through;">
-                                @{ '$' + price }
-                            </span>
-                            <span class="mtext-106 cl2">
-                                @{ '$' + discount_price }
-                            </span>
-                        </div>
+                        <p class="mtext-106 cl2 mr-1" style="text-decoration:line-through;">
+                            原價: @{ '$' + price }
+                        </p>
+                        <p class="mtext-106 cl2" style="color: red;">
+                            Line優惠價: @{ '$' + discount_price }
+                        </p>
                     </template>
                     <template v-else>
                         <span class="mtext-106 cl2">
@@ -99,7 +97,7 @@
                             </div>
 
                         </div>
-                        <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" @click="addToCart('{{.data.Id}}', '{{.data.Price}}')">新增到購物車</button>
+                        <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" @click="addToCart('{{.data.Id}}', '{{.data.Price}}', '{{ .data.DiscountPrice }}')">新增到購物車</button>
                     </div>
                 </div>
             </div>
@@ -243,11 +241,15 @@ const vueApp = Vue.createApp({
                     break;
             }
         },
-        addToCart: function(id, price) {
+        addToCart: function(id, price, discountPrice) {
+            let insertPrice = price;
+            if(discountPrice !== undefined && discountPrice > 0) {
+                insertPrice = discountPrice;
+            }
             if(typeof(vm_header.orderDetail[id]) === "undefined") {
                 vm_header.orderDetail[id] = {
                     "id": id,
-                    "price": price,
+                    "price": insertPrice,
                     "amount": this.amount,
                     "picture": this.picture,
                     "name": this.productName,
