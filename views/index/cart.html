@@ -98,7 +98,7 @@
                         </div>
 
                         <div class="bor8 bg0" style="width:100%;">
-                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" placeholder="請輸入聯絡方式 Email 或 手機" v-model="orderInfo.contact" ref="orderInfoContact">
+                            <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" placeholder="請輸入手機" v-model="orderInfo.contact" ref="orderInfoContact">
                         </div>
                     </div>
 
@@ -249,6 +249,7 @@ const vueApp = Vue.createApp({
                 swal("訂購失敗", "購物車為空, 請先選購商品", "error");
                 return;
             }
+            
             let requireFields = ["name", "contact", "city", "area","address"];
             let focusMapping = {
                 "name": {el: "orderInfoName", tip: "請輸入訂購人姓名"},
@@ -266,6 +267,11 @@ const vueApp = Vue.createApp({
                     }
                 }
             }
+            if(!this.orderInfo.contact.match(/^09[0-9]{8}$/)) {
+                swal("訂購失敗", "您填入錯誤的手機號碼格式", "error");
+                return;
+            }
+
             try {
                 this.canSubmit = false;
                 const response = await axios.post('/orders/add',{

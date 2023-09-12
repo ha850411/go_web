@@ -15,6 +15,7 @@ type Products struct {
 	Type          int       `json:"type"`
 	Tname         string    `json:"tname"`
 	Content       string    `json:"content"`
+	ExpiredRemark string    `json:"expiredRemark"`
 	UpdateTime    time.Time `json:"updateTime"`
 	FormatTime    string    `json:"formatTime"`
 	PictureCnt    int       `json:"pictureCnt"`

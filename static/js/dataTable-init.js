@@ -75,6 +75,16 @@ function initProductTable(keyword)
                 }
             },
             {
+                data: 'expiredRemark',
+                render: function(data, type, row) {
+                    if(!data) {
+                        return "-";
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            {
                 data: 'formatTime',
             },
             {

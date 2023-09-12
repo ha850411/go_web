@@ -38,6 +38,7 @@ CREATE TABLE `products` (
   `status` int NOT NULL DEFAULT '1' COMMENT '0:刪除 1:存在',
   `type` int NOT NULL DEFAULT '0' COMMENT '商品分類',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '產品介紹\r\n',
+  `expiredRemark` VARCHAR(200) NULL DEFAULT NULL,
   `sort` int NOT NULL DEFAULT '0' COMMENT '排序',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

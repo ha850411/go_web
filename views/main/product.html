@@ -19,6 +19,7 @@
                     <th>價格</th>
                     <th>優惠價格</th>
                     <th>產品類別</th>
+                    <th>有效期限</th>
                     <th>更新時間</th>
                     <th></th>
                 </thead>
@@ -29,6 +30,7 @@
                     <th>價格</th>
                     <th>優惠價格</th>
                     <th>產品類別</th>
+                    <th>有效期限</th>
                     <th>更新時間</th>
                     <th></th>
                 </tfoot>
@@ -183,6 +185,7 @@ function doInsert()
             price: price,
             discount_price: $('#modal_discount_price').val(),
             content: $('#modal_content').val(),
+            expiredRemark: $('#modal_expiredRemark').val(),
         },
         beforeSend: function(){
             $('#addSubmitBtn').prop("disabled", true);
@@ -219,6 +222,7 @@ function modifyProduct(id)
             $('#modal_edit_discount_price').val(result.data.discount_price);
             $('#modal_edit_type').val(result.data.type);
             $('#modal_edit_content').val(result.data.content);
+            $('#modal_edit_expiredRemark').val(result.data.expiredRemark);
             if(result.data.amountNotice == 0) {
                 $('#modal_edit_amount_notice').val('');
             } else {
@@ -264,6 +268,7 @@ function doEdit()
             price: $('#modal_edit_price').val(),
             discount_price: $('#modal_edit_discount_price').val(),
             content: $('#modal_edit_content').val(),
+            expiredRemark: $('#modal_edit_expiredRemark').val(),
         },
         beforeSend: function(){
             $('#editSubmitBtn').prop("disabled", true);
