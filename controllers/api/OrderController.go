@@ -248,3 +248,48 @@ func DeleteOrders(c *gin.Context) {
 		})
 	}
 }
+
+func CheckOrders(c *gin.Context) {
+	tempDetail := c.PostForm("detail")
+	var detail map[string]map[string]interface{}
+	_ = json.Unmarshal([]byte(tempDetail), &detail)
+
+	var pidLists []string
+
+	for _, jsonMap := range detail {
+		if val, ok := jsonMap["id"].(string); ok {
+			pidLists = append(pidLists, val)
+		}
+	}
+
+	data := make([]interface{}, 0)
+	pidStr := strings.Join(pidLists, ",")
+	if pidStr != "" {
+		sql := fmt.Sprintf(`SELECT id, name
+		FROM products 
+		WHERE id IN (%s) AND amount < 1`, pidStr)
+		fmt.Printf("sql: %v\n", sql)
+		rows, err := db.Query(sql)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": 500,
+				"msg":  err,
+			})
+			log.Panic(err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			rowData := struct {
+				Id   int    `json:"id"`
+				Name string `json:"name"`
+			}{}
+			rows.Scan(&rowData.Id, &rowData.Name)
+			data = append(data, rowData)
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": data,
+	})
+}

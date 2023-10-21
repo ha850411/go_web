@@ -1,6 +1,7 @@
 package front
 
 import (
+	"encoding/json"
 	"fmt"
 	"goWeb/controllers/api"
 	"goWeb/controllers/api/front"
@@ -20,6 +21,7 @@ type ProductInfo struct {
 	Picture       []string `json:"picture"`
 	Content       string   `json:"content"`
 	Type          int      `json:"type"`
+	Amount        string   `json:"amount"`
 }
 
 func GetCommonOutput(active string) map[string]interface{} {
@@ -65,8 +67,10 @@ func ProductDetail(c *gin.Context) {
 	// 取得推薦商品
 	relatedData, _ := front.GetFrontProducts(1, "", "all", true)
 	output := GetCommonOutput("detail")
+	jsonData, _ := json.Marshal(rowData)
 	output["id"] = id
 	output["data"] = rowData
+	output["jsonData"] = string(jsonData)
 	output["relatedData"] = relatedData
 	c.HTML(http.StatusOK, "front_product_detail", output)
 }
@@ -103,8 +107,9 @@ func Contact(c *gin.Context) {
 func getProductById(id string) (ProductInfo, error) {
 	rowData := ProductInfo{}
 	db = database.DbConnect()
-	err := db.QueryRow(`SELECT id, name, price, discount_price, IFNULL(content, ''), type FROM products 
-	WHERE id = ?`, id).Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.DiscountPrice, &rowData.Content, &rowData.Type)
+	err := db.QueryRow(`SELECT id, name, price, discount_price, IFNULL(content, ''), type, amount
+	FROM products 
+	WHERE id = ?`, id).Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.DiscountPrice, &rowData.Content, &rowData.Type, &rowData.Amount)
 	if err != nil {
 		return rowData, err
 	}

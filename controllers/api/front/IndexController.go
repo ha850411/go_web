@@ -55,7 +55,7 @@ func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) (
 	sql := fmt.Sprintf("SELECT count(*) FROM products WHERE status=1 %s", where)
 	db.QueryRow(sql).Scan(&count)
 	// data
-	sql = fmt.Sprintf("SELECT id, name, price, discount_price FROM products WHERE status=1 %v ORDER BY %s LIMIT %v OFFSET %v", where, orderby, perpage, perpage*page-perpage)
+	sql = fmt.Sprintf("SELECT id, name, price, discount_price, amount FROM products WHERE status=1 %v ORDER BY %s LIMIT %v OFFSET %v", where, orderby, perpage, perpage*page-perpage)
 	fmt.Printf("sql: %v\n", sql)
 	rows, err := db.Query(sql)
 	if err != nil {
@@ -70,8 +70,9 @@ func GetFrontProducts(page int, keyword string, kind string, orderbyRand bool) (
 			Price         int      `json:"price"`
 			DiscountPrice int      `json:"discount_price"`
 			Picture       []string `json:"picture"`
+			Amount        int      `json:"amount"`
 		}{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.DiscountPrice)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.DiscountPrice, &rowData.Amount)
 		var pictures string
 		db.QueryRow(`SELECT GROUP_CONCAT(DISTINCT picture) as pictures FROM products_picture WHERE pid= ?`, rowData.Id).Scan(&pictures)
 		if pictures != "" {

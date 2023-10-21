@@ -33,10 +33,15 @@
                                         </div>
                                         <div>
                                             <div style="display:flex;align-items: center;">名稱:<span style="margin-left:3px;" v-text="data.name"></span></div>
-                                            <div style="display:flex;align-items: center;">
+                                            <div v-if="data.amountNotice > 0 && data.amount < data.amountNotice"
+                                            style="display:flex;align-items: center;">
                                                 <span>庫存存量過低(</span>
                                                 <span v-text="'< ' + data.amountNotice"></span>
                                                 <span>)</span>
+                                            </div>
+    
+                                            <div v-if="!expiredCheck(data.formatExpiredDate)">
+                                                <div>有效期限小於三個月</div>
                                             </div>
                                         </div>
                                     </div>
@@ -88,12 +93,22 @@
                                             <span class="dot bg-danger"></span>
                                         </div>
                                         <div>
-                                            <div style="display:flex;align-items: center;">名稱:<span style="margin-left:3px;" v-text="data.name"></span></div>
                                             <div style="display:flex;align-items: center;">
+                                                <span>名稱:</span>
+                                                <span style="margin-left:3px;" v-text="data.name"></span>
+                                            </div>
+                                            
+                                            <div v-if="data.amountNotice > 0 && data.amount < data.amountNotice"
+                                            style="display:flex;align-items: center;">
                                                 <span>庫存存量過低(</span>
                                                 <span v-text="'< ' + data.amountNotice"></span>
                                                 <span>)</span>
                                             </div>
+
+                                            <div v-if="!expiredCheck(data.formatExpiredDate)">
+                                                <div>有效期限小於三個月</div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </a>

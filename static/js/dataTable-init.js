@@ -75,11 +75,21 @@ function initProductTable(keyword)
                 }
             },
             {
-                data: 'expiredRemark',
+                data: 'formatExpiredDate',
                 render: function(data, type, row) {
                     if(!data) {
                         return "-";
                     } else {
+                        // 小於三個月顯示紅字
+                        let today = new Date();
+                        let threeMonthsAgo = new Date(
+                            today.getFullYear(), 
+                            today.getMonth() + 3, 
+                            today.getDate()
+                        );
+                        if(new Date(data).getTime() < threeMonthsAgo.getTime()) {
+                            return "<span style='color: red'>" + data + "</span>";
+                        }
                         return data;
                     }
                 }

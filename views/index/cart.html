@@ -253,6 +253,46 @@ const vueApp = Vue.createApp({
                 swal("訂購失敗", "購物車為空, 請先選購商品", "error");
                 return;
             }
+
+            // 檢查存貨數量
+            try {
+                this.canSubmit = false;
+                formData = new FormData();
+                formData.append("detail", JSON.stringify(this.orderDetail));
+                const response = await axios.post('/api/orders/check',formData, {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+                console.log(response.data.data);
+                let message = [];
+                for(i=0; i<response.data.data.length; i++) {
+                    message.push(response.data.data[i].name);
+                }
+                console.log(message)
+                if(message.length > 0) {
+                    swal({
+                        title: "訂購失敗",
+                        text: message.join(",") + "已無庫存",
+                        icon: "error",
+                        buttons: false,
+                        timer: 2000,
+                    });
+                    return;
+                }
+            } catch (error) {
+                if (error.response !== undefined) {
+                    this.errorMsg = error.response.data.message;
+                } else {
+                    this.errorMsg = error.message;
+                }
+                swal("訂購失敗", "請重新輸入訂單 !", "error");
+                setTimeout(function(){
+                    location.reload();
+                }, 1000)
+            } finally {
+                this.canSubmit = true;
+            }
             
             let requireFields = ["name", "contact", "city", "area","address"];
             let focusMapping = {

@@ -89,7 +89,21 @@
             },
             initMenu: function() {
                 this.menuData = JSON.parse(this.menuData);
-            }
+            },
+            expiredCheck: function(expiredDate) {
+                if(expiredDate) {
+                    let today = new Date();
+                    let threeMonthsAgo = new Date(
+                        today.getFullYear(), 
+                        today.getMonth() + 3, 
+                        today.getDate()
+                    );
+                    if(new Date(expiredDate).getTime() < threeMonthsAgo.getTime()) {
+                       return false;
+                    }
+                }
+                return true;
+            },
         },
     });
 const vm_menu = menu.mount('#menu');

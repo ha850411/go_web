@@ -79,8 +79,17 @@
                                 </template>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="javascript:void(0)" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" @click="addToCart(data.id, data.name, data.price, data.discount_price, data.picture)">
+                                <a v-if="data.amount > 0"
+                                href="javascript:void(0)" 
+                                class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" 
+                                @click="addToCart(data.id, data.name, data.price, data.discount_price, data.picture)">
                                     <i class="zmdi zmdi-shopping-cart cl2" style="font-size:20px;"></i>
+                                </a>
+                                
+                                <a v-else
+                                href="javascript:void(0)" 
+                                class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                    <i class="zmdi zmdi-shopping-cart cl2" style="font-size:20px; color: gray"></i>
                                 </a>
                             </div>
                         </div>

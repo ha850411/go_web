@@ -55,7 +55,7 @@ func GetProductsList(c *gin.Context) {
 	db.QueryRow(sql).Scan(&ids)
 	count := len(strings.Split(ids, ","))
 	// 分頁
-	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.price, a.discount_price, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt, a.expiredRemark
+	sql = fmt.Sprintf(`SELECT a.id, a.name, a.amount, a.amountNotice, a.price, a.discount_price, a.updateTime, a.type, IFNULL(b.name, '') as tname, count(c.id) as pictureCnt, a.expiredDate
 	FROM products as a
 	LEFT JOIN products_type as b ON a.type = b.id
 	LEFT JOIN products_picture as c ON a.id=c.pid
@@ -73,8 +73,13 @@ func GetProductsList(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.Price, &rowData.DiscountPrice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt, &rowData.ExpiredRemark)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.Price, &rowData.DiscountPrice, &rowData.UpdateTime, &rowData.Type, &rowData.Tname, &rowData.PictureCnt, &rowData.ExpiredDate)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
+
+		if rowData.ExpiredDate.Unix() > 0 {
+			rowData.FormatExpiredDate = rowData.ExpiredDate.Format("2006-01-02")
+		}
+
 		data = append(data, rowData)
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -128,10 +133,10 @@ func AddProduct(c *gin.Context) {
 		discount_price = "0"
 	}
 	content := c.DefaultPostForm("content", "")
-	expiredRemark := c.DefaultPostForm("expiredRemark", "")
+	expiredDate := c.DefaultPostForm("expiredDate", "")
 
-	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type, price, discount_price, content, expiredRemark) VALUES ('%s', %s, %s, %s, %s, %s, '%s', '%s')",
-		name, amount, amountNotice, productType, price, discount_price, content, expiredRemark)
+	sql := fmt.Sprintf("INSERT INTO products (name, amount, amountNotice, type, price, discount_price, content, expiredDate) VALUES ('%s', %s, %s, %s, %s, %s, '%s', '%s')",
+		name, amount, amountNotice, productType, price, discount_price, content, expiredDate)
 	row, err := db.Exec(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -167,14 +172,14 @@ func EditProduct(c *gin.Context) {
 	price := c.PostForm("price")
 	discount_price := c.PostForm("discount_price")
 	content := c.DefaultPostForm("content", "")
-	expiredRemark := c.DefaultPostForm("expiredRemark", "")
+	expiredDate := c.DefaultPostForm("expiredDate", "")
 
 	// 檢查數量是否有變
 	var nowAmount string
 	sql := fmt.Sprintf("SELECT amount FROM products WHERE id=%s", editId)
 	db.QueryRow(sql).Scan(&nowAmount)
 
-	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s, price=%s, discount_price=%s, content='%s', expiredRemark='%s' WHERE id=%s", name, amount, amountNotice, productType, price, discount_price, content, expiredRemark, editId)
+	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s, price=%s, discount_price=%s, content='%s', expiredDate='%s' WHERE id=%s", name, amount, amountNotice, productType, price, discount_price, content, expiredDate, editId)
 	fmt.Printf("sql: %v\n", sql)
 	row, err := db.Exec(sql)
 	if err != nil {
@@ -243,7 +248,17 @@ func writeProductsLog(id string, amount string) {
 }
 
 func GetTips(c *gin.Context) {
-	sql := "SELECT id,name,amount,amountNotice,updateTime FROM products WHERE status = 1 AND amountNotice > 0 AND amount<=amountNotice"
+	// 顯示存貨 < 警戒線 或 有效期限小於三個月的資料
+	sql := `
+	SELECT id, name, amount, amountNotice, updateTime, expiredDate
+	FROM products
+	WHERE status = 1
+	AND (
+		( amountNotice > 0 AND amount<=amountNotice )
+		OR
+		( expiredDate < NOW() + INTERVAL 3 MONTH )
+	)`
+
 	rows, err := db.Query(sql)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -256,8 +271,11 @@ func GetTips(c *gin.Context) {
 	data := make([]interface{}, 0)
 	for rows.Next() {
 		rowData := models.Products{}
-		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime)
+		rows.Scan(&rowData.Id, &rowData.Name, &rowData.Amount, &rowData.AmountNotice, &rowData.UpdateTime, &rowData.ExpiredDate)
 		rowData.FormatTime = rowData.UpdateTime.Format("2006-01-02 15:04:05")
+		if rowData.ExpiredDate.Unix() > 0 {
+			rowData.FormatExpiredDate = rowData.ExpiredDate.Format("2006-01-02")
+		}
 		data = append(data, rowData)
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -723,8 +741,13 @@ func DeleteProductType(c *gin.Context) {
 func GetProductInfo(c *gin.Context) {
 	pid := c.Param("id")
 	var result models.Products
-	db.QueryRow(`SELECT id, name, amount, amountNotice, price, type, IFNULL(content, ''), IFNULL(expiredRemark, '')
-	FROM products WHERE id= ?`, pid).Scan(&result.Id, &result.Name, &result.Amount, &result.AmountNotice, &result.Price, &result.Type, &result.Content, &result.ExpiredRemark)
+	db.QueryRow(`SELECT id, name, amount, amountNotice, price, discount_price, type, IFNULL(content, ''), expiredDate
+	FROM products WHERE id= ?`, pid).Scan(&result.Id, &result.Name, &result.Amount, &result.AmountNotice, &result.Price, &result.DiscountPrice, &result.Type, &result.Content, &result.ExpiredDate)
+
+	if result.ExpiredDate.Unix() > 0 {
+		result.FormatExpiredDate = result.ExpiredDate.Format("2006-01-02")
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"data": result,
