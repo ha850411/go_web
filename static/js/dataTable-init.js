@@ -63,6 +63,12 @@ function initProductTable(keyword)
             },
             {
                 data: 'discount_price',
+                render: function(data, type, row) {
+                    if(parseInt(data) > 0) {
+                        return data;
+                    }
+                    return "-";
+                }
             },
             {
                 data: 'tname',

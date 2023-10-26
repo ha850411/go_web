@@ -170,7 +170,10 @@ func EditProduct(c *gin.Context) {
 	}
 	productType := c.PostForm("type")
 	price := c.PostForm("price")
-	discount_price := c.PostForm("discount_price")
+	discount_price := c.DefaultPostForm("discount_price", "0")
+	if len(discount_price) == 0 {
+		discount_price = "0"
+	}
 	content := c.DefaultPostForm("content", "")
 	expiredDate := c.DefaultPostForm("expiredDate", "")
 

@@ -223,11 +223,19 @@ function modifyProduct(id)
             $('#modal_edit_type').val(result.data.type);
             $('#modal_edit_content').val(result.data.content);
             $('#modal_edit_expiredDate').val(result.data.formatExpiredDate);
+            // 優惠價格
+            if(result.data.discount_price == 0) {
+                $('#modal_edit_discount_price').val('');
+            } else {
+                $('#modal_edit_discount_price').val(result.data.discount_price);
+            }
+            // 存貨警戒
             if(result.data.amountNotice == 0) {
                 $('#modal_edit_amount_notice').val('');
             } else {
                 $('#modal_edit_amount_notice').val(result.data.amountNotice);
             }
+        
         },
         error: function (thrownError) {
             console.log(thrownError);
