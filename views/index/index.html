@@ -12,7 +12,7 @@
 
 <!-- Product -->
 <section class="bg0 p-b-140">
-    <div class="container p-5">
+    <div class="container pt-5">
         <div class="p-b-10">
             <h3 class="ltext-103 cl5">
                 @{ categoryTitle }
@@ -56,7 +56,7 @@
                 <i class='fa fa-spinner fa-spin fa-3x fa-fw' style="margin: 0 auto;"></i>
             </template>
             <template v-else v-for="data in productData">
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35">
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3 p-b-35">
                     <div class="block2">
                         <a :href="'/product/' + data.id">
                             <template v-if="data.picture === null">

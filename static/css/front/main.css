@@ -2059,7 +2059,7 @@ input.num-product::-webkit-inner-spin-button {
 
 @media (max-width: 575px) {
     .block2-pic {
-        max-height: 350px; 
+        max-height: 250px; 
         height:100vh;
     }
 }
