@@ -175,16 +175,20 @@ func EditProduct(c *gin.Context) {
 		discount_price = "0"
 	}
 	content := c.DefaultPostForm("content", "")
-	expiredDate := c.DefaultPostForm("expiredDate", "")
+
+	expiredDate := conf.GetStringOrNil(c, "expiredDate")
 
 	// 檢查數量是否有變
 	var nowAmount string
 	sql := fmt.Sprintf("SELECT amount FROM products WHERE id=%s", editId)
 	db.QueryRow(sql).Scan(&nowAmount)
 
-	sql = fmt.Sprintf("UPDATE products SET name='%s', amount=%s, amountNotice=%s, type=%s, price=%s, discount_price=%s, content='%s', expiredDate='%s' WHERE id=%s", name, amount, amountNotice, productType, price, discount_price, content, expiredDate, editId)
+	sql = `UPDATE products
+	SET name = ?, amount = ? , amountNotice = ?, type = ?, price = ?, discount_price = ?,
+	content = ?, expiredDate = ? WHERE id = ?`
+
 	fmt.Printf("sql: %v\n", sql)
-	row, err := db.Exec(sql)
+	row, err := db.Exec(sql, name, amount, amountNotice, productType, price, discount_price, content, expiredDate, editId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,

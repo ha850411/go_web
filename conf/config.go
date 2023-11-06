@@ -6,6 +6,7 @@ import (
 	"path"
 	"runtime"
 
+	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v2"
 )
 
@@ -62,4 +63,12 @@ func Readfile(filePath string) (Conf, error) {
 		return settings, err1
 	}
 	return settings, nil
+}
+
+func GetStringOrNil(c *gin.Context, postKey string) interface{} {
+	result := c.PostForm(postKey)
+	if result == "" {
+		return nil
+	}
+	return result
 }
