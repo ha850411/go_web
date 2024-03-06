@@ -260,11 +260,15 @@ func GetTips(c *gin.Context) {
 	SELECT id, name, amount, amountNotice, updateTime, expiredDate
 	FROM products
 	WHERE status = 1
-	AND (
-		( amountNotice > 0 AND amount<=amountNotice )
-		OR
-		( expiredDate < NOW() + INTERVAL 3 MONTH )
-	)`
+	AND amountNotice > 0 AND amount<=amountNotice
+	UNION
+	SELECT id, name, amount, amountNotice, updateTime, expiredDate
+	FROM products
+	WHERE status = 1
+	AND expiredDate != '0000-00-00' 
+	AND expiredDate IS NOT NULL
+	AND expiredDate < NOW() + INTERVAL 3 MONTH
+	`
 
 	rows, err := db.Query(sql)
 	if err != nil {
