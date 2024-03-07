@@ -1,0 +1,767 @@
+go: downloading github.com/gin-gonic/gin v1.8.2
+go: downloading gopkg.in/yaml.v2 v2.4.0
+go: downloading github.com/gin-contrib/multitemplate v0.0.0-20220829131020-8c2a8441bc2b
+go: downloading github.com/go-sql-driver/mysql v1.7.0
+go: downloading github.com/mattn/go-isatty v0.0.17
+go: downloading google.golang.org/protobuf v1.28.1
+go: downloading github.com/gin-contrib/sse v0.1.0
+go: downloading github.com/go-playground/validator/v10 v10.11.1
+go: downloading github.com/ugorji/go/codec v1.2.8
+go: downloading golang.org/x/net v0.5.0
+go: downloading github.com/pelletier/go-toml/v2 v2.0.6
+go: downloading golang.org/x/sys v0.5.0
+go: downloading github.com/leodido/go-urn v1.2.1
+go: downloading github.com/go-playground/universal-translator v0.18.0
+go: downloading golang.org/x/crypto v0.5.0
+go: downloading golang.org/x/text v0.6.0
+go: downloading github.com/go-playground/locales v0.14.1
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /admin/login              --> goWeb/controllers.Login (3 handlers)
+[GIN-debug] POST   /admin/auth               --> goWeb/controllers.Auth (3 handlers)
+[GIN-debug] GET    /admin/logout             --> goWeb/controllers.Logout (3 handlers)
+[GIN-debug] GET    /admin/                   --> goWeb/controllers.ProductManage (4 handlers)
+[GIN-debug] GET    /admin/product            --> goWeb/controllers.ProductManage (4 handlers)
+[GIN-debug] GET    /admin/product/pic/:pid   --> goWeb/controllers.ProductPicManage (4 handlers)
+[GIN-debug] GET    /admin/product/type       --> goWeb/controllers.ProductTypeManage (4 handlers)
+[GIN-debug] GET    /admin/analysis           --> goWeb/controllers.Analysis (4 handlers)
+[GIN-debug] GET    /admin/order              --> goWeb/controllers.OrderManage (4 handlers)
+[GIN-debug] GET    /admin/setting            --> goWeb/controllers.SettingManage (4 handlers)
+[GIN-debug] POST   /admin/setting/updatePassword --> goWeb/controllers.UpdatePassword (4 handlers)
+[GIN-debug] GET    /admin/banner             --> goWeb/controllers.BannerManage (4 handlers)
+[GIN-debug] GET    /admin/about              --> goWeb/controllers.AboutManage (4 handlers)
+[GIN-debug] GET    /admin/contact            --> goWeb/controllers.ContactManage (4 handlers)
+[GIN-debug] GET    /linebot/notify           --> goWeb/controllers.LineBotNotify (4 handlers)
+[GIN-debug] GET    /                         --> goWeb/controllers/front.Index (4 handlers)
+[GIN-debug] GET    /product                  --> goWeb/controllers/front.Product (4 handlers)
+[GIN-debug] GET    /product/:id              --> goWeb/controllers/front.ProductDetail (4 handlers)
+[GIN-debug] GET    /cart                     --> goWeb/controllers/front.ShoppingCart (4 handlers)
+[GIN-debug] GET    /about                    --> goWeb/controllers/front.About (4 handlers)
+[GIN-debug] GET    /contact                  --> goWeb/controllers/front.Contact (4 handlers)
+[GIN-debug] GET    /orders                   --> goWeb/controllers/front.Orders (4 handlers)
+[GIN-debug] POST   /orders/add               --> goWeb/controllers/front.OrdersAdd (4 handlers)
+[GIN-debug] GET    /.well-known/acme-challenge/*files --> goWeb/routes.GetWebRouters.func1 (3 handlers)
+[GIN-debug] GET    /api/products/:id         --> goWeb/controllers/api.GetProductInfo (3 handlers)
+[GIN-debug] GET    /api/products/getList     --> goWeb/controllers/api.GetProductsList (3 handlers)
+[GIN-debug] PUT    /api/products/updateAmount --> goWeb/controllers/api.UpdateAmount (3 handlers)
+[GIN-debug] POST   /api/products/add         --> goWeb/controllers/api.AddProduct (3 handlers)
+[GIN-debug] PATCH  /api/products/edit        --> goWeb/controllers/api.EditProduct (3 handlers)
+[GIN-debug] DELETE /api/products/delete/:id  --> goWeb/controllers/api.DeleteProduct (3 handlers)
+[GIN-debug] GET    /api/products/getTips     --> goWeb/controllers/api.GetTips (3 handlers)
+[GIN-debug] GET    /api/products/getProductsNameList --> goWeb/controllers/api.GetProductsNameList (3 handlers)
+[GIN-debug] GET    /api/products/getProductsLog --> goWeb/controllers/api.GetProductsLog (3 handlers)
+[GIN-debug] GET    /api/products/export      --> goWeb/controllers/api.ExportCsv (3 handlers)
+[GIN-debug] GET    /api/products/getPictures --> goWeb/controllers/api.GetPictureLists (3 handlers)
+[GIN-debug] GET    /api/products/showPicture/:id --> goWeb/controllers/api.ShowPicture (3 handlers)
+[GIN-debug] POST   /api/products/uploadsPic  --> goWeb/controllers/api.UploadPic (3 handlers)
+[GIN-debug] PUT    /api/products/updatePic   --> goWeb/controllers/api.UpdatePic (3 handlers)
+[GIN-debug] DELETE /api/products/deletePic/:id --> goWeb/controllers/api.DeletePic (3 handlers)
+[GIN-debug] GET    /api/products/type        --> goWeb/controllers/api.GetProductType (3 handlers)
+[GIN-debug] POST   /api/products/type        --> goWeb/controllers/api.AddProductType (3 handlers)
+[GIN-debug] PUT    /api/products/type        --> goWeb/controllers/api.UpdateProductType (3 handlers)
+[GIN-debug] DELETE /api/products/type/:id    --> goWeb/controllers/api.DeleteProductType (3 handlers)
+[GIN-debug] POST   /api/products/sort        --> goWeb/controllers/api.SortProducts (3 handlers)
+[GIN-debug] GET    /api/orders/getLists      --> goWeb/controllers/api.GetOrdersLists (3 handlers)
+[GIN-debug] POST   /api/orders/add           --> goWeb/controllers/api.AddOrders (3 handlers)
+[GIN-debug] GET    /api/orders/:id           --> goWeb/controllers/api.GetOrders (3 handlers)
+[GIN-debug] PATCH  /api/orders/edit          --> goWeb/controllers/api.EditOrders (3 handlers)
+[GIN-debug] DELETE /api/orders/:id           --> goWeb/controllers/api.DeleteOrders (3 handlers)
+[GIN-debug] POST   /api/orders/check         --> goWeb/controllers/api.CheckOrders (3 handlers)
+[GIN-debug] GET    /api/settings/unsetLine/:username --> goWeb/controllers/api.UnsetLine (3 handlers)
+[GIN-debug] GET    /api/banner               --> goWeb/controllers/api.GetBannerList (3 handlers)
+[GIN-debug] POST   /api/banner               --> goWeb/controllers/api.UploadBanner (3 handlers)
+[GIN-debug] PUT    /api/banner               --> goWeb/controllers/api.UpdateBanner (3 handlers)
+[GIN-debug] DELETE /api/banner/:id           --> goWeb/controllers/api.DeleteBanner (3 handlers)
+[GIN-debug] POST   /api/about                --> goWeb/controllers/api.UpdateAbout (3 handlers)
+[GIN-debug] POST   /api/ckeditor/uploads     --> goWeb/controllers/api.CkeditorUploads (3 handlers)
+[GIN-debug] GET    /api/contact              --> goWeb/controllers/api.GetContactList (3 handlers)
+[GIN-debug] DELETE /api/contact/:id          --> goWeb/controllers/api.DeleteContact (3 handlers)
+[GIN-debug] GET    /api/front/products       --> goWeb/controllers/api/front.GetProductsList (3 handlers)
+[GIN-debug] POST   /api/front/contact        --> goWeb/controllers/api/front.InsertContact (4 handlers)
+[GIN-debug] GET    /static/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] HEAD   /static/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8088
+[GIN-debug] Listening and serving HTTPS on :443
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:03:57 | 200 |  516.045375ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:03:57 | 200 |      31.912ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   46.732041ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   20.081542ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:03:57 | 200 |     34.2915ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:03:57 | 200 |     34.1645ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   59.900084ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    7.890125ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   10.490416ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   13.209792ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    11.31575ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791436"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    9.623084ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    5.630667ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    8.218416ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   10.354916ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    6.094416ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    7.960459ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    6.009959ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |       6.519ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    6.922958ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    13.15775ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:03:57 | 404 |   14.115666ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 404 |   24.287958ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    50.87875ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   50.724458ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   59.269042ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    36.67925ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   19.689417ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:03:57 | 200 |   18.334917ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    8.897209ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    9.076459ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    5.282917ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    7.192375ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:03:57 | 200 |    8.400584ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:03:58 | 200 |  1.091532792s |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:03:58 | 404 |   14.023166ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 404 |   15.031459ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 200 |   13.803458ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 404 |   14.807125ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 404 |   15.708917ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 404 |   24.029042ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 200 |   32.768583ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:03:58 | 200 |  100.999458ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:04:00 | 200 |  161.574458ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:04:00 | 200 |     4.72825ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:04:52 | 200 |  306.357083ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:04:52 | 200 |    8.919916ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791491"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:04:52 | 404 |    2.772083ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+[GIN] 2024/03/07 - 14:04:52 | 404 |    2.402458ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:04:53 | 200 |  735.182334ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:04:53 | 404 |    4.562625ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:04:53 | 404 |     5.12525ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:04:53 | 404 |    4.117459ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:04:53 | 404 |    5.061833ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:04:53 | 404 |    3.699125ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:05:03 | 404 |    5.240083ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:05:03 | 200 |   10.904833ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:05:03 | 200 |      10.141ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:08:25 | 200 |  451.029834ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:08:25 | 200 |   10.020375ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791705"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:08:25 | 404 |    4.350666ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:08:25 | 404 |    6.166916ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:08:26 | 200 |  1.019192834s |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:08:26 | 404 |   33.438417ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:08:26 | 404 |   41.822876ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:08:26 | 404 |   41.816542ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:08:26 | 404 |   40.401292ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:08:26 | 404 |   46.149001ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:08:47 | 200 |  300.724875ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:08:47 | 200 |   16.814333ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791727"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:08:47 | 404 |    4.815667ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:08:47 | 404 |    5.875125ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:08:48 | 200 |  723.840084ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:08:48 | 404 |    2.385042ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:08:48 | 404 |    3.917416ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:08:48 | 404 |       3.744ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:08:48 | 404 |    5.494041ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:08:48 | 404 |   30.596541ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:09:07 | 200 |  307.826291ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:09:07 | 200 |   29.484625ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791747"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:09:07 | 404 |    1.694333ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:09:07 | 404 |    2.286625ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:08 | 200 |  730.536334ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:09:08 | 404 |    4.216959ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:09:08 | 404 |    3.892667ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:09:08 | 404 |    3.999792ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:09:08 | 404 |   20.220459ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:09:08 | 404 |   24.469792ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:09:17 | 200 |  293.107542ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:09:17 | 200 |   19.875459ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791757"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:09:17 | 404 |    4.821167ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:09:17 | 404 |    6.008458ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:18 | 200 |  708.493626ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:09:18 | 404 |    2.814541ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:09:18 | 404 |    4.496541ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:09:18 | 404 |    5.494417ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:09:18 | 404 |   11.309792ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:09:18 | 404 |    11.96825ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:09:21 | 200 |  292.292042ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:09:21 | 200 |    3.543291ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791761"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:09:21 | 404 |    1.531125ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:09:21 | 404 |    2.377209ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:22 | 200 |  702.428209ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:09:22 | 404 |    2.112042ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:09:22 | 404 |    2.770834ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:09:22 | 404 |    8.515334ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:09:22 | 404 |    2.950167ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:09:22 | 404 |    9.187583ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:37 | 200 |  724.441667ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:09:37 | 200 |    7.610834ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:09:37 | 404 |    6.648875ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:09:37 | 404 |    5.724083ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:09:37 | 404 |    6.352083ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:09:37 | 404 |    6.772416ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+keyword: 
+where:  AND type=1
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=1 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:39 | 200 |  726.435541ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=1"
+[GIN] 2024/03/07 - 14:09:39 | 404 |    3.847375ms |    192.168.65.1 | GET      "/static/uploads/50/28166541405061138.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 404 |    5.019958ms |    192.168.65.1 | GET      "/static/uploads/52/28166541405061141.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 404 |      8.0225ms |    192.168.65.1 | GET      "/static/uploads/70/28166541405061160.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 404 |    5.923708ms |    192.168.65.1 | GET      "/static/uploads/47/28166541405061136.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 404 |   10.383375ms |    192.168.65.1 | GET      "/static/uploads/71/28166541405061163.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 404 |   14.379291ms |    192.168.65.1 | GET      "/static/uploads/51/28166541405061133.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 404 |   12.486625ms |    192.168.65.1 | GET      "/static/uploads/87/28485639775191080.jpg"
+[GIN] 2024/03/07 - 14:09:39 | 200 |   16.608292ms |    192.168.65.1 | GET      "/static/images/front/product-01.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:39 | 200 |  157.290626ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:09:40 | 404 |    7.326084ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:09:40 | 200 |   11.016916ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:09:40 | 200 |   14.827875ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:09:47 | 200 |  302.660667ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   13.074292ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   46.083042ms |    192.168.65.1 | GET      "/static/fonts/linearicons-v1.0.0/icon-font.min.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    22.56725ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   11.842417ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   28.979833ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   26.050333ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |      6.0615ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    3.161583ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    27.32775ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    4.092459ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/magnific-popup.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    5.680208ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791787"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    9.649333ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    6.453125ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   10.829583ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    9.365834ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   21.682291ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   16.827833ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   13.007458ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    6.158042ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   15.817417ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   12.781917ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |      5.2155ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    6.796042ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:09:47 | 200 |      5.3895ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    5.938292ms |    192.168.65.1 | GET      "/static/js/captcha-mini.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    2.681916ms |    192.168.65.1 | GET      "/static/js/front/slick-custom.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    2.808458ms |    192.168.65.1 | GET      "/static/js/front/main.js"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    3.065958ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+[GIN] 2024/03/07 - 14:09:47 | 404 |     1.92325ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   15.324417ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:09:47 | 200 |   51.312875ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   50.875667ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   51.239625ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:09:47 | 200 |     51.6065ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    6.386875ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:09:47 | 200 |      52.683ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:09:47 | 200 |    8.775083ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   16.328625ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:47 | 404 |   54.951791ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+[GIN] 2024/03/07 - 14:09:47 | 404 |   19.660541ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:09:47 | 200 |   92.415417ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 200 |   92.939875ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 200 |   89.493541ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 200 |    2.070291ms |    192.168.65.1 | GET      "/static/images/favicon.ico"
+[GIN] 2024/03/07 - 14:09:48 | 200 |   812.32075ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:09:48 | 404 |    4.289292ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 404 |   15.648917ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 200 |   30.328041ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 404 |      24.448ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 404 |      17.563ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 200 |    4.679333ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 404 |    3.483459ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:09:48 | 200 |   63.565708ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:09:56 | 200 |  289.243042ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   27.571333ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   38.623834ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   36.195291ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   39.598167ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   15.399625ms |    192.168.65.1 | GET      "/static/fonts/linearicons-v1.0.0/icon-font.min.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   45.907708ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |      40.472ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    8.556208ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   10.017792ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    9.596209ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |       8.357ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/magnific-popup.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    8.704292ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    12.71025ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791796"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   10.653584ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   11.647208ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   19.028542ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   16.686834ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   20.474541ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   19.432792ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   23.577833ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   19.831417ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    4.961333ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    7.045416ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    7.407125ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    17.49425ms |    192.168.65.1 | GET      "/static/js/captcha-mini.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    3.371125ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+[GIN] 2024/03/07 - 14:09:56 | 200 |       8.121ms |    192.168.65.1 | GET      "/static/js/front/slick-custom.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |    8.723209ms |    192.168.65.1 | GET      "/static/js/front/main.js"
+[GIN] 2024/03/07 - 14:09:56 | 200 |   14.901958ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+[GIN] 2024/03/07 - 14:09:56 | 404 |    3.563708ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:09:57 | 200 |   15.707083ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+[GIN] 2024/03/07 - 14:09:57 | 200 |   17.356417ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+[GIN] 2024/03/07 - 14:09:57 | 200 |     18.0225ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:09:57 | 200 |   18.482125ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:09:57 | 200 |   19.149667ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:09:57 | 200 |    2.810292ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+[GIN] 2024/03/07 - 14:09:57 | 200 |     6.16675ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+[GIN] 2024/03/07 - 14:09:57 | 404 |   10.203042ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:09:57 | 200 |  107.993042ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:09:57 | 200 |     161.543ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 404 |   73.274375ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 200 |  167.415834ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 200 |  169.124792ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 200 |    2.346666ms |    192.168.65.1 | GET      "/static/images/favicon.ico"
+[GIN] 2024/03/07 - 14:09:57 | 200 |  847.826333ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:09:57 | 404 |    2.348042ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 404 |    2.785875ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 404 |    4.842667ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 404 |    6.809542ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 200 |    9.220208ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 404 |   30.032708ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:09:57 | 200 |    41.87025ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:09:58 | 200 |  102.146876ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:10:04 | 200 |  293.519417ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   33.130667ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   35.050458ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   41.206625ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   42.040083ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   17.674917ms |    192.168.65.1 | GET      "/static/fonts/linearicons-v1.0.0/icon-font.min.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   27.172666ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   27.089167ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   27.064291ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |       7.556ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    6.526084ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |     5.47375ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |     5.79025ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/magnific-popup.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   10.296625ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:10:04 | 200 |     17.1765ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   20.311792ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791804"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   17.963208ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   18.976083ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   12.437834ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    21.33775ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   17.592125ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    5.785459ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    3.713083ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    5.015375ms |    192.168.65.1 | GET      "/static/js/captcha-mini.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    7.585125ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 404 |    6.179375ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   10.452208ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    9.599791ms |    192.168.65.1 | GET      "/static/js/front/slick-custom.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    5.632542ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 200 |      3.3115ms |    192.168.65.1 | GET      "/static/js/front/main.js"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    15.53075ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+[GIN] 2024/03/07 - 14:10:04 | 200 |    9.319167ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   12.231709ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   12.208958ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   10.262667ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   14.575583ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:10:04 | 200 |    4.718416ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+[GIN] 2024/03/07 - 14:10:04 | 200 |   11.637458ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:10:04 | 200 |    95.92125ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:10:04 | 200 |  136.484667ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 404 |  106.456791ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 200 |  144.062708ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 404 |   27.756417ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 200 |  168.854666ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:10:04 | 200 |     1.70125ms |    192.168.65.1 | GET      "/static/images/favicon.ico"
+[GIN] 2024/03/07 - 14:10:05 | 200 |  825.522625ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:10:05 | 404 |    9.176792ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 404 |     5.59325ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 404 |    5.799166ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 404 |    6.870375ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 200 |   12.375458ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 404 |   12.046417ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 200 |   29.757541ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:10:05 | 200 |   97.261166ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:10:11 | 200 |  305.902833ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   33.208958ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   16.935833ms |    192.168.65.1 | GET      "/static/fonts/linearicons-v1.0.0/icon-font.min.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   53.627333ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   57.499292ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   14.697375ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   43.754334ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |    75.41875ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   26.241208ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   16.137416ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   14.395375ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/magnific-popup.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   14.215084ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   26.093542ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |      15.364ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791810"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   20.645583ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   18.588208ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   15.750875ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   14.139125ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   17.903917ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   13.825416ms |    192.168.65.1 | GET      "/static/js/captcha-mini.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   19.806125ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   20.510875ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   30.094833ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   16.602125ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   18.434792ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   22.191375ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   20.892209ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   11.341667ms |    192.168.65.1 | GET      "/static/js/front/slick-custom.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   13.955583ms |    192.168.65.1 | GET      "/static/js/front/main.js"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   13.975708ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 404 |    3.040834ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:10:11 | 200 |   38.790667ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   55.645834ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   84.461292ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   84.485292ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   85.376041ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+[GIN] 2024/03/07 - 14:10:11 | 200 |     3.62925ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+[GIN] 2024/03/07 - 14:10:11 | 200 |       5.213ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   16.618875ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:10:11 | 404 |   24.173166ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:10:11 | 200 |   62.556667ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 404 |   39.494958ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   69.154042ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 200 |   72.574541ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:10:11 | 200 |      5.0785ms |    192.168.65.1 | GET      "/static/images/favicon.ico"
+[GIN] 2024/03/07 - 14:10:12 | 200 |  790.683542ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:10:12 | 404 |    6.436625ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 404 |    11.79575ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 200 |    9.715625ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 404 |    9.821917ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 404 |   10.786834ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 404 |   15.821083ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 200 |   21.137917ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:10:12 | 200 |  104.975875ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:10:28 | 200 |  169.764417ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:10:39 | 404 |   21.029625ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:10:39 | 200 |   22.336166ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:10:39 | 200 |  101.537458ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:11 | 200 |  710.684958ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:11:11 | 200 |       9.637ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:11:11 | 200 |    9.703333ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:11:11 | 200 |   15.455917ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:11:11 | 404 |   10.302958ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:11:11 | 404 |   12.655292ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:11:11 | 404 |    6.743166ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:11:11 | 404 |    6.736917ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:11 | 200 |      95.379ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+[GIN] 2024/03/07 - 14:11:12 | 200 |  197.340208ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:11:12 | 200 |      3.4005ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:22 | 200 |    716.9955ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:11:22 | 404 |    4.476916ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:11:22 | 200 |    8.749208ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:11:22 | 404 |    8.717125ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:11:22 | 200 |    9.128375ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:11:22 | 200 |    9.658208ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:11:23 | 404 |   22.690875ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:11:23 | 404 |   26.142084ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+[GIN] 2024/03/07 - 14:11:23 | 200 |   78.786375ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where:  AND type=1
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=1 ORDER BY sort asc LIMIT 8 OFFSET 0
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+keyword: 
+where:  AND type=2
+[GIN] 2024/03/07 - 14:11:30 | 200 |  508.606166ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:11:30 | 200 |       4.542ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:30 | 200 |  1.268999334s |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=1"
+[GIN] 2024/03/07 - 14:11:30 | 404 |    3.204958ms |    192.168.65.1 | GET      "/static/uploads/47/28166541405061136.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 404 |    5.031042ms |    192.168.65.1 | GET      "/static/uploads/70/28166541405061160.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 200 |   13.073667ms |    192.168.65.1 | GET      "/static/images/front/product-01.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 404 |    3.436417ms |    192.168.65.1 | GET      "/static/uploads/71/28166541405061163.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 404 |       3.112ms |    192.168.65.1 | GET      "/static/uploads/52/28166541405061141.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 404 |    5.010542ms |    192.168.65.1 | GET      "/static/uploads/50/28166541405061138.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 404 |    5.912375ms |    192.168.65.1 | GET      "/static/uploads/51/28166541405061133.jpg"
+[GIN] 2024/03/07 - 14:11:30 | 404 |    5.670417ms |    192.168.65.1 | GET      "/static/uploads/87/28485639775191080.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 200 |  955.033375ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:11:31 | 404 |    4.123833ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 404 |    7.722167ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 200 |   10.916709ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 200 |     10.5045ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 200 |   11.559417ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 404 |    3.995166ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 404 |    4.020666ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+[GIN] 2024/03/07 - 14:11:31 | 200 |   66.622542ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where: 
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:36 | 200 |  732.721459ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:11:36 | 404 |    2.926708ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:11:36 | 404 |     3.56175ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:11:36 | 404 |    3.368542ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:11:36 | 404 |    4.124875ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:11:36 | 404 |    4.882708ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+keyword: 
+where:  AND type=1
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=1 ORDER BY sort asc LIMIT 8 OFFSET 0
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:36 | 200 |  739.729542ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=1"
+[GIN] 2024/03/07 - 14:11:36 | 404 |   10.101791ms |    192.168.65.1 | GET      "/static/uploads/70/28166541405061160.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |    4.707958ms |    192.168.65.1 | GET      "/static/uploads/52/28166541405061141.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |   12.617209ms |    192.168.65.1 | GET      "/static/uploads/71/28166541405061163.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |   12.932166ms |    192.168.65.1 | GET      "/static/uploads/47/28166541405061136.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |   20.811208ms |    192.168.65.1 | GET      "/static/uploads/50/28166541405061138.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |    2.401416ms |    192.168.65.1 | GET      "/static/uploads/87/28485639775191080.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |    1.111166ms |    192.168.65.1 | GET      "/static/uploads/51/28166541405061133.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:37 | 200 |      727.03ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:11:37 | 404 |    8.942667ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |    6.285792ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |     5.12125ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 404 |     9.22025ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:11:37 | 200 |  181.493958ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:11:58 | 200 |  452.887417ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:11:58 | 200 |   20.659208ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:11:58 | 200 |   11.526792ms |    192.168.65.1 | GET      "/static/fonts/linearicons-v1.0.0/icon-font.min.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |    9.243125ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |     13.1005ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |   13.345917ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |   17.885417ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |   18.710833ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |    8.208708ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |    8.112041ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |   14.104542ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/magnific-popup.css"
+[GIN] 2024/03/07 - 14:11:58 | 200 |    7.288208ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791918"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    7.482958ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:11:58 | 200 |    9.215083ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   19.844541ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |     24.4355ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   20.452833ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    19.96575ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   30.314792ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   24.885875ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |      2.9405ms |    192.168.65.1 | GET      "/static/js/captcha-mini.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |     2.87475ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    3.094917ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    2.640333ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |       4.518ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |     4.63275ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    1.620584ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    2.517583ms |    192.168.65.1 | GET      "/static/js/front/main.js"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    2.038708ms |    192.168.65.1 | GET      "/static/js/front/slick-custom.js"
+[GIN] 2024/03/07 - 14:11:59 | 404 |    1.785916ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:11:59 | 200 |       9.467ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:11:59 | 200 |   32.660208ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   28.650416ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   33.911459ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   34.077291ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    7.241125ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   34.024042ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   16.902584ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   19.584334ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+[GIN] 2024/03/07 - 14:11:59 | 404 |   17.825541ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:11:59 | 404 |   32.078583ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   92.265667ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   101.08325ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   94.074292ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |    1.008084ms |    192.168.65.1 | GET      "/static/images/favicon.ico"
+[GIN] 2024/03/07 - 14:11:59 | 200 |  753.869667ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:11:59 | 404 |   10.085042ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 404 |    9.769375ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 404 |    12.88975ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 404 |   12.965667ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   14.046083ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 404 |   19.316458ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:11:59 | 200 |   54.656792ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:12:00 | 200 |   105.58025ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+[GIN] 2024/03/07 - 14:12:10 | 404 |   10.326416ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:12:10 | 200 |   12.882875ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:12:10 | 200 |     8.37825ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:17 | 200 |  170.103626ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:12:17 | 200 |    3.246875ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"
+sql: SELECT id, picture, updateTime FROM banner ORDER BY sort asc LIMIT 0, 10
+[GIN] 2024/03/07 - 14:12:30 | 200 |  300.862208ms |    192.168.65.1 | GET      "/"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   23.385458ms |    192.168.65.1 | GET      "/static/js/axios.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   29.026167ms |    192.168.65.1 | GET      "/static/vendor/jquery-3.2.1/jquery-3.2.1.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   30.868541ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   35.594792ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/css/all.min.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   35.692958ms |    192.168.65.1 | GET      "/static/fonts/iconic/css/material-design-iconic-font.min.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   39.297875ms |    192.168.65.1 | GET      "/static/js/vue.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |    7.150208ms |    192.168.65.1 | GET      "/static/fonts/linearicons-v1.0.0/icon-font.min.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |    8.922667ms |    192.168.65.1 | GET      "/static/vendor/css-hamburgers/hamburgers.min.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |     17.4825ms |    192.168.65.1 | GET      "/static/vendor/select2/css/select2.min.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |    6.288333ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |      9.7745ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   17.418083ms |    192.168.65.1 | GET      "/static/css/front/util.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   18.928917ms |    192.168.65.1 | GET      "/static/css/front/main.css?1709791950"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   15.763083ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/magnific-popup.css"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   23.496708ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   11.690125ms |    192.168.65.1 | GET      "/static/vendor/slick/slick.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   11.019458ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/bootstrap.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   20.077666ms |    192.168.65.1 | GET      "/static/vendor/select2/js/select2.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   15.764458ms |    192.168.65.1 | GET      "/static/js/captcha-mini.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   17.050625ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   16.854584ms |    192.168.65.1 | GET      "/static/vendor/perfect-scrollbar/perfect-scrollbar.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   16.082666ms |    192.168.65.1 | GET      "/static/vendor/sweetalert/sweetalert.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   19.611375ms |    192.168.65.1 | GET      "/static/vendor/MagnificPopup/jquery.magnific-popup.min.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   18.660417ms |    192.168.65.1 | GET      "/static/images/logo.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 200 |    6.068084ms |    192.168.65.1 | GET      "/static/js/front/slick-custom.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |    6.021584ms |    192.168.65.1 | GET      "/static/images/wine_notice.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   14.055166ms |    192.168.65.1 | GET      "/static/js/front/main.js"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   10.602791ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+[GIN] 2024/03/07 - 14:12:30 | 200 |    6.750584ms |    192.168.65.1 | GET      "/static/images/wine_notice_m.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 404 |      42.753ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:12:30 | 200 |     24.5735ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Regular.ttf"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   27.346292ms |    192.168.65.1 | GET      "/static/fonts/iconic/fonts/Material-Design-Iconic-Font.woff2?v=2.2.0"
+keyword: 
+where: 
+[GIN] 2024/03/07 - 14:12:30 | 200 |   30.881583ms |    192.168.65.1 | GET      "/static/fonts/Montserrat/Montserrat-Bold.ttf"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   25.044792ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Medium.ttf"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   10.851333ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-regular-400.woff2"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   29.933667ms |    192.168.65.1 | GET      "/static/fonts/Poppins/Poppins-Bold.ttf"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   13.025458ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-brands-400.woff2"
+[GIN] 2024/03/07 - 14:12:30 | 404 |   22.871875ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061151.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   22.706667ms |    192.168.65.1 | GET      "/static/vendor/font-awesome/webfonts/fa-solid-900.woff2"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   33.647583ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474574.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 404 |   18.048584ms |    192.168.65.1 | GET      "/static/uploads/banner/28166541405061152.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   57.625917ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474573.jpg"
+[GIN] 2024/03/07 - 14:12:30 | 200 |   53.898792ms |    192.168.65.1 | GET      "/static/uploads/banner/28126231895474572.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:30 | 200 |    2.421458ms |    192.168.65.1 | GET      "/static/images/favicon.ico"
+[GIN] 2024/03/07 - 14:12:31 | 200 |  792.223001ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=all"
+[GIN] 2024/03/07 - 14:12:31 | 404 |    7.053417ms |    192.168.65.1 | GET      "/static/uploads/90/28485639775191086.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 404 |   16.460041ms |    192.168.65.1 | GET      "/static/uploads/91/28485639775191088.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 404 |   11.733375ms |    192.168.65.1 | GET      "/static/uploads/92/28485639775191090.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 404 |     7.78225ms |    192.168.65.1 | GET      "/static/uploads/89/28485639775191096.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 200 |   18.831042ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 404 |       5.561ms |    192.168.65.1 | GET      "/static/uploads/95/28485639775191094.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 200 |   10.717708ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:12:31 | 200 |  116.070959ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:32 | 200 |  227.345917ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:12:32 | 200 |    3.721208ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+keyword: 
+where:  AND type=4
+[GIN] 2024/03/07 - 14:12:33 | 200 |  759.335292ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:12:33 | 404 |    3.258542ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+[GIN] 2024/03/07 - 14:12:33 | 404 |    4.343875ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:12:33 | 200 |    7.036084ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:12:33 | 404 |    5.991041ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:12:33 | 404 |       4.858ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:33 | 200 |  178.650208ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:12:41 | 200 |   22.759958ms |    192.168.65.1 | GET      "/static/js/axios.min.map"
+[GIN] 2024/03/07 - 14:12:41 | 404 |   17.210667ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/js/popper.js.map"
+[GIN] 2024/03/07 - 14:12:41 | 200 |   15.604458ms |    192.168.65.1 | GET      "/static/vendor/bootstrap4/css/bootstrap.min.css.map"
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:55 | 200 |   785.49775ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:12:55 | 404 |   13.788042ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 200 |   14.359042ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 404 |   16.907084ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 200 |    16.39875ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 200 |   21.495125ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 404 |    6.629792ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 404 |    9.788792ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:12:55 | 200 |     111.871ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:56 | 200 |  238.148334ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:12:56 | 200 |    3.628416ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"
+keyword: 
+where:  AND type=2
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=2 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:12:58 | 200 |  833.832917ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=2"
+[GIN] 2024/03/07 - 14:12:58 | 200 |    6.084917ms |    192.168.65.1 | GET      "/static/uploads/36/28126231895474641.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 200 |    8.479583ms |    192.168.65.1 | GET      "/static/uploads/38/28126231895474617.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 200 |    8.310167ms |    192.168.65.1 | GET      "/static/uploads/64/28126231895474581.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 404 |    8.244459ms |    192.168.65.1 | GET      "/static/uploads/76/28485639775191042.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 404 |    8.251042ms |    192.168.65.1 | GET      "/static/uploads/75/28485639775191040.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 404 |   76.441084ms |    192.168.65.1 | GET      "/static/uploads/78/28485639775191049.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 404 |   78.631167ms |    192.168.65.1 | GET      "/static/uploads/77/28485639775191047.jpg"
+[GIN] 2024/03/07 - 14:12:58 | 200 |  121.634626ms |    192.168.65.1 | GET      "/static/uploads/34/28126231895474627.jpg"
+keyword: 
+where:  AND type=4
+sql: SELECT id, name, price, discount_price, amount FROM products WHERE status=1  AND type=4 ORDER BY sort asc LIMIT 8 OFFSET 0
+[GIN] 2024/03/07 - 14:13:00 | 200 |  170.080083ms |    192.168.65.1 | GET      "/api/front/products?page=1&keyword=&kind=4"
+[GIN] 2024/03/07 - 14:13:00 | 200 |   21.328667ms |    192.168.65.1 | GET      "/static/uploads/55/28126231895474608.jpg"

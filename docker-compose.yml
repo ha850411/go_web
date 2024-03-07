@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     working_dir: /app
     ports:
-      - 80:8087
+      - 8088:8088
       - 443:443
     volumes:
       - .:/app
