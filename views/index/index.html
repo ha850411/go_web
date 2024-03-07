@@ -56,6 +56,13 @@
             </div>
         </div>
 
+        <div class="flex-w flex-sb-m mb-5" v-if="kind==4">
+            <div style="color: #FF0000;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span class="ml-1">賞味期限過後的半年內，您仍可安心食用。此區商品價格會有折扣，同意再進行購買</span>
+            </div>
+        </div>
+
         <div class="row isotope-grid">
             <template v-if="productLoading">
                 <i class='fa fa-spinner fa-spin fa-3x fa-fw' style="margin: 0 auto;"></i>
