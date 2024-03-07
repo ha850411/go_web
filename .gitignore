@@ -1,3 +1,5 @@
 conf/config.yaml
 .idea/*
 static/uploads/*
+cert/*
+logs/*
