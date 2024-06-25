@@ -53,7 +53,7 @@ func UpdatePassword(c *gin.Context) {
 	}
 	if rowsAffected, _ := rows.RowsAffected(); rowsAffected > 0 {
 		c.SetCookie("loginToken", "", -1, "/", "", false, false) // 登出
-		c.Redirect(http.StatusMovedPermanently, "/admin/login")
+		c.Redirect(http.StatusFound, "/admin/login")
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": http.StatusBadRequest,
