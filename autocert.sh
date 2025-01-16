@@ -2,7 +2,7 @@
 
 #go project path
 projectPath=/home/gopath/go_web
-myHost=easonlee.shop
+myHost=easonlee.site
 
 #備份原來的憑證
 mv $projectPath/certs/fullchain.crt $projectPath/certs/fullchain.crt.bk.$(date '+%Y%m%d')
