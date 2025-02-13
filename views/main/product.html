@@ -21,6 +21,7 @@
                     <th>產品類別</th>
                     <th>有效期限</th>
                     <th>更新時間</th>
+                    <th>商品備註</th>
                     <th></th>
                 </thead>
                 <tfoot>
@@ -32,6 +33,7 @@
                     <th>產品類別</th>
                     <th>有效期限</th>
                     <th>更新時間</th>
+                    <th>商品備註</th>
                     <th></th>
                 </tfoot>
             </table>
@@ -186,6 +188,7 @@ function doInsert()
             discount_price: $('#modal_discount_price').val(),
             content: $('#modal_content').val(),
             expiredDate: $('#modal_expiredDate').val(),
+            tip: $('#modal_tip').val(),
         },
         beforeSend: function(){
             $('#addSubmitBtn').prop("disabled", true);
@@ -223,6 +226,8 @@ function modifyProduct(id)
             $('#modal_edit_type').val(result.data.type);
             $('#modal_edit_content').val(result.data.content);
             $('#modal_edit_expiredDate').val(result.data.formatExpiredDate);
+            console.log(result.data.tip);
+            $('#modal_edit_tip').val(result.data.tip?.String);
             // 優惠價格
             if(result.data.discount_price == 0) {
                 $('#modal_edit_discount_price').val('');
@@ -277,6 +282,7 @@ function doEdit()
             discount_price: $('#modal_edit_discount_price').val(),
             content: $('#modal_edit_content').val(),
             expiredDate: $('#modal_edit_expiredDate').val(),
+            tip: $('#modal_edit_tip').val(),
         },
         beforeSend: function(){
             $('#editSubmitBtn').prop("disabled", true);

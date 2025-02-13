@@ -104,6 +104,12 @@ function initProductTable(keyword)
                 data: 'formatTime',
             },
             {
+                data: 'tip',
+                render: function(data, type, row) {
+                    return row?.tip?.String ?? "";
+                }
+            },
+            {
                 data: null, 
                 render: function(data, type, row) {
                     hasPicture = '';

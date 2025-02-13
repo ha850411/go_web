@@ -22,6 +22,7 @@ type ProductInfo struct {
 	Content       string   `json:"content"`
 	Type          int      `json:"type"`
 	Amount        string   `json:"amount"`
+	Tip           string   `json:"tip"`
 }
 
 func GetCommonOutput(active string) map[string]interface{} {
@@ -107,9 +108,9 @@ func Contact(c *gin.Context) {
 func getProductById(id string) (ProductInfo, error) {
 	rowData := ProductInfo{}
 	db = database.DbConnect()
-	err := db.QueryRow(`SELECT id, name, price, discount_price, IFNULL(content, ''), type, amount
+	err := db.QueryRow(`SELECT id, name, price, discount_price, IFNULL(content, ''), type, amount, tip
 	FROM products 
-	WHERE id = ?`, id).Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.DiscountPrice, &rowData.Content, &rowData.Type, &rowData.Amount)
+	WHERE id = ?`, id).Scan(&rowData.Id, &rowData.Name, &rowData.Price, &rowData.DiscountPrice, &rowData.Content, &rowData.Type, &rowData.Amount, &rowData.Tip)
 	if err != nil {
 		return rowData, err
 	}

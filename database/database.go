@@ -31,6 +31,12 @@ func DbConnect() *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// 移除 NO_ZERO_DATE，避免 0000-00-00 格式問題
+	if _, err := db.Exec("SET SESSION sql_mode='NO_ENGINE_SUBSTITUTION'"); err != nil {
+		log.Fatal(err)
+	}
+
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
