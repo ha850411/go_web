@@ -10,3 +10,4 @@ common:
   ENV: local | prod (choose one)
   PROJECT_ROOT: AUTO_GET
   UPLOADS_PATH: static/uploads
+  LINE_MESSAGING_API_ACCESS_TOKEN: {LINE_ASSESS_TOKEN}
