@@ -44,7 +44,7 @@ func OrdersAdd(c *gin.Context) {
 		var detail map[string]map[string]interface{}
 		_ = json.Unmarshal([]byte(postData.Detail), &detail)
 		LastInsertId, _ := rows.LastInsertId()
-		lineMessage := fmt.Sprintf("\n*新訂單\n姓名: %s\n聯絡方式: %s\n配送地址: %s\n備註: %s\n訂購商品:", postData.Name, postData.Contact, postData.Address, postData.Remark)
+		lineMessage := fmt.Sprintf("【雪国魚沼推播】\n*新訂單\n姓名: %s\n聯絡方式: %s\n配送地址: %s\n備註: %s\n訂購商品:", postData.Name, postData.Contact, postData.Address, postData.Remark)
 		var total int
 		for _, jsonMap := range detail {
 			// get price

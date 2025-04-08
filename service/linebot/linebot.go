@@ -1,20 +1,17 @@
 package linebot
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"goWeb/conf"
-	"goWeb/database"
-	"io/ioutil"
-	"log"
 	"net/http"
-	"net/url"
-	"strings"
 )
 
 var (
 	REDIRECT_URI    = ""
 	OAUTH_TOKEN_URL = "https://notify-bot.line.me/oauth/token"
-	NOTICE_URL      = "https://notify-api.line.me/api/notify"
+	NOTICE_URL      = "https://api.line.me/v2/bot/message/broadcast"
 	CLIENT_ID       = "Hg6jcH8P2quWxvlBEpC4n8"
 	CLIENT_SECRET   = "YE5r6rhpBFUGjqyeK7z9TCUKsSkxK2DrF0EpZAjntUM"
 )
@@ -28,28 +25,48 @@ func init() {
 }
 
 func Request(message string) {
-	form := url.Values{}
-	form.Add("message", message)
-
-	sql := "SELECT linebot_token FROM users WHERE linebot_token IS NOT NULL"
-	db := database.DbConnect()
-	rows, err := db.Query(sql)
-	if err != nil {
-		log.Panic(err)
+	channelAccessToken := conf.Settings.Common.LINE_MESSAGING_API_ACCESS_TOKEN
+	// 創建請求體
+	broadcastPayload := map[string]interface{}{
+		"messages": []map[string]interface{}{
+			{
+				"type": "text",
+				"text": message,
+			},
+		},
 	}
-	defer rows.Close()
-	for rows.Next() {
-		var token string
-		rows.Scan(&token)
-		bearerToken := fmt.Sprintf("Bearer %s", token)
-		req, _ := http.NewRequest("POST", NOTICE_URL, strings.NewReader(form.Encode()))
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Set("Authorization", bearerToken)
 
-		client := &http.Client{}
-		resp, _ := client.Do(req)
-		response, _ := ioutil.ReadAll(resp.Body)
-		// var jsonResponse map[string]interface{}
-		fmt.Printf("response: %v\n", string(response))
+	// 編碼為 JSON
+	jsonData, err := json.Marshal(broadcastPayload)
+	if err != nil {
+		fmt.Println("Error marshalling JSON:", err)
+		return
+	}
+
+	// 創建 HTTP POST 請求
+	req, err := http.NewRequest("POST", NOTICE_URL, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+
+	// 設置請求標頭
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+channelAccessToken)
+
+	// 發送請求
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// 檢查響應狀態
+	if resp.StatusCode == http.StatusOK {
+		fmt.Println("Message sent successfully!")
+	} else {
+		fmt.Printf("Failed to send message, status code: %d\n", resp.StatusCode)
 	}
 }

@@ -29,9 +29,10 @@ type DatabaseConf struct {
 }
 
 type CommonConf struct {
-	ENV          string `yaml:"ENV"`
-	PROJECT_ROOT string `yaml:"PROJECT_ROOT"`
-	UPLOADS_PATH string `yaml:"UPLOADS_PATH"`
+	ENV                             string `yaml:"ENV"`
+	PROJECT_ROOT                    string `yaml:"PROJECT_ROOT"`
+	UPLOADS_PATH                    string `yaml:"UPLOADS_PATH"`
+	LINE_MESSAGING_API_ACCESS_TOKEN string `yaml:"LINE_MESSAGING_API_ACCESS_TOKEN"`
 }
 
 var Settings Conf
