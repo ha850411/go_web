@@ -186,7 +186,7 @@ const vueApp = Vue.createApp({
     delimiters : ["@{", "}"],
     data() {
         return {
-            tip: '{{ .data.Tip }}',
+            tip: '{{ .data.Tip.String }}',
             picture: '{{ .data.Picture }}',
             price: '{{ .data.Price }}',
             discount_price: '{{ .data.DiscountPrice }}',

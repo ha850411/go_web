@@ -1,6 +1,7 @@
 package front
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"goWeb/controllers/api"
@@ -14,15 +15,15 @@ import (
 )
 
 type ProductInfo struct {
-	Id            int      `json:"id"`
-	Name          string   `json:"name"`
-	Price         int      `json:"price"`
-	DiscountPrice int      `json:"discount_price"`
-	Picture       []string `json:"picture"`
-	Content       string   `json:"content"`
-	Type          int      `json:"type"`
-	Amount        string   `json:"amount"`
-	Tip           string   `json:"tip"`
+	Id            int            `json:"id"`
+	Name          string         `json:"name"`
+	Price         int            `json:"price"`
+	DiscountPrice int            `json:"discount_price"`
+	Picture       []string       `json:"picture"`
+	Content       string         `json:"content"`
+	Type          int            `json:"type"`
+	Amount        string         `json:"amount"`
+	Tip           sql.NullString `json:"tip"`
 }
 
 func GetCommonOutput(active string) map[string]interface{} {
